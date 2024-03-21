@@ -1,10 +1,6 @@
 package com.redhat.coolstore.rest;
 
-import jakarta.ws.rs.ApplicationPath;
-import jakarta.ws.rs.core.Application;
+// No imports needed
 
-
-@ApplicationPath("/services")
-public class RestApplication extends Application {
-
-}
+// public class RestApplication extends Application {
+// }

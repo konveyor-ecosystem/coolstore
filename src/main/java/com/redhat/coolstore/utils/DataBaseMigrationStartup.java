@@ -1,15 +1,13 @@
 package com.redhat.coolstore.utils;
 
+import io.quarkus.runtime.StartupEvent;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,25 +15,22 @@ import java.util.logging.Logger;
 /**
  * Created by tqvarnst on 2017-04-04.
  */
-@Singleton
-@Startup
-@TransactionManagement(TransactionManagementType.BEAN)
+@ApplicationScoped
 public class DataBaseMigrationStartup {
 
     @Inject
     Logger logger;
 
-    @Resource(mappedName = "java:jboss/datasources/CoolstoreDS")
+    @Inject
+    @Named("CoolstoreDS")
     DataSource dataSource;
 
-    @PostConstruct
-    private void startup() {
-
-
+    void startup(@Observes StartupEvent event) {
         try {
             logger.info("Initializing/migrating the database using FlyWay");
-            Flyway flyway = new Flyway();
-            flyway.setDataSource(dataSource);
+            Flyway flyway = Flyway.configure()
+                    .dataSource(dataSource)
+                    .load();
             flyway.baseline();
             // Start the db.migration
             flyway.migrate();
@@ -44,10 +39,6 @@ public class DataBaseMigrationStartup {
                 logger.log(Level.SEVERE,"FAILED TO INITIALIZE THE DATABASE: " + e.getMessage(),e);
             else
                 System.out.println("FAILED TO INITIALIZE THE DATABASE: " + e.getMessage() + " and injection of logger doesn't work");
-
         }
     }
-
-
-
 }

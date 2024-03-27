@@ -4,17 +4,17 @@ import com.redhat.coolstore.model.CatalogItemEntity;
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.utils.Transformers;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.redhat.coolstore.utils.Transformers.toProduct;
 
-@Stateless
+@ApplicationScoped
 public class ProductService {
 
-    @Inject
+    @Instance
     CatalogService cm;
 
     public ProductService() {

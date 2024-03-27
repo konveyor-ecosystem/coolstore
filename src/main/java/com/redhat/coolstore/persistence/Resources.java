@@ -1,17 +1,17 @@
 package com.redhat.coolstore.persistence;
 
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
-@Dependent
+@ApplicationScoped
 public class Resources {
 
-    @PersistenceContext
+    @Inject
     private EntityManager em;
 
-    @Produces
+    @Named
     public EntityManager getEntityManager() {
         return em;
     }

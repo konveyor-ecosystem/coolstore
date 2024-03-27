@@ -1,10 +1,10 @@
 package com.redhat.coolstore.service;
 
 import java.util.Hashtable;
-import java.util.logging.Logger;
+import org.jboss.logging.Logger;
 
-import javax.ejb.Stateful;
-import javax.inject.Inject;
+import jakarta.ejb.Stateful;
+import jakarta.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -14,7 +14,7 @@ import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
 
 @Stateful
-public class ShoppingCartService  {
+public class ShoppingCartService {
 
     @Inject
     Logger log;
@@ -25,13 +25,10 @@ public class ShoppingCartService  {
     @Inject
     PromoService ps;
 
-
     @Inject
     ShoppingCartOrderProcessor shoppingCartOrderProcessor;
 
-    private ShoppingCart cart  = new ShoppingCart(); //Each user can have multiple shopping carts (tabbed browsing)
-
-   
+    private ShoppingCart cart = new ShoppingCart(); // Each user can have multiple shopping carts (tabbed browsing)
 
     public ShoppingCartService() {
     }
@@ -42,10 +39,10 @@ public class ShoppingCartService  {
 
     public ShoppingCart checkOutShoppingCart(String cartId) {
         ShoppingCart cart = this.getShoppingCart(cartId);
-      
+
         log.info("Sending  order: ");
         shoppingCartOrderProcessor.process(cart);
-   
+
         cart.resetShoppingCartItemList();
         priceShoppingCart(cart);
         return cart;
@@ -111,7 +108,7 @@ public class ShoppingCartService  {
         return productServices.getProductByItemId(itemId);
     }
 
-	private static ShippingServiceRemote lookupShippingServiceRemote() {
+    private static ShippingServiceRemote lookupShippingServiceRemote() {
         try {
             final Hashtable<String, String> jndiProperties = new Hashtable<>();
             jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");

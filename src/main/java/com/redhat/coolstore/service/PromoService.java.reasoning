@@ -1,0 +1,1 @@
+["1. The issue found in the static code analysis is that the import statement `javax.enterprise` needs to be replaced with `jakarta.enterprise` to migrate to Quarkus.\n2. The `javax.enterprise.context.ApplicationScoped` annotation needs to be replaced with `javax.enterprise.context.ApplicationScoped` for Quarkus compatibility."]

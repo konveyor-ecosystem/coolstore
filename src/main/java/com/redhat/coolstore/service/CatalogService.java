@@ -1,20 +1,21 @@
 package com.redhat.coolstore.service;
 
 import java.util.List;
-import java.util.logging.Logger;
+import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
+
+import javax.enterprise.context.ApplicationScoped;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 
 import com.redhat.coolstore.model.*;
 
-@Stateless
+@ApplicationScoped
 public class CatalogService {
 
     @Inject
@@ -39,7 +40,8 @@ public class CatalogService {
     }
 
     public void updateInventoryItems(String itemId, int deducts) {
-        InventoryEntity inventoryEntity = getCatalogItemById(itemId).getInventory();
+        CatalogItemEntity catalogItem = em.find(CatalogItemEntity.class, itemId);
+        InventoryEntity inventoryEntity = catalogItem.getInventory();
         int currentQuantity = inventoryEntity.getQuantity();
         inventoryEntity.setQuantity(currentQuantity-deducts);
         em.merge(inventoryEntity);

@@ -3,69 +3,42 @@ package com.redhat.coolstore.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
+import javax.enterprise.context.ApplicationScoped;
 
-import com.redhat.coolstore.model.ShoppingCart;
+@Path("/shipping")
+@ApplicationScoped
+public class ShippingService {
 
-@Stateless
-@Remote
-public class ShippingService implements ShippingServiceRemote {
-
-    @Override
-    public double calculateShipping(ShoppingCart sc) {
-
-        if (sc != null) {
-
-            if (sc.getCartItemTotal() >= 0 && sc.getCartItemTotal() < 25) {
-
-                return 2.99;
-
-            } else if (sc.getCartItemTotal() >= 25 && sc.getCartItemTotal() < 50) {
-
-                return 4.99;
-
-            } else if (sc.getCartItemTotal() >= 50 && sc.getCartItemTotal() < 75) {
-
-                return 6.99;
-
-            } else if (sc.getCartItemTotal() >= 75 && sc.getCartItemTotal() < 100) {
-
-                return 8.99;
-
-            } else if (sc.getCartItemTotal() >= 100 && sc.getCartItemTotal() < 10000) {
-
-                return 10.99;
-
-            }
-
+    @GET
+    @Path("/calculateShipping")
+    public double calculateShipping(@QueryParam("cartTotal") double cartTotal) {
+        if (cartTotal >= 0 && cartTotal < 25) {
+            return 2.99;
+        } else if (cartTotal >= 25 && cartTotal < 50) {
+            return 4.99;
+        } else if (cartTotal >= 50 && cartTotal < 75) {
+            return 6.99;
+        } else if (cartTotal >= 75 && cartTotal < 100) {
+            return 8.99;
+        } else if (cartTotal >= 100 && cartTotal < 10000) {
+            return 10.99;
         }
-
         return 0;
-
     }
 
-    @Override
-    public double calculateShippingInsurance(ShoppingCart sc) {
-
-        if (sc != null) {
-
-            if (sc.getCartItemTotal() >= 25 && sc.getCartItemTotal() < 100) {
-
-                return getPercentOfTotal(sc.getCartItemTotal(), 0.02);
-
-            } else if (sc.getCartItemTotal() >= 100 && sc.getCartItemTotal() < 500) {
-
-                return getPercentOfTotal(sc.getCartItemTotal(), 0.015);
-
-            } else if (sc.getCartItemTotal() >= 500 && sc.getCartItemTotal() < 10000) {
-
-                return getPercentOfTotal(sc.getCartItemTotal(), 0.01);
-
-            }
-
+    @GET
+    @Path("/calculateShippingInsurance")
+    public double calculateShippingInsurance(@QueryParam("cartTotal") double cartTotal) {
+        if (cartTotal >= 25 && cartTotal < 100) {
+            return getPercentOfTotal(cartTotal, 0.02);
+        } else if (cartTotal >= 100 && cartTotal < 500) {
+            return getPercentOfTotal(cartTotal, 0.015);
+        } else if (cartTotal >= 500 && cartTotal < 10000) {
+            return getPercentOfTotal(cartTotal, 0.01);
         }
-
         return 0;
     }
 

@@ -4,14 +4,14 @@ import com.redhat.coolstore.model.CatalogItemEntity;
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.utils.Transformers;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import javax.enterprise.context.ApplicationScoped; // Updated import statement from jakarta.ejb.Stateless to javax.enterprise.context.ApplicationScoped
+import jakarta.inject.Inject; // Updated import statement from javax.inject.Inject to jakarta.inject.Inject
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.redhat.coolstore.utils.Transformers.toProduct;
 
-@Stateless
+@ApplicationScoped // Replaced @Stateless with @ApplicationScoped
 public class ProductService {
 
     @Inject

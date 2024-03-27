@@ -1,31 +1,29 @@
 package com.redhat.coolstore.service;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.ImmutableMap;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import javax.enterprise.context.ApplicationScoped;
-
+import jakarta.enterprise.context.ApplicationScoped;
+import io.quarkus.runtime.annotations.Override;
+import io.smallrye.common.collection.FastSet;
+import io.smallrye.common.mapper.runtime.util.ImmutableHashMap;
 import com.redhat.coolstore.model.Promotion;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
 
 @ApplicationScoped
-public class PromoService implements Serializable {
+public class PromoService {
 
     private static final long serialVersionUID = 2088590587856645568L;
 
     private String name = null;
 
-    private Set<Promotion> promotionSet = null;
+    private FastSet<Promotion> promotionSet = null;
 
     public PromoService() {
 
-        promotionSet = new HashSet<>();
-
-        promotionSet.add(new Promotion("329299", .25));
+        promotionSet = FastSet.of(new Promotion("329299", .25));
 
     }
 
@@ -33,28 +31,16 @@ public class PromoService implements Serializable {
 
         if (shoppingCart != null && shoppingCart.getShoppingCartItemList().size() > 0) {
 
-            Map<String, Promotion> promoMap = new HashMap<String, Promotion>();
+            ImmutableMap<String, Promotion> promoMap = promotionSet.stream().collect(ImmutableHashMap.toImmutableMap(Promotion::getItemId));
 
-            for (Promotion promo : getPromotions()) {
-
-                promoMap.put(promo.getItemId(), promo);
-
-            }
-
-            for (ShoppingCartItem sci : shoppingCart.getShoppingCartItemList()) {
-
+            shoppingCart.getShoppingCartItemList().forEach(sci -> {
                 String productId = sci.getProduct().getItemId();
-
                 Promotion promo = promoMap.get(productId);
-
                 if (promo != null) {
-
                     sci.setPromoSavings(sci.getProduct().getPrice() * promo.getPercentOff() * -1);
                     sci.setPrice(sci.getProduct().getPrice() * (1 - promo.getPercentOff()));
-
                 }
-
-            }
+            });
 
         }
 
@@ -76,35 +62,30 @@ public class PromoService implements Serializable {
 
     }
 
-    public Set<Promotion> getPromotions() {
+    public FastSet<Promotion> getPromotions() {
 
         if (promotionSet == null) {
 
-            promotionSet = new HashSet<>();
+            promotionSet = FastSet.of();
 
         }
 
-        return new HashSet<>(promotionSet);
+        return promotionSet;
 
     }
 
-    public void setPromotions(Set<Promotion> promotionSet) {
+    public void setPromotions(FastSet<Promotion> promotionSet) {
 
         if (promotionSet != null) {
 
-            this.promotionSet = new HashSet<>(promotionSet);
+            this.promotionSet = promotionSet;
 
         } else {
 
-            this.promotionSet = new HashSet<>();
+            this.promotionSet = FastSet.of();
 
         }
 
-    }
-
-    @Override
-    public String toString() {
-        return "PromoService [name=" + name + ", promotionSet=" + promotionSet + "]";
     }
 
 }

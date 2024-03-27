@@ -1,10 +1,1 @@
-package com.redhat.coolstore.rest;
-
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
-
-
-@ApplicationPath("/services")
-public class RestApplication extends Application {
-
-}
+// Empty file as there are no functionalities left in the file after the changes.

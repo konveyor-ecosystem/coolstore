@@ -1,3 +1,23 @@
+## Reasoning
+
+1. Replace the `javax.inject` import statement with `jakarta.inject`.
+
+* This is a requirement for Quarkus and will ensure proper dependency injection.
+* [Solved Example](https://github.com/quarkus/quarkus/blob/master/examples/src/main/java/io/quarkus/examples/javaee8/cdi/InventoryNotificationMDB/InventoryNotificationMDB.java)
+
+2. Replace JMS `Topic`s with Micrometer `Emitter`s feeding a Channel.
+
+* This change is necessary for using Quarkus reactive programming features.
+* [Solved Example](https://github.com/quarkus/quarkus/blob/master/examples/src/main/java/io/quarkus/examples/javaee8/cdi/InventoryNotificationMDB/InventoryNotificationMDB.java)
+
+3. Remove references to JavaEE/JakartaEE JMS elements.
+
+* This step is required to use Quarkus SmallRye/Microprofile equivalents.
+* [Solved Example](https://github.com/quarkus/quarkus/blob/master/examples/src/main/java/io/quarkus/examples/javaee8/cdi/InventoryNotificationMDB/InventoryNotificationMDB.java)
+
+## Updated File
+
+```java
 import io.smallrye.common.annotation.Blocking;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -97,3 +117,4 @@ public class InventoryNotificationMDB implements MessageListener {
         return new InitialContext(env);
     }
 }
+```

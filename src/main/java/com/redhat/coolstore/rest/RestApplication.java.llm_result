@@ -1,0 +1,20 @@
+## Reasoning
+
+1. The `javax.ws.rs` package has been replaced with `jakarta.ws.rs` in Quarkus. Therefore, the import statement `import javax.ws.rs.ApplicationPath;` should be updated to `import jakarta.ws.rs.ApplicationPath;`.
+2. The same change should be made to the import statement on line 4.
+3. JAX-RS activation is no longer necessary in Quarkus. The root path can be set if desired, but it is not required. Therefore, the comment indicating the need for JAX-RS activation can be removed.
+4. The same change should be made to the comment on line 8.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.rest;
+
+import jakarta.ws.rs.ApplicationPath;
+import jakarta.ws.rs.core.Application;
+
+@ApplicationPath("/services")
+public class RestApplication extends Application {
+
+}
+```

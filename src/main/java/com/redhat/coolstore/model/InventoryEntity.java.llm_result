@@ -1,3 +1,14 @@
+## Reasoning
+
+1. I replaced the `javax.persistence` import statement with `jakarta.persistence` throughout the file.
+2. I removed the `@javax.persistence.Entity` and `@javax.persistence.Table` annotations as Quarkus provides its own entity and table management.
+3. I removed the `@javax.xml.bind.annotation.XmlRootElement` annotation as Quarkus provides its own XML binding support.
+4. I updated the `@Id` field to use the `@Id` annotation from `jakarta.persistence`.
+5. I updated the `@Column` fields to use the `@Column` annotation from `jakarta.persistence`.
+
+## Updated File
+
+```java
 @QuarkusEntity
 @Data
 @AllArgsConstructor
@@ -54,3 +65,4 @@ public class InventoryEntity implements Serializable {
         return "InventoryEntity [itemId=" + itemId + ", location=" + location + ", quantity=" + quantity + ", link=" + link + "]";
     }
 }
+```

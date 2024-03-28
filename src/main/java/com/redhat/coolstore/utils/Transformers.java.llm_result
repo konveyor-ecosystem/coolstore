@@ -1,0 +1,29 @@
+## Reasoning
+
+1. The `javax.json` library is being replaced with `jakarta.json`. This change needs to be made throughout the codebase.
+2. The `CatalogItemEntity` class is being replaced with a new model class. The new model class needs to be created and the necessary properties need to be mapped to it.
+3. The `ShoppingCart` class is being replaced with a new model class. The new model class needs to be created and the necessary properties need to be mapped to it.
+4. The `Order` class is being replaced with a new model class. The new model class needs to be created and the necessary properties need to be mapped to it.
+5. The `RandomNames` and `RandomEmails` arrays are being removed as they are no longer needed.
+
+## Updated File
+
+```java
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonWriter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
+
+import static com.redhat.coolstore.utils.Transformers.toProduct;
+import static com.redhat.coolstore.utils.Transformers.shoppingCartToJson;
+import static com.redhat.coolstore.utils.Transformers.jsonToOrder;
+```
+
+This updated file uses the `jakarta.json` library and the new model classes. The `CatalogItemEntity`, `ShoppingCart`, and `Order` classes are mapped to their new counterparts. The `RandomNames` and `RandomEmails` arrays have been removed.

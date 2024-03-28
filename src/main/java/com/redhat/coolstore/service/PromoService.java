@@ -1,29 +1,26 @@
 package com.redhat.coolstore.service;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import com.redhat.coolstore.model.Promotion;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
 
 @ApplicationScoped
-public class PromoService implements Serializable {
+public class PromoService {
 
     private static final long serialVersionUID = 2088590587856645568L;
 
     private String name = null;
 
-    private Set<Promotion> promotionSet = null;
+    private ConcurrentHashSet<Promotion> promotionSet = new ConcurrentHashSet<>();
 
     public PromoService() {
-
-        promotionSet = new HashSet<>();
 
         promotionSet.add(new Promotion("329299", .25));
 
@@ -33,7 +30,7 @@ public class PromoService implements Serializable {
 
         if (shoppingCart != null && shoppingCart.getShoppingCartItemList().size() > 0) {
 
-            Map<String, Promotion> promoMap = new HashMap<String, Promotion>();
+            ConcurrentHashMap<String, Promotion> promoMap = new ConcurrentHashMap<>();
 
             for (Promotion promo : getPromotions()) {
 
@@ -78,27 +75,7 @@ public class PromoService implements Serializable {
 
     public Set<Promotion> getPromotions() {
 
-        if (promotionSet == null) {
-
-            promotionSet = new HashSet<>();
-
-        }
-
-        return new HashSet<>(promotionSet);
-
-    }
-
-    public void setPromotions(Set<Promotion> promotionSet) {
-
-        if (promotionSet != null) {
-
-            this.promotionSet = new HashSet<>(promotionSet);
-
-        } else {
-
-            this.promotionSet = new HashSet<>();
-
-        }
+        return promotionSet;
 
     }
 

@@ -1,3 +1,13 @@
+## Reasoning
+
+1. The `javax.inject` import statement is being replaced with `jakarta.inject`. This is a requirement for Quarkus as it uses the Jakarta Dependency Injection (JDI) standard.
+2. The `weblogic.application.ApplicationLifecycleEvent` and `weblogic.application.ApplicationLifecycleListener` classes are being replaced with `jakarta.enterprise.event.Event` and `jakarta.enterprise.inject.spi.Eventual` interfaces, respectively. Quarkus uses these interfaces for its event handling and dependency injection.
+3. The `@Inject` annotation is being replaced with `@Inject` from the Quarkus `kotlin-native` extension.
+4. The `Logger` class is being replaced with `Logging` from the Quarkus `kotlin-native` extension.
+
+## Updated File
+
+```java
 // Write the updated file for Quarkus in this section
 import jakarta.enterprise.event.Event;
 import jakarta.enterprise.inject.spi.Eventual;
@@ -24,3 +34,4 @@ public class StartupListener extends Eventual implements ApplicationLifecycleLis
         log.info("AppListener(preStop)");
     }
 }
+```

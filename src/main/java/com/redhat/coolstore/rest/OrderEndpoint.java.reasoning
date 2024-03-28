@@ -1,0 +1,1 @@
+["1. To migrate the code to Quarkus, we need to replace the `javax.enterprise` import statement with `jakarta.enterprise`.\n2. Similarly, we need to replace the `javax.inject` import statement with `jakarta.inject`.\n3. Additionally, we need to replace the `javax.ws` import statement with `jakarta.ws`.\n4. These changes are required to ensure compatibility with Quarkus."]

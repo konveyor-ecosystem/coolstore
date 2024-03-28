@@ -1,3 +1,16 @@
+
+## Reasoning
+
+1. The `javax.enterprise` package is being replaced with `jakarta.enterprise` in Quarkus. This change is necessary to ensure compatibility with the Quarkus framework.
+2. The `@ApplicationScoped` annotation is being retained as it is a valid annotation in Quarkus.
+3. The `Serializable` interface is being retained as it is a valid interface in Java and Quarkus.
+4. The `HashMap` and `HashSet` classes are being used for storing promotions and shopping cart items. No changes are required for these classes in Quarkus.
+5. The `Promotion` class is being used for storing promotion details. No changes are required for this class in Quarkus.
+6. The `ShoppingCart` and `ShoppingCartItem` classes are being used for storing shopping cart information. No changes are required for these classes in Quarkus.
+
+## Updated File
+
+```java
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.HashMap;
@@ -105,3 +118,4 @@ public class PromoService implements Serializable {
     }
 
 }
+```

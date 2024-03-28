@@ -1,0 +1,1 @@
+["1. We need to replace the `javax.ejb` import statement with `jakarta.ejb` as Quarkus uses Jakarta EE 9.\n2. We need to replace the `javax.inject` import statement with `jakarta.inject` as Quarkus uses Jakarta EE 9.\n3. The `@Stateless` annotation needs to be replaced with a scope eg `@ApplicationScoped` to convert the Stateless EJBs to a CDI bean."]

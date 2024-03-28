@@ -1,3 +1,12 @@
+## Reasoning
+
+1. We need to replace the `javax.ejb` import statement with `jakarta.ejb` as Quarkus uses Jakarta EE 9.
+2. We need to replace the `javax.inject` import statement with `jakarta.inject` as Quarkus uses Jakarta EE 9.
+3. The `@Stateless` annotation needs to be replaced with a scope eg `@ApplicationScoped` to convert the Stateless EJBs to a CDI bean.
+
+## Updated File
+
+```java
 @RequestScoped
 @Inject
 public class ProductService {
@@ -20,3 +29,4 @@ public class ProductService {
         return Transformers.toProduct(entity);
     }
 }
+```

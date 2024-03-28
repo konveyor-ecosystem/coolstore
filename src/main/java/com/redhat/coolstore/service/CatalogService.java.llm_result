@@ -1,3 +1,14 @@
+## Reasoning
+
+1. To migrate the `CatalogService` from JavaEE to Quarkus, we need to replace the `@Stateless` annotation with a scope eg `@ApplicationScoped`.
+2. The `@PersistenceContext` is replaced with `@Inject` for injecting the EntityManager in Quarkus.
+3. The `javax.persistence` import statement should be replaced with `jakarta.persistence`.
+4. The `javax.ejb` import statement should be replaced with `jakarta.ejb`.
+5. The `javax.inject` import statement should be replaced with `jakarta.inject`.
+
+## Updated File
+
+```java
 @ApplicationScoped
 public class CatalogService {
 
@@ -29,3 +40,4 @@ public class CatalogService {
         em.merge(inventoryEntity);
     }
 }
+```

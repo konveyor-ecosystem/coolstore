@@ -1,18 +1,12 @@
-package com.redhat.coolstore.persistence;
-
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+// Update the Resources class to use Jakarta Persistence and Quarkus annotations
 @Dependent
 public class Resources {
 
     @PersistenceContext
+    @Named("entityManager")
     private EntityManager em;
 
-    @Produces
-    public EntityManager getEntityManager() {
+    public EntityManager getEm() {
         return em;
     }
 }

@@ -1,0 +1,19 @@
+## Reasoning
+
+1. To migrate the code to Quarkus, we need to replace the `javax.enterprise` import statement with `jakarta.enterprise`.
+2. Similarly, we need to replace the `javax.inject` import statement with `jakarta.inject`.
+3. Additionally, we need to replace the `javax.ws` import statement with `jakarta.ws`.
+4. These changes are required to ensure compatibility with Quarkus.
+
+## Updated File
+
+```java
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+```

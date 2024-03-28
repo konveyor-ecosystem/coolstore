@@ -1,31 +1,47 @@
 package com.redhat.coolstore.utils;
 
-import io.quarkus.flyway.QuarkusFlyway;
-import io.quarkus.log.Log;
-import io.quarkus.transaction.Transactional;
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.annotation.Resource;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
 import jakarta.inject.Inject;
 import jakarta.sql.DataSource;
+import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-@ApplicationScoped
-@Transactional
+@Singleton
+@Startup
 public class DataBaseMigrationStartup {
 
     @Inject
-    Log log;
+    Logger logger;
 
-    @Inject
     DataSource dataSource;
 
     @PostConstruct
-    public void startup() {
-        QuarkusFlyway flyway = new QuarkusFlyway();
-        flyway.setDataSource(dataSource);
-        flyway.baseline();
-        flyway.migrate()
-            .ifException(throwable -> log.severe("FAILED TO INITIALIZE THE DATABASE: " + throwable.getMessage(), throwable));
+    private void startup() {
+
+
+        try {
+            logger.info("Initializing/migrating the database using FlyWay");
+            Flyway flyway = new Flyway();
+            flyway.setDataSource(dataSource);
+            flyway.baseline();
+            // Start the db.migration
+            flyway.migrate();
+        } catch (FlywayException e) {
+            if(logger !=null)
+                logger.log(Level.SEVERE,"FAILED TO INITIALIZE THE DATABASE: " + e.getMessage(),e);
+            else
+                System.out.println("FAILED TO INITIALIZE THE DATABASE: " + e.getMessage() + " and injection of logger doesn't work");
+
+        }
     }
+
+
 
 }

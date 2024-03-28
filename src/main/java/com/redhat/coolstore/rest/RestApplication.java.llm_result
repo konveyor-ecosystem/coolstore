@@ -1,0 +1,19 @@
+
+## Reasoning
+
+1. **Issue 1 and 2:** The Java EE specification has been renamed to Jakarta EE in version 9, which includes a change in package names from `javax` to `jakarta`. Quarkus is built on Jakarta EE 8, so we need to update our import statements accordingly. This change is required to ensure compatibility with Quarkus.
+
+2. **Issue 3 and 4:** JAX-RS activation is no longer necessary in Quarkus, as it uses a different approach for setting up the application context. The `@ApplicationPath` annotation is used to set the root path for the JAX-RS application, but in Quarkus, it is not required. We can remove the `@ApplicationPath` annotation and the root path will still work as expected.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.rest;
+
+import jakarta.ws.rs.core.Application;
+
+public class RestApplication extends Application {
+}
+```
+
+In the updated file, we have removed the `@ApplicationPath` annotation and changed the import statements to use `jakarta.ws` instead of `javax.ws`. This ensures compatibility with Quarkus and simplifies the code.

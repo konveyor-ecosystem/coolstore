@@ -1,0 +1,128 @@
+
+## Reasoning
+
+1. **Replace the `javax.enterprise` import statement with `jakarta.enterprise`**: This change is required because Quarkus uses the Jakarta EE API instead of the Java EE API. The `javax` namespace has been replaced with `jakarta` in Jakarta EE, starting with version 8.
+
+2. **Replace the `javax.inject` import statement with `jakarta.inject`**: Similar to the first step, this change is required because Quarkus uses the Jakarta EE API instead of the Java EE API. The `javax` namespace has been replaced with `jakarta` in Jakarta EE, starting with version 8.
+
+3. **Replace the `javax.ws` import statement with `jakarta.ws`**: This change is required because Quarkus uses the Jakarta EE API instead of the Java EE API. The `javax` namespace has been replaced with `jakarta` in Jakarta EE, starting with version 8. This change needs to be done for all the `javax.ws` import statements.
+
+4. **Change `@SessionScoped` to `@RequestScoped`**: This change is required because Quarkus uses a different concept for managing the lifecycle of beans. Quarkus uses a more lightweight approach with the `@RequestScoped` annotation, which is more suitable for a microservices architecture.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.rest;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+
+import com.redhat.coolstore.model.Product;
+import com.redhat.coolstore.model.ShoppingCart;
+import com.redhat.coolstore.model.ShoppingCartItem;
+import com.redhat.coolstore.service.ShoppingCartService;
+
+@RequestScoped
+@Path("/cart")
+public class CartEndpoint implements Serializable {
+
+	private static final long serialVersionUID = -7227732980791688773L;
+
+	@Inject
+	private ShoppingCartService shoppingCartService;
+
+	@GET
+	@Path("/{cartId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ShoppingCart getCart(@PathParam("cartId") String cartId) {
+		return shoppingCartService.getShoppingCart(cartId);
+	}
+
+	@POST
+	@Path("/checkout/{cartId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ShoppingCart checkout(@PathParam("cartId") String cartId) {
+		return shoppingCartService.checkOutShoppingCart(cartId);
+	}
+
+	@POST
+	@Path("/{cartId}/{itemId}/{quantity}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ShoppingCart add(@PathParam("cartId") String cartId,
+							@PathParam("itemId") String itemId,
+							@PathParam("quantity") int quantity) throws Exception {
+		ShoppingCart cart = shoppingCartService.getShoppingCart(cartId);
+
+		Product product = shoppingCartService.getProduct(itemId);
+
+		ShoppingCartItem sci = new ShoppingCartItem();
+		sci.setProduct(product);
+		sci.setQuantity(quantity);
+		sci.setPrice(product.getPrice());
+		cart.addShoppingCartItem(sci);
+
+		try {
+			shoppingCartService.priceShoppingCart(cart);
+			cart.setShoppingCartItemList(dedupeCartItems(cart.getShoppingCartItemList()));
+		} catch (Exception ex) {
+			cart.removeShoppingCartItem(sci);
+			throw ex;
+		}
+
+		return cart;
+	}
+
+	@POST
+	@Path("/{cartId}/{tmpId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ShoppingCart set(@PathParam("cartId") String cartId,
+							@PathParam("tmpId") String tmpId) throws Exception {
+
+		ShoppingCart cart = shoppingCartService.getShoppingCart(cartId);
+		ShoppingCart tmpCart = shoppingCartService.getShoppingCart(tmpId);
+
+		if (tmpCart != null) {
+			cart.resetShoppingCartItemList();
+			cart.setShoppingCartItemList(tmpCart.getShoppingCartItemList());
+		}
+
+		try {
+			shoppingCartService.priceShoppingCart(cart);
+			cart.setShoppingCartItemList(dedupeCartItems(cart.getShoppingCartItemList()));
+		} catch (Exception ex) {
+			throw ex;
+		}
+
+		return cart;
+	}
+
+	@DELETE
+	@Path("/{cartId}/{itemId}/{quantity}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ShoppingCart delete(@PathParam("cartId") String cartId,
+							   @PathParam("itemId") String itemId,
+							   @PathParam("quantity") int quantity) throws Exception {
+
+		List<ShoppingCartItem> toRemoveList = new ArrayList<>();
+
+		ShoppingCart cart = shoppingCartService.getShoppingCart(cartId);
+
+		cart.getShoppingCartItemList().stream()
+				.filter(sci -> sci.getProduct().getItemId().equals(itemId))
+				.forEach(sci -> {
+					if (quantity >= sci.getQuantity()) {
+						toRemoveList.add(sci);
+		

@@ -1,0 +1,52 @@
+
+## Reasoning
+
+1. **Replace Weblogic dependencies**: The input file uses Weblogic's `ApplicationLifecycleEvent` and `ApplicationLifecycleListener`. These are specific to WebLogic and not part of the Java EE standard. Quarkus does not support WebLogic, so we need to replace these dependencies. However, since the requirement is to handle application lifecycle events, we can use Quarkus' `io.quarkus.runtime.ShutdownEvent` and `io.quarkus.runtime.StartupEvent` to achieve the same functionality.
+
+2. **Replace `javax.inject` import statement with `jakarta.inject`**: This change is required because Quarkus uses the Jakarta EE specification, which uses the `jakarta` package namespace instead of `javax`. This change is necessary to ensure that the `@Inject` annotation is correctly recognized by Quarkus.
+
+3. **Remove Weblogic-specific code**: Since we are migrating to Quarkus, we need to remove any Weblogic-specific code. In this case, we can remove the `extends ApplicationLifecycleListener` and the `ApplicationLifecycleEvent` parameters from the `postStart` and `preStop` methods.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.utils;
+
+import jakarta.inject.Inject;
+import java.util.logging.Logger;
+import io.quarkus.runtime.ShutdownEvent;
+import io.quarkus.runtime.StartupEvent;
+
+public class StartupListener {
+
+    @Inject
+    Logger log;
+
+    void onStart(StartupEvent ev) {
+        log.info("AppListener(postStart)");
+    }
+
+    void onStop(ShutdownEvent ev) {
+        log.info("AppListener(preStop)");
+    }
+
+}
+```
+
+## Changes to pom.xml
+
+1. Remove the Weblogic dependencies from the `<dependencies>` section.
+2. Add the Quarkus dependencies for `StartupEvent` and `ShutdownEvent`. You can add the following dependencies to your `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-runtime</artifactId>
+</dependency>
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-logging-jul</artifactId>
+</dependency>
+```
+
+Note: The above dependencies are already included in the `pom.xml` file of the Quarkus project. Therefore, you don't need to add them again.

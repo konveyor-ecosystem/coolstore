@@ -1,0 +1,64 @@
+
+## Reasoning
+
+1. The first issue highlights the need to replace the `javax.ejb` import statement with `jakarta.ejb`. This change is necessary because Quarkus uses the Jakarta EE API, which has renamed the `javax.ejb` package to `jakarta.ejb` in a previous version. This change is required to ensure compatibility with Quarkus.
+
+2. The second issue highlights the need to replace the `javax.inject` import statement with `jakarta.inject`. This change is necessary because Quarkus uses the Jakarta EE API, which has renamed the `javax.inject` package to `jakarta.inject` in a previous version. This change is required to ensure compatibility with Quarkus.
+
+3. The third, fourth, fifth, and sixth issues all highlight the need to replace the `javax.persistence` import statement with `jakarta.persistence`. This change is necessary because Quarkus uses the Jakarta EE API, which has renamed the `javax.persistence` package to `jakarta.persistence` in a previous version. This change is required to ensure compatibility with Quarkus.
+
+4. The seventh issue highlights the need to remove the `@Produces` annotation from the `EntityManager` and inject it directly. This change is necessary because Quarkus automatically creates the `EntityManager` bean when the datasource is correctly configured. If a producer is still needed, a qualification should be created for the produced `EntityManager` and every injection point for the EM.
+
+5. The eighth issue highlights the need to replace the `@Stateless` annotation with a scope, such as `@ApplicationScoped`. This change is necessary because Quarkus uses CDI for dependency injection, and the `@Stateless` annotation is not a valid CDI scope.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.service;
+
+import java.util.List;
+import java.util.logging.Logger;
+
+import jakarta.inject.Inject;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
+import com.redhat.coolstore.model.*;
+
+@ApplicationScoped
+public class CatalogService {
+
+    @Inject
+    Logger log;
+
+    @Inject
+    private EntityManager em;
+
+    public CatalogService() {
+    }
+
+    public List<CatalogItemEntity> getCatalogItems() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<CatalogItemEntity> criteria = cb.createQuery(CatalogItemEntity.class);
+        Root<CatalogItemEntity> member = criteria.from(CatalogItemEntity.class);
+        criteria.select(member);
+        return em.createQuery(criteria).getResultList();
+    }
+
+    public CatalogItemEntity getCatalogItemById(String itemId) {
+        return em.find(CatalogItemEntity.class, itemId);
+    }
+
+    public void updateInventoryItems(String itemId, int deducts) {
+        InventoryEntity inventoryEntity = getCatalogItemById(itemId).getInventory();
+        int currentQuantity = inventoryEntity.getQuantity();
+        inventoryEntity.setQuantity(currentQuantity-deducts);
+        em.merge(inventoryEntity);
+    }
+
+}
+```

@@ -1,3 +1,29 @@
+
+## Reasoning
+
+1. The first step is to address the issues found in the static analysis. The first issue is to replace the `javax.ejb` import statement with `jakarta.ejb`. This change is necessary because Quarkus uses the Jakarta EE API, which has renamed the `javax` package to `jakarta`. This change is required for the `@Stateful` annotation.
+
+2. The second issue is to replace the `javax.inject` import statement with `jakarta.inject`. This change is necessary for the `@Inject` annotation.
+
+3. The `ShoppingCartService` class is a stateful session bean in Java EE, which manages the state of a shopping cart for a user. In Quarkus, we can achieve the same functionality using a CDI bean with the `@SessionScoped` annotation. This annotation ensures that a single instance of the bean is created for each HTTP session.
+
+4. The `ProductService` and `PromoService` classes are injected using the `@Inject` annotation. In Quarkus, we can use the same annotation to inject these services.
+
+5. The `ShoppingCartOrderProcessor` class is injected using the `@Inject` annotation. In Quarkus, we can use the same annotation to inject this class.
+
+6. The `ShoppingCart` class is a model class that represents a shopping cart. In Quarkus, we can use the same class without any changes.
+
+7. The `priceShoppingCart` method calculates the total price of a shopping cart, including the price of each item, shipping cost, and any applicable promotions. In Quarkus, we can use the same method without any changes.
+
+8. The `initShoppingCartForPricing` method initializes the shopping cart for pricing by setting the total price, total promotion savings, shipping cost, and shipping promotion savings to zero. In Quarkus, we can use the same method without any changes.
+
+9. The `getProduct` method retrieves a product by its item ID. In Quarkus, we can use the same method without any changes.
+
+10. The `lookupShippingServiceRemote` method looks up a remote EJB using JNDI. In Quarkus, we can replace this method with a REST client that calls a remote service using the HTTP protocol.
+
+## Updated File
+
+```java
 package com.redhat.coolstore.service;
 
 import jakarta.enterprise.context.SessionScoped;
@@ -117,3 +143,4 @@ public class ShoppingCartService  {
     }
 
 }
+```

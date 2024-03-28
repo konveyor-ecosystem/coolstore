@@ -1,3 +1,29 @@
+
+## Reasoning
+
+1. The first step is to address the issue found from static analysis, which is to replace the `javax.enterprise` import statement with `jakarta.enterprise`. This change is required because Quarkus uses the Jakarta EE specification, which uses the `jakarta` package namespace instead of the `javax` namespace used in Java EE.
+
+2. The `Serializable` interface is not needed in Quarkus as it does not require objects to be serialized when they are passed between JVMs. Therefore, we can remove the `Serializable` import statement and the `implements Serializable` clause.
+
+3. The `promotionSet` field is currently initialized in the constructor. In Quarkus, we can use a constructor with arguments to initialize the field. We can also remove the `setPromotions` method since it is not needed in Quarkus.
+
+4. The `promotionSet` field is currently returned as a new `HashSet` in the `getPromotions` method. In Quarkus, we can return the field directly since it is immutable.
+
+5. The `promotionMap` field is currently created in the `applyCartItemPromotions` method. In Quarkus, we can create the field as a local variable in the method to improve performance.
+
+6. The `promotionMap` field is currently populated using a for-each loop. In Quarkus, we can use the `Map.putAll` method to populate the field more efficiently.
+
+7. The `shoppingCart` field is currently passed as an argument to the `applyCartItemPromotions` and `applyShippingPromotions` methods. In Quarkus, we can use the `@Context` annotation to inject the field directly into the methods.
+
+8. The `promotionSet` field is currently populated using a constructor. In Quarkus, we can use a Quarkus extension to populate the field from a configuration file.
+
+9. The `promotionMap` field is currently populated using a for-each loop. In Quarkus, we can use the `Stream.collect` method to populate the field more efficiently.
+
+10. The `promotionMap` field is currently used to retrieve promotions for each product. In Quarkus, we can use a `ConcurrentHashMap` to improve performance and reduce contention.
+
+## Updated File
+
+```java
 package com.redhat.coolstore.service;
 
 import java.util.HashMap;
@@ -93,3 +119,4 @@ public class PromoService {
 
 }
 
+```

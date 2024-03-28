@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
+import jakarta.inject.Injected;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
+import io.quarkus.arc.inject.Injected;
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.service.ProductService;
 
@@ -22,7 +23,7 @@ public class ProductEndpoint implements Serializable {
      */
     private static final long serialVersionUID = -7227732980791688773L;
 
-    @Inject
+    @Injected
     private ProductService pm;
 
 

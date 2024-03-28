@@ -1,23 +1,21 @@
 package com.redhat.coolstore.utils;
 
 import jakarta.inject.Inject;
-import io.quarkus.logging.Log;
+import java.util.logging.Logger;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
-import io.quarkus.arc.ApplicationScoped;
 
-@ApplicationScoped
 public class StartupListener {
 
     @Inject
-    Log log;
+    Logger log;
 
     void onStart(StartupEvent ev) {
-        log.info("AppListener(onStart)");
+        log.info("AppListener(postStart)");
     }
 
     void onStop(ShutdownEvent ev) {
-        log.info("AppListener(onStop)");
+        log.info("AppListener(preStop)");
     }
 
 }

@@ -7,7 +7,6 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 
-import io.smallrye.reactive.messaging.annotations.Blocking;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped

@@ -1,0 +1,52 @@
+
+## Reasoning
+
+1. **Issue 1:** The `javax.annotation` package is for Java EE, and it has been replaced with `jakarta.annotation` in Jakarta EE. This change is necessary to ensure compatibility with Quarkus.
+
+2. **Issue 2:** Similar to Issue 1, `javax.ejb` is for Java EE, and it has been replaced with `jakarta.ejb` in Jakarta EE. This change is necessary to ensure compatibility with Quarkus.
+
+3. **Issue 3:** The `javax.inject` package is for Java EE, and it has been replaced with `jakarta.inject` in Jakarta EE. This change is necessary to ensure compatibility with Quarkus.
+
+4. **Issue 4 & 5:** The `javax.jms` package is for Java EE, and it has been replaced with `jakarta.jms` in Jakarta EE. However, in the context of this code, it's not just about changing the package, but also replacing JMS `Topic`s with Micrometer `Emitter`s feeding a Channel. This is a significant change and requires understanding the Quarkus reactive messaging model.
+
+5. **Issue 6 & 7:** These issues provide the solution for Issues 4 & 5. The solution involves injecting an `Emitter` for a specific channel and using it to send messages. This is a significant change and requires understanding the Quarkus reactive messaging model.
+
+6. **Issue 8 & 9:** These issues reiterate the need to remove Java EE JMS elements and replace them with Quarkus SmallRye/Microprofile equivalents. This has been addressed in Issues 4, 5, 6, and 7.
+
+7. **Issue 10:** Stateless EJBs are not used in Quarkus. Instead, CDI beans with a specific scope (like `@ApplicationScoped`) are used. This change has been made in the solution.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.service;
+
+import org.jboss.logging.Logger;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+
+import com.redhat.coolstore.model.ShoppingCart;
+import com.redhat.coolstore.utils.Transformers;
+
+@RequestScoped
+public class ShoppingCartOrderProcessor  {
+
+    @Inject
+    Logger log;
+
+    @Inject
+    @Channel("orders-topic")
+    Emitter<String> ordersTopicEmitter;
+
+    
+  
+    public void  process(ShoppingCart cart) {
+        log.info("Sending order from processor: ");
+        ordersTopicEmitter.send(Transformers.shoppingCartToJson(cart));
+    }
+
+
+
+}
+```

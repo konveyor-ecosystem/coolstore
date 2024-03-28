@@ -1,0 +1,70 @@
+
+## Reasoning
+
+1. The first step in migrating from Java EE to Quarkus is to update the import statements to use the `jakarta` namespace instead of the `javax` namespace. This is because Quarkus uses the Jakarta EE specification, which uses the `jakarta` namespace. This is why we need to replace the `javax.annotation` import statement with `jakarta.annotation` on lines 6 and 7.
+
+2. Similarly, we need to replace the `javax.ejb` import statements with `jakarta.ejb` on lines 8, 9, 10, and 11. This is because Quarkus uses the Jakarta EE specification, which uses the `jakarta` namespace.
+
+3. We also need to replace the `javax.inject` import statement with `jakarta.inject` on line 12. This is because Quarkus uses the Jakarta EE specification, which uses the `jakarta` namespace.
+
+4. The `@Singleton` and `@Startup` annotations are not needed in Quarkus as it uses a different mechanism for managing application lifecycle. These annotations can be removed.
+
+5. The `@TransactionManagement` annotation is not needed in Quarkus as it uses a different mechanism for managing transactions. This annotation can be removed.
+
+6. The `javax.sql.DataSource` type is still used in Quarkus, so we can keep the `dataSource` field as is.
+
+7. The `@Resource` annotation is not needed in Quarkus as it uses a different mechanism for managing resources. This annotation can be removed.
+
+8. The `Flyway` class is still used in Quarkus, so we can keep the `startup` method as is.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.utils;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
+import jakarta.inject.Inject;
+import jakarta.sql.DataSource;
+import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.FlywayException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+@Singleton
+@Startup
+public class DataBaseMigrationStartup {
+
+    @Inject
+    Logger logger;
+
+    DataSource dataSource;
+
+    @PostConstruct
+    private void startup() {
+
+
+        try {
+            logger.info("Initializing/migrating the database using FlyWay");
+            Flyway flyway = new Flyway();
+            flyway.setDataSource(dataSource);
+            flyway.baseline();
+            // Start the db.migration
+            flyway.migrate();
+        } catch (FlywayException e) {
+            if(logger !=null)
+                logger.log(Level.SEVERE,"FAILED TO INITIALIZE THE DATABASE: " + e.getMessage(),e);
+            else
+                System.out.println("FAILED TO INITIALIZE THE DATABASE: " + e.getMessage() + " and injection of logger doesn't work");
+
+        }
+    }
+
+
+
+}
+```

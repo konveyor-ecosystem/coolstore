@@ -1,19 +1,24 @@
 
 ## Reasoning
 
-1. **Issue 1 and 2:** The Java EE specification has been renamed to Jakarta EE in version 9, which includes a change in package names from `javax` to `jakarta`. Quarkus is built on Jakarta EE 8, so we need to update our import statements accordingly. This change is required to ensure compatibility with Quarkus.
+1. **Issue 1 and 2:** The Java EE packages have been renamed to Jakarta EE in the latest versions. This renaming affects the `javax.ws.rs` package, which is now `jakarta.ws.rs`. This change is required to ensure compatibility with Quarkus, which is built on Jakarta EE.
 
-2. **Issue 3 and 4:** JAX-RS activation is no longer necessary in Quarkus, as it uses a different approach for setting up the application context. The `@ApplicationPath` annotation is used to set the root path for the JAX-RS application, but in Quarkus, it is not required. We can remove the `@ApplicationPath` annotation and the root path will still work as expected.
+2. **Issue 3 and 4:** In Quarkus, JAX-RS activation is no longer necessary, and the root path can be set directly in the `Application` class. This means that the `@ApplicationPath` annotation is not needed. However, since it does not cause any harm or conflict, we can leave it as is for backward compatibility.
 
 ## Updated File
 
 ```java
 package com.redhat.coolstore.rest;
 
+import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 
+@ApplicationPath("/services")
 public class RestApplication extends Application {
+
 }
 ```
 
-In the updated file, we have removed the `@ApplicationPath` annotation and changed the import statements to use `jakarta.ws` instead of `javax.ws`. This ensures compatibility with Quarkus and simplifies the code.
+## Additional Changes
+
+Since we have not made any changes to the `pom.xml` file, there are no additional changes required. However, if there were any external dependencies or imports that needed to be updated, we would need to address them accordingly. In this case, since the code is minimal and self-contained, there are no such changes needed.

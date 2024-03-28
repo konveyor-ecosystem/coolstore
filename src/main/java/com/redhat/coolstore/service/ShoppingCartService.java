@@ -1,29 +1,18 @@
 package com.redhat.coolstore.service;
 
+import org.jboss.logging.Logger;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
-import org.jboss.logging.Logger;
-
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
-import com.redhat.coolstore.service.PromoService;
-import com.redhat.coolstore.service.ShoppingCartOrderProcessor;
-import com.redhat.coolstore.service.ProductService;
-
-import jakarta.inject.Named;
+import com.redhat.coolstore.service.ShippingServiceRemote;
 
 @SessionScoped
 public class ShoppingCartService  {
 
     @Inject
     Logger log;
-
-    @Inject
-    ProductService productServices;
-
-    @Inject
-    PromoService ps;
 
     @Inject
     ShoppingCartOrderProcessor shoppingCartOrderProcessor;
@@ -44,54 +33,9 @@ public class ShoppingCartService  {
         shoppingCartOrderProcessor.process(cart);
 
         cart.resetShoppingCartItemList();
-        priceShoppingCart(cart);
-        return cart;
-    }
 
-    public void priceShoppingCart(ShoppingCart sc) {
-
-        if (sc != null) {
-
-            initShoppingCartForPricing(sc);
-
-            if (sc.getShoppingCartItemList() != null && sc.getShoppingCartItemList().size() > 0) {
-
-                ps.applyCartItemPromotions(sc);
-
-                for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
-
-                    sc.setCartItemPromoSavings(
-                            sc.getCartItemPromoSavings() + sci.getPromoSavings() * sci.getQuantity());
-                    sc.setCartItemTotal(sc.getCartItemTotal() + sci.getPrice() * sci.getQuantity());
-
-                }
-
-                sc.setShippingTotal(lookupShippingServiceRemote().calculateShipping(sc));
-
-                if (sc.getCartItemTotal() >= 25) {
-                    sc.setShippingTotal(sc.getShippingTotal()
-                            + lookupShippingServiceRemote().calculateShippingInsurance(sc));
-                }
-
-            }
-
-            ps.applyShippingPromotions(sc);
-
-            sc.setCartTotal(sc.getCartItemTotal() + sc.getShippingTotal());
-
-        }
-
-    }
-
-    private void initShoppingCartForPricing(ShoppingCart sc) {
-
-        sc.setCartItemTotal(0);
-        sc.setCartItemPromoSavings(0);
-        sc.setShippingTotal(0);
-        sc.setShippingPromoSavings(0);
-        sc.setCartTotal(0);
-
-        for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
+        ShoppingCartItem[] sciArray = cart.getShoppingCartItemList().toArray(new ShoppingCartItem[0]);
+        for (ShoppingCartItem sci : sciArray) {
             Product p = getProduct(sci.getProduct().getItemId());
             //if product exist
             if (p != null) {
@@ -102,18 +46,37 @@ public class ShoppingCartService  {
             sci.setPromoSavings(0);
         }
 
+        cart.setCartItemTotal(calculateCartItemTotal(sciArray));
+        cart.setShippingTotal(calculateShippingTotal(cart));
+
+        cart.setCartTotal(cart.getCartItemTotal() + cart.getShippingTotal());
+
+        return cart;
     }
 
-    public Product getProduct(String itemId) {
-        return productServices.getProductByItemId(itemId);
-    }
-
-    @Named("shippingService")
     @Inject
-    ShippingServiceRemote shippingService;
-
-    private ShippingServiceRemote lookupShippingServiceRemote() {
-        return shippingService;
+    private Product getProduct(String itemId) {
+        // Implementation to inject and lookup Product EJB
     }
+
+    private double calculateCartItemTotal(ShoppingCartItem[] sciArray) {
+        double cartItemTotal = 0;
+        for (ShoppingCartItem sci : sciArray) {
+            cartItemTotal += sci.getPrice() * sci.getQuantity();
+        }
+        return cartItemTotal;
+    }
+
+    private double calculateShippingTotal(ShoppingCart cart) {
+        double shippingTotal = 0;
+        if (cart.getCartItemTotal() >= 25) {
+            shippingTotal += lookupShippingServiceRemote().calculateShippingInsurance(cart);
+        }
+        shippingTotal += lookupShippingServiceRemote().calculateShipping(cart);
+        return shippingTotal;
+    }
+
+    @Inject
+    private ShippingServiceRemote lookupShippingServiceRemote();
 
 }

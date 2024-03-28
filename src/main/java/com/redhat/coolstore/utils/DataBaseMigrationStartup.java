@@ -1,30 +1,30 @@
 package com.redhat.coolstore.utils;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
-import jakarta.ejb.Singleton;
-import jakarta.ejb.Startup;
-import jakarta.ejb.TransactionManagement;
-import jakarta.ejb.TransactionManagementType;
-import jakarta.inject.Inject;
-import jakarta.sql.DataSource;
+import io.deploy.micrometer.api.MicrometerRegistry;
+import io.quarkus.hibernate.transaction.Transactional;
+import io.quarkus.arc.runtime.BeanCreator;
+import io.quarkus.hibernate.orm.runtime.JdbcDataSource;
+import io.quarkus.logging.Log;
+import io.quarkus.runtime.Startup;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-@Singleton
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+
 @Startup
+@BeanCreator
 public class DataBaseMigrationStartup {
 
     @Inject
-    Logger logger;
+    Log logger;
 
-    DataSource dataSource;
+    @Inject
+    JdbcDataSource dataSource;
 
     @PostConstruct
+    @Transactional
     private void startup() {
-
 
         try {
             logger.info("Initializing/migrating the database using FlyWay");

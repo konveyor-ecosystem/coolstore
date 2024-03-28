@@ -13,7 +13,7 @@
 
 3. After updating the import statements, there are no further changes required for the `OrderItem` class. The class uses the JPA annotations to define an entity, and these annotations are still valid in Quarkus.
 
-4. There are no external dependencies to update in the `pom.xml` file, as the `OrderItem` class does not have any dependencies.
+4. There are no external dependencies to update in the `pom.xml` file. The `OrderItem` class does not have any dependencies on external libraries.
 
 5. The updated `OrderItem` class is compatible with Quarkus and can be used in a Quarkus application.
 

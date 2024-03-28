@@ -1,13 +1,15 @@
 
 ## Reasoning
 
-1. **Addressing Issue 1:** The first issue to address is the import statement for `javax.enterprise.context.RequestScoped`. This import statement needs to be updated to `jakarta.enterprise.context.RequestScoped` to be compatible with Quarkus. This is because Quarkus uses the Jakarta EE API, which is a successor to Java EE. The package names have been changed from `javax` to `jakarta` in Jakarta EE.
+1. **Addressing Issue 1:** The first issue suggests replacing the `javax.enterprise` import statement with `jakarta.enterprise`. This change is required because Quarkus uses the Jakarta EE API, which has moved from the `javax` namespace to the `jakarta` namespace. This change is necessary to ensure compatibility with Quarkus.
 
-2. **Addressing Issue 2:** The second issue to address is the import statement for `javax.inject.Inject`. This import statement needs to be updated to `jakarta.inject.Inject` to be compatible with Quarkus. This is similar to Issue 1, where the package names have been changed from `javax` to `jakarta` in Jakarta EE.
+2. **Addressing Issue 2:** The second issue suggests replacing the `javax.inject` import statement with `jakarta.inject`. This change is also required due to the move from the `javax` namespace to the `jakarta` namespace.
 
-3. **Addressing Issue 3:** The third issue to address is the import statement for `javax.ws.rs.*`. This import statement needs to be updated to `jakarta.ws.rs.*` to be compatible with Quarkus. Again, this is due to the package name change from `javax` to `jakarta` in Jakarta EE.
+3. **Addressing Issue 3:** The third issue suggests replacing the `javax.ws` import statement with `jakarta.ws`. This change is required for the same reason as Issues 1 and 2.
 
-4. **External Dependencies and Imports:** There are no external dependencies in the provided code that need to be updated in the `pom.xml`. However, the import statements for `javax.ws.rs.core.MediaType` and `com.redhat.coolstore.service.ProductService` will need to be updated to `jakarta.ws.rs.core.MediaType` and `io.quarkus.arc.inject.Injected`, respectively. The `ProductService` class needs to be updated to use the `@Injected` annotation instead of `@Inject`.
+4. **No changes to the pom.xml:** The provided information does not indicate any changes are needed in the pom.xml.
+
+5. **No changes to imports:** The provided information does not indicate any changes are needed for the other imports.
 
 ## Updated File
 
@@ -18,11 +20,10 @@ import java.io.Serializable;
 import java.util.List;
 
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Injected;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
-import io.quarkus.arc.inject.Injected;
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.service.ProductService;
 
@@ -37,7 +38,7 @@ public class ProductEndpoint implements Serializable {
      */
     private static final long serialVersionUID = -7227732980791688773L;
 
-    @Injected
+    @Inject
     private ProductService pm;
 
 

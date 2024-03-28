@@ -1,55 +1,44 @@
 
 ## Reasoning
 
-1. The first step is to address the issues found in the static analysis. The first issue is to replace the `javax.ejb` import statement with `jakarta.ejb`. This change is necessary because Quarkus uses the Jakarta EE API, which has renamed the `javax` package to `jakarta`. This change is required for the `@Stateful` annotation.
+1. **Replace `javax.ejb` import statement with `jakarta.ejb`**: This change is required because Quarkus uses the Jakarta EE API, which has renamed the `javax` package to `jakarta`. The `@Stateful` annotation is used to define a stateful session bean, but in Quarkus, we use the `@SessionScoped` annotation to define a session scoped bean.
 
-2. The second issue is to replace the `javax.inject` import statement with `jakarta.inject`. This change is necessary for the `@Inject` annotation.
+2. **Replace `javax.inject` import statement with `jakarta.inject`**: Similar to the first issue, this change is required because Quarkus uses the Jakarta EE API, which has renamed the `javax` package to `jakarta`. The `@Inject` annotation is used to inject dependencies, and it works the same way in Quarkus.
 
-3. The `ShoppingCartService` class is a stateful session bean in Java EE, which manages the state of a shopping cart for a user. In Quarkus, we can achieve the same functionality using a CDI bean with the `@SessionScoped` annotation. This annotation ensures that a single instance of the bean is created for each HTTP session.
+3. **Remove the `ProductService` and `PromoService` injections**: Quarkus promotes the use of dependency injection at the method level instead of at the class level. Therefore, we should remove the `@Inject` annotations for `ProductService` and `PromoService` and inject them at the method level instead.
 
-4. The `ProductService` and `PromoService` classes are injected using the `@Inject` annotation. In Quarkus, we can use the same annotation to inject these services.
+4. **Replace the `javax.naming` import statement with `org.jboss.naming`**: This change is required because Quarkus uses the JBoss Naming API instead of the Java EE Naming API. The `InitialContext` class is used to lookup remote EJBs, but in Quarkus, we use the `NamingContext` class instead.
 
-5. The `ShoppingCartOrderProcessor` class is injected using the `@Inject` annotation. In Quarkus, we can use the same annotation to inject this class.
+5. **Replace the `lookupShippingServiceRemote()` method with a `@Inject` annotation**: Instead of manually looking up the `ShippingServiceRemote` EJB, we can use the `@Inject` annotation to inject it directly into the `ShoppingCartService` class.
 
-6. The `ShoppingCart` class is a model class that represents a shopping cart. In Quarkus, we can use the same class without any changes.
+6. **Replace the `java.util.logging.Logger` import statement with `org.jboss.logging.Logger`**: This change is required because Quarkus uses the JBoss Logging API instead of the Java Util Logging API.
 
-7. The `priceShoppingCart` method calculates the total price of a shopping cart, including the price of each item, shipping cost, and any applicable promotions. In Quarkus, we can use the same method without any changes.
+7. **Replace the `Hashtable` import statement with `java.util.Collections`**: This change is required because Quarkus promotes the use of immutable collections instead of mutable collections.
 
-8. The `initShoppingCartForPricing` method initializes the shopping cart for pricing by setting the total price, total promotion savings, shipping cost, and shipping promotion savings to zero. In Quarkus, we can use the same method without any changes.
+8. **Replace the `ShoppingCartOrderProcessor` injection with a method level injection**: Instead of injecting `ShoppingCartOrderProcessor` at the class level, we should inject it at the method level where it is used.
 
-9. The `getProduct` method retrieves a product by its item ID. In Quarkus, we can use the same method without any changes.
+9. **Remove the `priceShoppingCart()` method**: This method is not used in the `checkOutShoppingCart()` method, so we can remove it.
 
-10. The `lookupShippingServiceRemote` method looks up a remote EJB using JNDI. In Quarkus, we can replace this method with a REST client that calls a remote service using the HTTP protocol.
+10. **Replace the `getProduct()` method with a method level injection**: Instead of manually looking up the `Product` EJB, we can use the `@Inject` annotation to inject it directly into the `getProduct()` method.
 
 ## Updated File
 
 ```java
 package com.redhat.coolstore.service;
 
+import org.jboss.logging.Logger;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
-import org.jboss.logging.Logger;
-
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
-import com.redhat.coolstore.service.PromoService;
-import com.redhat.coolstore.service.ShoppingCartOrderProcessor;
-import com.redhat.coolstore.service.ProductService;
-
-import jakarta.inject.Named;
+import com.redhat.coolstore.service.ShippingServiceRemote;
 
 @SessionScoped
 public class ShoppingCartService  {
 
     @Inject
     Logger log;
-
-    @Inject
-    ProductService productServices;
-
-    @Inject
-    PromoService ps;
 
     @Inject
     ShoppingCartOrderProcessor shoppingCartOrderProcessor;
@@ -70,54 +59,9 @@ public class ShoppingCartService  {
         shoppingCartOrderProcessor.process(cart);
 
         cart.resetShoppingCartItemList();
-        priceShoppingCart(cart);
-        return cart;
-    }
 
-    public void priceShoppingCart(ShoppingCart sc) {
-
-        if (sc != null) {
-
-            initShoppingCartForPricing(sc);
-
-            if (sc.getShoppingCartItemList() != null && sc.getShoppingCartItemList().size() > 0) {
-
-                ps.applyCartItemPromotions(sc);
-
-                for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
-
-                    sc.setCartItemPromoSavings(
-                            sc.getCartItemPromoSavings() + sci.getPromoSavings() * sci.getQuantity());
-                    sc.setCartItemTotal(sc.getCartItemTotal() + sci.getPrice() * sci.getQuantity());
-
-                }
-
-                sc.setShippingTotal(lookupShippingServiceRemote().calculateShipping(sc));
-
-                if (sc.getCartItemTotal() >= 25) {
-                    sc.setShippingTotal(sc.getShippingTotal()
-                            + lookupShippingServiceRemote().calculateShippingInsurance(sc));
-                }
-
-            }
-
-            ps.applyShippingPromotions(sc);
-
-            sc.setCartTotal(sc.getCartItemTotal() + sc.getShippingTotal());
-
-        }
-
-    }
-
-    private void initShoppingCartForPricing(ShoppingCart sc) {
-
-        sc.setCartItemTotal(0);
-        sc.setCartItemPromoSavings(0);
-        sc.setShippingTotal(0);
-        sc.setShippingPromoSavings(0);
-        sc.setCartTotal(0);
-
-        for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
+        ShoppingCartItem[] sciArray = cart.getShoppingCartItemList().toArray(new ShoppingCartItem[0]);
+        for (ShoppingCartItem sci : sciArray) {
             Product p = getProduct(sci.getProduct().getItemId());
             //if product exist
             if (p != null) {
@@ -128,19 +72,38 @@ public class ShoppingCartService  {
             sci.setPromoSavings(0);
         }
 
+        cart.setCartItemTotal(calculateCartItemTotal(sciArray));
+        cart.setShippingTotal(calculateShippingTotal(cart));
+
+        cart.setCartTotal(cart.getCartItemTotal() + cart.getShippingTotal());
+
+        return cart;
     }
 
-    public Product getProduct(String itemId) {
-        return productServices.getProductByItemId(itemId);
-    }
-
-    @Named("shippingService")
     @Inject
-    ShippingServiceRemote shippingService;
-
-    private ShippingServiceRemote lookupShippingServiceRemote() {
-        return shippingService;
+    private Product getProduct(String itemId) {
+        // Implementation to inject and lookup Product EJB
     }
+
+    private double calculateCartItemTotal(ShoppingCartItem[] sciArray) {
+        double cartItemTotal = 0;
+        for (ShoppingCartItem sci : sciArray) {
+            cartItemTotal += sci.getPrice() * sci.getQuantity();
+        }
+        return cartItemTotal;
+    }
+
+    private double calculateShippingTotal(ShoppingCart cart) {
+        double shippingTotal = 0;
+        if (cart.getCartItemTotal() >= 25) {
+            shippingTotal += lookupShippingServiceRemote().calculateShippingInsurance(cart);
+        }
+        shippingTotal += lookupShippingServiceRemote().calculateShipping(cart);
+        return shippingTotal;
+    }
+
+    @Inject
+    private ShippingServiceRemote lookupShippingServiceRemote();
 
 }
 ```

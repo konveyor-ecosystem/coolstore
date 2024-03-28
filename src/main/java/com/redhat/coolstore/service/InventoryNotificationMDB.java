@@ -9,7 +9,8 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.reactive.messaging.Message;
 
-@Transactional
+import java.util.List;
+
 public class InventoryNotificationMDB {
 
     private static final int LOW_THRESHOLD = 50;
@@ -23,9 +24,11 @@ public class InventoryNotificationMDB {
 
     @Incoming("orders-incoming")
     @Blocking
+    @Transactional
     public void onMessage(String orderStr) {
         Order order = Transformers.jsonToOrder(orderStr);
-        order.getItemList().forEach(orderItem -> {
+        List<Order.OrderItem> itemList = order.getItemList();
+        for (Order.OrderItem orderItem : itemList) {
             int old_quantity = catalogService.getCatalogItemById(orderItem.getProductId()).getInventory().getQuantity();
             int new_quantity = old_quantity - orderItem.getQuantity();
             if (new_quantity < LOW_THRESHOLD) {
@@ -33,7 +36,7 @@ public class InventoryNotificationMDB {
             } else {
                 orderItem.setQuantity(new_quantity);
             }
-        });
+        }
         orderEmitter.send(Message.of(orderStr));
     }
 }

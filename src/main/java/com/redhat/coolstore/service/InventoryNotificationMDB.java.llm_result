@@ -3,9 +3,9 @@
 
 1. **Issue 1:** The import statement `javax.inject.Inject` needs to be replaced with `jakarta.inject.Inject` because Quarkus uses the Jakarta EE API, which has renamed the `javax` package to `jakarta`. This change is necessary to ensure compatibility with Quarkus.
 
-2. **Issue 2:** JMS Topics should be replaced with Micrometer Emitters feeding a Channel. This is because Quarkus uses the SmallRye/Microprofile implementation for messaging, which uses Emitters and Channels instead of JMS Topics. The `@Inject` and `@Channel` annotations are used to inject the Emitter, and the `@Incoming` annotation is used to specify the channel name.
+2. **Issue 2:** JMS Topics should be replaced with Micrometer Emitters feeding a Channel. This is because Quarkus uses the SmallRye/MicroProfile implementation for messaging, which uses Emitters and Channels instead of JMS Topics. The `@Inject` and `@Channel` annotations are used to inject the Emitter, and the `@Incoming` annotation is used to specify the channel name.
 
-3. **Issue 3:** References to JavaEE/JakartaEE JMS elements should be removed and replaced with their Quarkus SmallRye/Microprofile equivalents. This is because Quarkus uses the SmallRye/Microprofile implementation for messaging, which does not use JMS elements such as `Topic`, `TopicConnection`, `TopicSession`, and `TopicSubscriber`. Instead, Quarkus uses Emitters and Channels.
+3. **Issue 3:** References to JavaEE/JakartaEE JMS elements should be removed and replaced with their Quarkus SmallRye/Microprofile equivalents. This is because Quarkus uses the SmallRye/MicroProfile implementation for messaging, which does not use JMS elements such as `Topic`, `TopicConnection`, `TopicSession`, and `TopicSubscriber`. Instead, Quarkus uses Emitters and Channels.
 
 ## Updated File
 
@@ -21,7 +21,8 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.reactive.messaging.Message;
 
-@Transactional
+import java.util.List;
+
 public class InventoryNotificationMDB {
 
     private static final int LOW_THRESHOLD = 50;
@@ -35,9 +36,11 @@ public class InventoryNotificationMDB {
 
     @Incoming("orders-incoming")
     @Blocking
+    @Transactional
     public void onMessage(String orderStr) {
         Order order = Transformers.jsonToOrder(orderStr);
-        order.getItemList().forEach(orderItem -> {
+        List<Order.OrderItem> itemList = order.getItemList();
+        for (Order.OrderItem orderItem : itemList) {
             int old_quantity = catalogService.getCatalogItemById(orderItem.getProductId()).getInventory().getQuantity();
             int new_quantity = old_quantity - orderItem.getQuantity();
             if (new_quantity < LOW_THRESHOLD) {
@@ -45,10 +48,10 @@ public class InventoryNotificationMDB {
             } else {
                 orderItem.setQuantity(new_quantity);
             }
-        });
+        }
         orderEmitter.send(Message.of(orderStr));
     }
 }
 ```
 
-Note that the `pom.xml` file and imports have been updated to reflect the changes made to the Java code. The `pom.xml` file now includes the SmallRye Reactive Messaging dependency, and the imports have been updated to include the SmallRye and Microprofile annotations. Additionally, the `CatalogService` class has been injected using the `@Inject` annotation, and the `onMessage` method now sends the `orderStr` to the `orderEmitter` using the `send` method.
+Note that the `pom.xml` file will also need to be updated to include the necessary Quarkus dependencies and remove any JavaEE/JakartaEE JMS dependencies. The updated `pom.xml` file is not included in this response, but it can be generated based on the updated Java code and the Quarkus documentation.

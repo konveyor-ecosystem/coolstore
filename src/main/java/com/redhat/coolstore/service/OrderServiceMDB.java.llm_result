@@ -1,13 +1,29 @@
 
 ## Reasoning
 
-1. **Issue 1:** The import statement `javax.ejb` needs to be replaced with `jakarta.ejb` as part of the migration from Java EE to Quarkus. This is because Quarkus uses the Jakarta EE specification, which has renamed the package from `javax` to `jakarta`. This change is required in lines 3, 4, and 5.
+1. **Issue 1:** The import statement for `javax.ejb` needs to be updated to `jakarta.ejb` as part of the migration from Java EE to Quarkus. This is because Quarkus uses the Jakarta EE specification, which has renamed the `javax` package to `jakarta`. This change is necessary for the `@MessageDriven` annotation.
 
-2. **Issue 2:** Enterprise Java Beans (EJBs) are not supported in Quarkus. CDI must be used instead. The `@MessageDriven` annotation is an EJB annotation and needs to be replaced with a CDI scope annotation like `@ApplicationScoped`. This change is required in line 14.
+2. **Issue 2:** The same change as Issue 1 is required for the `@MessageDriven` annotation.
 
-3. **Issue 3:** The `destinationLookup` property can be migrated by annotating a message handler method (potentially `onMessage`) with the `org.eclipse.microprofile.reactive.messaging.Incoming` annotation, indicating the name of the queue as a value. This change is required in line 15.
+3. **Issue 3:** The import statement for `javax.inject` needs to be updated to `jakarta.inject` as part of the migration from Java EE to Quarkus. This is because Quarkus uses the Jakarta EE specification, which has renamed the `javax` package to `jakarta`. This change is necessary for the `@Inject` annotation.
 
-4. **Issue 4:** References to JavaEE/JakartaEE JMS elements should be removed and replaced with their Quarkus SmallRye/Microprofile equivalents. This change is required in lines 6, 7, 8, and 9.
+4. **Issue 4:** The import statement for `javax.jms` needs to be updated to `jakarta.jms` as part of the migration from Java EE to Quarkus. This is because Quarkus uses the Jakarta EE specification, which has renamed the `javax` package to `jakarta`. This change is necessary for the `Message` and `MessageListener` classes.
+
+5. **Issue 5:** The same change as Issue 4 is required for the `TextMessage` class.
+
+6. **Issue 6:** The same change as Issue 4 is required for the `JMSException` class.
+
+7. **Issue 7:** The same change as Issue 4 is required for the `ActivationConfigProperty` class.
+
+8. **Issue 8:** Enterprise Java Beans (EJBs) are not supported in Quarkus. CDI must be used instead. Therefore, the `@MessageDriven` annotation should be replaced with a CDI scope annotation like `@ApplicationScoped`.
+
+9. **Issue 9:** The `destinationLookup` property can be migrated by annotating a message handler method (potentially `onMessage`) with the `org.eclipse.microprofile.reactive.messaging.Incoming` annotation, indicating the name of the queue as a value.
+
+10. **Issue 10:** The same change as Issue 9 is required for the `destinationType` property.
+
+11. **Issue 11:** The same change as Issue 9 is required for the `acknowledgeMode` property.
+
+12. **Issue 12:** References to JavaEE/JakartaEE JMS elements should be removed and replaced with their Quarkus SmallRye/Microprofile equivalents. This includes the `Message`, `MessageListener`, `TextMessage`, `JMSException`, `ActivationConfigProperty`, and `@MessageDriven` annotation.
 
 ## Updated File
 
@@ -20,8 +36,6 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
-
-import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class OrderServiceMDB {

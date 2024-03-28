@@ -10,7 +10,7 @@ import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.utils.Transformers;
 
 @RequestScoped
-public class ShoppingCartOrderProcessor  {
+public class ShoppingCartOrderProcessor {
 
     @Inject
     Logger log;
@@ -19,13 +19,8 @@ public class ShoppingCartOrderProcessor  {
     @Channel("orders-topic")
     Emitter<String> ordersTopicEmitter;
 
-    
-  
-    public void  process(ShoppingCart cart) {
+    public void process(ShoppingCart cart) {
         log.info("Sending order from processor: ");
         ordersTopicEmitter.send(Transformers.shoppingCartToJson(cart));
     }
-
-
-
 }

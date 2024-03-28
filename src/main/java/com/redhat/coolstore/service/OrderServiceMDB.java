@@ -7,8 +7,6 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 
-import jakarta.enterprise.context.ApplicationScoped;
-
 @ApplicationScoped
 public class OrderServiceMDB {
 

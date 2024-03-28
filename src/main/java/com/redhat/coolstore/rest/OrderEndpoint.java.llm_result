@@ -1,15 +1,23 @@
 
 ## Reasoning
 
-1. The first step in migrating the JavaEE code to Quarkus is to address the issues found in the static code analysis. The primary issue to address is replacing the `javax.enterprise`, `javax.inject`, and `javax.ws.rs` import statements with their corresponding `jakarta.enterprise`, `jakarta.inject`, and `jakarta.ws` equivalents.
+1. The first step is to address the issues found from static analysis. These issues are related to import statements that need to be updated from `javax` to `jakarta` namespace. This is necessary because Quarkus uses the `jakarta` namespace for its dependencies, following the transition from Java EE to Jakarta EE.
 
-2. The reason for this change is that Quarkus uses the `jakarta` namespace for its APIs, which is a result of the transfer of Java EE technologies to the Eclipse Foundation. The `javax` namespace is still used in Java EE, and therefore, there is a conflict.
+2. We need to replace the `javax.enterprise.context.RequestScoped` import statement with `jakarta.enterprise.context.RequestScoped` (Issue 1). This change is necessary because Quarkus uses the `jakarta` namespace for its dependencies.
 
-3. To update the import statements, we need to replace all instances of `javax` with `jakarta`. For example, `javax.enterprise.context.RequestScoped` should be replaced with `jakarta.enterprise.context.RequestScoped`.
+3. We need to replace the `javax.inject.Inject` import statement with `jakarta.inject.Inject` (Issue 2). This change is necessary because Quarkus uses the `jakarta` namespace for its dependencies.
 
-4. After updating the import statements, we need to ensure that there are no conflicts with external dependencies in the `pom.xml` file. In this case, there are no external dependencies that need to be updated.
+4. We need to replace the `javax.ws.rs.Consumes` import statement with `jakarta.ws.rs.Consumes` (Issue 3). This change is necessary because Quarkus uses the `jakarta` namespace for its dependencies.
 
-5. Finally, we need to ensure that there are no impacts on imports that are not part of the migration. In this case, the import statement `import com.redhat.coolstore.model.Order;` and `import com.redhat.coolstore.service.OrderService;` are not part of the migration and do not need to be updated.
+5. We need to replace the `javax.ws.rs.GET` import statement with `jakarta.ws.rs.GET` (Issue 4). This change is necessary because Quarkus uses the `jakarta` namespace for its dependencies.
+
+6. We need to replace the `javax.ws.rs.Path` import statement with `jakarta.ws.rs.Path` (Issue 5). This change is necessary because Quarkus uses the `jakarta` namespace for its dependencies.
+
+7. We need to replace the `javax.ws.rs.PathParam` import statement with `jakarta.ws.rs.PathParam` (Issue 6). This change is necessary because Quarkus uses the `jakarta` namespace for its dependencies.
+
+8. We need to replace the `javax.ws.rs.Produces` import statement with `jakarta.ws.rs.Produces` (Issue 7). This change is necessary because Quarkus uses the `jakarta` namespace for its dependencies.
+
+9. We need to replace the `javax.ws.rs.core.MediaType` import statement with `jakarta.ws.rs.core.MediaType` (Issue 8). This change is necessary because Quarkus uses the `jakarta` namespace for its dependencies.
 
 ## Updated File
 

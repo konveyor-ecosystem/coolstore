@@ -1,13 +1,47 @@
 
 ## Reasoning
 
-1. **Issue 1 & 2:** The Java EE specification has been migrated to the Jakarta EE specification, which means that the package names have changed from `javax` to `jakarta`. This change needs to be reflected in the import statements on lines 3 and 4.
+1. The first step is to address the issues found from static analysis. The input file contains import statements from the `javax` package, but Quarkus uses the `jakarta` package. Therefore, we need to replace the `javax` import statements with `jakarta` import statements.
 
-2. **Issue 3 & 4:** Similar to issue 1 and 2, the package names have changed from `javax.persistence` to `jakarta.persistence`. This change needs to be reflected in the import statements on lines 5 and 6.
+2. The second step is to address the issue with the `@PersistenceContext` annotation and the `@Produces` annotation on the `EntityManager`. In Quarkus, the `@Produces` annotation is not needed if the producer method is annotated with a scope annotation, a stereotype, or a qualifier. Therefore, we can remove the `@Produces` annotation and use a `@Named` getter method instead.
 
-3. **Issue 5:** In Quarkus, the `@Produces` annotation is not needed for injecting an `EntityManager`. Instead, Quarkus creates the bean automatically when the datasource is correctly configured. Therefore, the `@Produces` annotation should be removed from the `EntityManager` on line 5.
+3. The third step is to update the `pom.xml` file to include the Quarkus dependencies. We need to replace the `javax.persistence` dependency with the `jakarta.persistence` dependency.
 
-4. **Issue 6:** In Quarkus, the `@Produces` annotation is not needed when the producer method is annotated with a scope annotation, a stereotype, or a qualifier. In this case, a `@Named` getter method can be used instead of the field. Therefore, the `@Named` annotation should be moved from the getter method to the field on line 14.
+4. The fourth step is to update the `pom.xml` file to include the Quarkus plugin. We need to add the following plugin to the `pom.xml` file:
+```xml
+<plugin>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-maven-plugin</artifactId>
+  <version>${quarkus.platform.version}</version>
+  <extensions>true</extensions>
+  <configuration>
+    <properties>
+      <quarkus-plugin.version>${quarkus.platform.version}</quarkus-plugin.version>
+      <dependency.coordinates>${project.dependency.coordinates}</dependency.coordinates>
+    </properties>
+  </configuration>
+</plugin>
+```
+5. The fifth step is to update the `pom.xml` file to include the Quarkus BOM (Bill of Materials). We need to add the following BOM to the `pom.xml` file:
+```xml
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-bom</artifactId>
+      <version>${quarkus.platform.version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+```
+6. The final step is to update the `pom.xml` file to include the Quarkus platform. We need to add the following platform to the `pom.xml` file:
+```xml
+<properties>
+  <quarkus.platform.version>2.6.1.Final</quarkus.platform.version>
+</properties>
+```
 
 ## Updated File
 
@@ -15,20 +49,26 @@
 package com.redhat.coolstore.persistence;
 
 import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.inject.Inject;
+import jakarta.enterprise.inject.Instance;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Dependent
 public class Resources {
 
-    @Inject
+    @PersistenceContext
     private EntityManager em;
 
-    @Named
-    public EntityManager getEntityManager() {
+    @Inject
+    @Named("myEntityManager")
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
+    }
+
+    public EntityManager getEm() {
         return em;
     }
 }
 ```
-
-Note that the changes made in this migration are minimal, as the original JavaEE code was already using the `@Inject` annotation to inject the `EntityManager`. Therefore, the main changes made were to update the import statements to use the `jakarta` package names instead of the `javax` package names.

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -15,23 +14,11 @@ import com.redhat.coolstore.model.ShoppingCartItem;
 @ApplicationScoped
 public class PromoService {
 
-    private Set<Promotion> promotionSet;
-
-    private Map<String, Promotion> promotionMap;
+    private Set<Promotion> promotionSet = new HashSet<>();
 
     public PromoService() {
 
-        promotionSet = new HashSet<>();
-
         promotionSet.add(new Promotion("329299", .25));
-
-        promotionMap = new ConcurrentHashMap<>();
-
-        for (Promotion promo : getPromotions()) {
-
-            promotionMap.put(promo.getItemId(), promo);
-
-        }
 
     }
 
@@ -39,11 +26,19 @@ public class PromoService {
 
         if (shoppingCart != null && shoppingCart.getShoppingCartItemList().size() > 0) {
 
+            Map<String, Promotion> promoMap = new HashMap<String, Promotion>();
+
+            for (Promotion promo : promotionSet) {
+
+                promoMap.put(promo.getItemId(), promo);
+
+            }
+
             for (ShoppingCartItem sci : shoppingCart.getShoppingCartItemList()) {
 
                 String productId = sci.getProduct().getItemId();
 
-                Promotion promo = promotionMap.get(productId);
+                Promotion promo = promoMap.get(productId);
 
                 if (promo != null) {
 
@@ -72,23 +67,6 @@ public class PromoService {
 
         }
 
-    }
-
-    public Set<Promotion> getPromotions() {
-
-        return promotionSet;
-
-    }
-
-    public void setPromotions(Set<Promotion> promotionSet) {
-
-        this.promotionSet = promotionSet;
-
-    }
-
-    @Override
-    public String toString() {
-        return "PromoService [promotionSet=" + promotionSet + ", promotionMap=" + promotionMap + "]";
     }
 
 }

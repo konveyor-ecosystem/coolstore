@@ -3,7 +3,7 @@
 
 1. **Issue 1 & 2:** The `javax.ejb` package is used in Java EE for Enterprise JavaBeans. However, Quarkus uses the `jakarta.ejb` package instead. Therefore, we need to replace the `javax.ejb` import statements with `jakarta.ejb`.
 
-2. **Issue 3:** Remote EJBs are not supported in Quarkus. Instead, we can use REST functionality to expose our services. We need to replace the `@Remote` annotation with `@Path` and provide an endpoint. Since REST services are stateless by nature, we can remove the `@Stateless` annotation. For every public method, we need to add `@GET`, `@Path`, and `@QueryParam` annotations as needed.
+2. **Issue 3:** Remote EJBs are not supported in Quarkus. Instead, we can use REST functionality to expose our services. We need to replace the `@Remote` annotation with `@Path` and provide an endpoint. Since REST services are stateless, we can remove the `@Stateless` annotation. For each public method, we need to add `@GET` and `@Path` annotations and replace `@Remote` with `@QueryParam` if needed.
 
 3. **Issue 4:** Stateless EJBs can be converted to a CDI bean by replacing the `@Stateless` annotation with a scope such as `@ApplicationScoped`.
 
@@ -19,58 +19,75 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
-
 import com.redhat.coolstore.model.ShoppingCart;
 
 @Path("/shipping")
 public class ShippingService {
 
+    @Inject
+    ShippingService shippingService;
+
     @GET
     @Path("/calculateShipping")
-    public Response calculateShipping(@QueryParam("cartItemTotal") BigDecimal cartItemTotal) {
+    public double calculateShipping(@QueryParam("sc") ShoppingCart sc) {
 
-        if (cartItemTotal == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        if (sc != null) {
+
+            if (sc.getCartItemTotal() >= 0 && sc.getCartItemTotal() < 25) {
+
+                return 2.99;
+
+            } else if (sc.getCartItemTotal() >= 25 && sc.getCartItemTotal() < 50) {
+
+                return 4.99;
+
+            } else if (sc.getCartItemTotal() >= 50 && sc.getCartItemTotal() < 75) {
+
+                return 6.99;
+
+            } else if (sc.getCartItemTotal() >= 75 && sc.getCartItemTotal() < 100) {
+
+                return 8.99;
+
+            } else if (sc.getCartItemTotal() >= 100 && sc.getCartItemTotal() < 10000) {
+
+                return 10.99;
+
+            }
+
         }
 
-        if (cartItemTotal.compareTo(BigDecimal.ZERO) >= 0 && cartItemTotal.compareTo(BigDecimal.valueOf(25)) < 0) {
-            return Response.ok(2.99).build();
-        } else if (cartItemTotal.compareTo(BigDecimal.valueOf(25)) >= 0 && cartItemTotal.compareTo(BigDecimal.valueOf(50)) < 0) {
-            return Response.ok(4.99).build();
-        } else if (cartItemTotal.compareTo(BigDecimal.valueOf(50)) >= 0 && cartItemTotal.compareTo(BigDecimal.valueOf(75)) < 0) {
-            return Response.ok(6.99).build();
-        } else if (cartItemTotal.compareTo(BigDecimal.valueOf(75)) >= 0 && cartItemTotal.compareTo(BigDecimal.valueOf(100)) < 0) {
-            return Response.ok(8.99).build();
-        } else if (cartItemTotal.compareTo(BigDecimal.valueOf(100)) >= 0 && cartItemTotal.compareTo(BigDecimal.valueOf(10000)) < 0) {
-            return Response.ok(10.99).build();
-        }
-
-        return Response.ok(0).build();
+        return 0;
 
     }
 
     @GET
     @Path("/calculateShippingInsurance")
-    public Response calculateShippingInsurance(@QueryParam("cartItemTotal") BigDecimal cartItemTotal) {
+    public double calculateShippingInsurance(@QueryParam("sc") ShoppingCart sc) {
 
-        if (cartItemTotal == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        if (sc != null) {
+
+            if (sc.getCartItemTotal() >= 25 && sc.getCartItemTotal() < 100) {
+
+                return getPercentOfTotal(sc.getCartItemTotal(), 0.02);
+
+            } else if (sc.getCartItemTotal() >= 100 && sc.getCartItemTotal() < 500) {
+
+                return getPercentOfTotal(sc.getCartItemTotal(), 0.015);
+
+            } else if (sc.getCartItemTotal() >= 500 && sc.getCartItemTotal() < 10000) {
+
+                return getPercentOfTotal(sc.getCartItemTotal(), 0.01);
+
+            }
+
         }
 
-        if (cartItemTotal.compareTo(BigDecimal.valueOf(25)) >= 0 && cartItemTotal.compareTo(BigDecimal.valueOf(100)) < 0) {
-            return Response.ok(getPercentOfTotal(cartItemTotal, 0.02)).build();
-        } else if (cartItemTotal.compareTo(BigDecimal.valueOf(100)) >= 0 && cartItemTotal.compareTo(BigDecimal.valueOf(500)) < 0) {
-            return Response.ok(getPercentOfTotal(cartItemTotal, 0.015)).build();
-        } else if (cartItemTotal.compareTo(BigDecimal.valueOf(500)) >= 0 && cartItemTotal.compareTo(BigDecimal.valueOf(10000)) < 0) {
-            return Response.ok(getPercentOfTotal(cartItemTotal, 0.01)).build();
-        }
-
-        return Response.ok(0).build();
+        return 0;
     }
 
-    private static double getPercentOfTotal(BigDecimal value, double percentOfTotal) {
-        return BigDecimal.valueOf(value.doubleValue() * percentOfTotal)
+    private static double getPercentOfTotal(double value, double percentOfTotal) {
+        return BigDecimal.valueOf(value * percentOfTotal)
                 .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();
     }
@@ -78,4 +95,4 @@ public class ShippingService {
 }
 ```
 
-Note that we have replaced the `@Stateless` and `@Remote` annotations with `@Path`. We have also added `@QueryParam` annotations to the method parameters. The methods have been annotated with `@GET` and `@Path`. The `calculateShipping` method now returns a `Response` object. The `getPercentOfTotal` method has been made static since it does not use any instance variables.
+Note: The `@Inject` annotation is used to inject the `ShippingService` class. This is because the `@Path` annotation creates a new instance of the class, and we need to use the same instance for both methods. In a real-world scenario, we would separate the two methods into different classes.

@@ -1,47 +1,35 @@
 package com.redhat.coolstore.utils;
 
-import io.deploy.micrometer.api.MicrometerRegistry;
-import io.quarkus.hibernate.transaction.Transactional;
-import io.quarkus.arc.runtime.BeanCreator;
-import io.quarkus.hibernate.orm.runtime.JdbcDataSource;
-import io.quarkus.logging.Log;
-import io.quarkus.runtime.Startup;
-import org.flywaydb.core.Flyway;
-import org.flywaydb.core.api.FlywayException;
-
 import jakarta.annotation.PostConstruct;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
 import jakarta.inject.Inject;
+import io.quarkus.flyway.QuarkusFlyway;
+import io.quarkus.log.Log;
+import jakarta.inject.Singleton;
+import jakarta.sql.DataSource;
+import org.flywaydb.core.FlywayException;
 
+@Singleton
 @Startup
-@BeanCreator
+@TransactionManagement(TransactionManagementType.BEAN)
 public class DataBaseMigrationStartup {
 
     @Inject
-    Log logger;
+    Log log;
 
     @Inject
-    JdbcDataSource dataSource;
+    DataSource dataSource;
 
     @PostConstruct
-    @Transactional
-    private void startup() {
-
-        try {
-            logger.info("Initializing/migrating the database using FlyWay");
-            Flyway flyway = new Flyway();
-            flyway.setDataSource(dataSource);
-            flyway.baseline();
-            // Start the db.migration
-            flyway.migrate();
-        } catch (FlywayException e) {
-            if(logger !=null)
-                logger.log(Level.SEVERE,"FAILED TO INITIALIZE THE DATABASE: " + e.getMessage(),e);
-            else
-                System.out.println("FAILED TO INITIALIZE THE DATABASE: " + e.getMessage() + " and injection of logger doesn't work");
-
-        }
+    public void startup() {
+        QuarkusFlyway flyway = new QuarkusFlyway();
+        flyway.setDataSource(dataSource);
+        flyway.baseline();
+        flyway.migrate()
+            .ifException(throwable -> log.severe("FAILED TO INITIALIZE THE DATABASE: " + throwable.getMessage(), throwable));
     }
-
-
 
 }

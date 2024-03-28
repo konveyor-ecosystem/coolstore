@@ -1,24 +1,22 @@
 package com.redhat.coolstore.utils;
 
-import org.jboss.logging.Logger;
-import io.quarkus.arc.runtime.BeanContainer;
+import jakarta.inject.Inject;
+import io.quarkus.logging.Log;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 
+@ApplicationScoped
 public class StartupListener {
 
-    private static final Logger log = Logger.getLogger(StartupListener.class);
+    @Inject
+    Log log;
 
-    public void onStart(StartupEvent event) {
+    void onStart(StartupEvent ev) {
         log.info("AppListener(onStart)");
     }
 
-    public void onStop(ShutdownEvent event) {
+    void onStop(ShutdownEvent ev) {
         log.info("AppListener(onStop)");
-    }
-
-    public void register(BeanContainer container) {
-        container.instance(StartupListener.class).get();
     }
 
 }

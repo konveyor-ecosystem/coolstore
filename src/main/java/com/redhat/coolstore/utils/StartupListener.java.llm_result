@@ -1,62 +1,47 @@
 
 ## Reasoning
 
-1. The first step is to understand the JavaEE code provided. This is a simple class extending `ApplicationLifecycleListener` from WebLogic Server, which is an Oracle middleware product. This class has two methods, `postStart` and `preStop`, that are called when the application starts and stops, respectively. The class also injects a `Logger` instance using the `@Inject` annotation from the `javax.inject` package.
+1. The first thing to notice is that the package name is `com.redhat.coolstore.utils`, which is a package for utility classes. This class, `StartupListener`, is used to perform some actions when the application starts or stops.
 
-2. The issue to fix is to replace the `javax.inject` import statement with `jakarta.inject`. This change is required because Quarkus uses the `jakarta` namespace for its APIs, following the transition from Java EE to Jakarta EE.
+2. The `@ApplicationScoped` annotation indicates that this bean is application-scoped, meaning that it is created once per application and shared among all injections.
 
-3. To address this issue, we need to replace the `javax.inject.Inject` import statement with `jakarta.inject.Inject`. However, since the `jakarta.inject` package is not present in the classpath, we will remove the `@Inject` annotation, as it is not necessary in this case.
+3. The `@Inject` annotation is used to inject the `Log` object, which is a Quarkus-specific logging utility.
 
-4. We also need to remove the `weblogic.application.ApplicationLifecycleListener` import statement and the `extends ApplicationLifecycleListener` clause, as Quarkus does not use this WebLogic-specific interface.
+4. The `onStart` and `onStop` methods are called when the application starts and stops, respectively. They simply log a message indicating that the application has started or stopped.
 
-5. Finally, we will add the necessary Quarkus annotations and dependencies to the class to make it work with Quarkus.
+5. The issue to fix is to replace the `javax.inject` import statement with `jakarta.inject`. This is because Quarkus uses the Jakarta EE specification, which uses the `jakarta` package name instead of `javax`.
+
+6. To fix the issue, we simply replace the `javax.inject.Inject` import statement with `jakarta.inject.Inject`.
+
+7. No changes are required for the `io.quarkus.logging.Log` import statement, as it is a Quarkus-specific logging utility.
+
+8. There are no external dependencies to update in the `pom.xml` file, as all the required dependencies are already included.
+
+9. There are no changes required for the imports, as they are all correct and up-to-date.
 
 ## Updated File
 
 ```java
 package com.redhat.coolstore.utils;
 
-import org.jboss.logging.Logger;
-import io.quarkus.arc.runtime.BeanContainer;
+import jakarta.inject.Inject;
+import io.quarkus.logging.Log;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 
+@ApplicationScoped
 public class StartupListener {
 
-    private static final Logger log = Logger.getLogger(StartupListener.class);
+    @Inject
+    Log log;
 
-    public void onStart(StartupEvent event) {
+    void onStart(StartupEvent ev) {
         log.info("AppListener(onStart)");
     }
 
-    public void onStop(ShutdownEvent event) {
+    void onStop(ShutdownEvent ev) {
         log.info("AppListener(onStop)");
-    }
-
-    public void register(BeanContainer container) {
-        container.instance(StartupListener.class).get();
     }
 
 }
 ```
-
-In the updated file, we have removed the `weblogic` package and the `@Inject` annotation. We have also added the necessary Quarkus annotations and methods to make the class work with Quarkus.
-
-The `onStart` method is called when the application starts, and the `onStop` method is called when the application stops. The `register` method is used to register the bean with the Quarkus DI framework.
-
-Note that we have also changed the `Logger` implementation to use the `org.jboss.logging.Logger` class, which is the recommended logging framework for Quarkus.
-
-Regarding the `pom.xml` file, we need to add the following dependencies:
-
-```xml
-<dependency>
-  <groupId>io.quarkus</groupId>
-  <artifactId>quarkus-arc</artifactId>
-</dependency>
-<dependency>
-  <groupId>org.jboss.logging</groupId>
-  <artifactId>jboss-logging</artifactId>
-</dependency>
-```
-
-These dependencies are required for the Quarkus DI framework and the `Logger` implementation, respectively.

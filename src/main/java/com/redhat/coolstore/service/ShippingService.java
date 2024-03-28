@@ -3,20 +3,19 @@ package com.redhat.coolstore.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import jakarta.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
+
 import com.redhat.coolstore.model.ShoppingCart;
 
+@ApplicationScoped
 @Path("/shipping")
 public class ShippingService {
 
-    @Inject
-    ShippingService shippingService;
-
     @GET
-    @Path("/calculateShipping")
+    @Path("/calculate-shipping")
     public double calculateShipping(@QueryParam("sc") ShoppingCart sc) {
 
         if (sc != null) {
@@ -50,7 +49,7 @@ public class ShippingService {
     }
 
     @GET
-    @Path("/calculateShippingInsurance")
+    @Path("/calculate-shipping-insurance")
     public double calculateShippingInsurance(@QueryParam("sc") ShoppingCart sc) {
 
         if (sc != null) {

@@ -1,47 +1,11 @@
 
 ## Reasoning
 
-1. The first step is to address the issues found from static analysis. The input file contains import statements from the `javax` package, but Quarkus uses the `jakarta` package. Therefore, we need to replace the `javax` import statements with `jakarta` import statements.
+1. The first four issues are related to import statements. In Quarkus, the `javax` namespace has been replaced with `jakarta`. This is a breaking change introduced in Jakarta EE 9, which Quarkus has adopted. Therefore, we need to replace the `javax` imports with `jakarta` imports.
 
-2. The second step is to address the issue with the `@PersistenceContext` annotation and the `@Produces` annotation on the `EntityManager`. In Quarkus, the `@Produces` annotation is not needed if the producer method is annotated with a scope annotation, a stereotype, or a qualifier. Therefore, we can remove the `@Produces` annotation and use a `@Named` getter method instead.
+2. Regarding Issue 5, in Java EE/Jakarta EE, we use `@PersistenceContext` to inject a data source. However, in Quarkus, a data source is automatically created by correctly setting up the datasource configuration. Since the `@Produces` annotation is not needed after configuring the datasource, we can remove it and directly inject the `EntityManager`.
 
-3. The third step is to update the `pom.xml` file to include the Quarkus dependencies. We need to replace the `javax.persistence` dependency with the `jakarta.persistence` dependency.
-
-4. The fourth step is to update the `pom.xml` file to include the Quarkus plugin. We need to add the following plugin to the `pom.xml` file:
-```xml
-<plugin>
-  <groupId>io.quarkus</groupId>
-  <artifactId>quarkus-maven-plugin</artifactId>
-  <version>${quarkus.platform.version}</version>
-  <extensions>true</extensions>
-  <configuration>
-    <properties>
-      <quarkus-plugin.version>${quarkus.platform.version}</quarkus-plugin.version>
-      <dependency.coordinates>${project.dependency.coordinates}</dependency.coordinates>
-    </properties>
-  </configuration>
-</plugin>
-```
-5. The fifth step is to update the `pom.xml` file to include the Quarkus BOM (Bill of Materials). We need to add the following BOM to the `pom.xml` file:
-```xml
-<dependencyManagement>
-  <dependencies>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-bom</artifactId>
-      <version>${quarkus.platform.version}</version>
-      <type>pom</type>
-      <scope>import</scope>
-    </dependency>
-  </dependencies>
-</dependencyManagement>
-```
-6. The final step is to update the `pom.xml` file to include the Quarkus platform. We need to add the following platform to the `pom.xml` file:
-```xml
-<properties>
-  <quarkus.platform.version>2.6.1.Final</quarkus.platform.version>
-</properties>
-```
+3. Issue 6 is related to the `@Named` annotation used on the getter method for the `EntityManager`. In Quarkus, we can skip the `@Produces` annotation completely if the producer method is annotated with a scope annotation, a stereotype, or a qualifier. Since the `@Named` annotation is a qualifier, we can use it to access the `EntityManager` directly.
 
 ## Updated File
 
@@ -49,26 +13,20 @@
 package com.redhat.coolstore.persistence;
 
 import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 @Dependent
 public class Resources {
 
-    @PersistenceContext
+    @Inject
     private EntityManager em;
 
-    @Inject
-    @Named("myEntityManager")
-    public void setEntityManager(EntityManager em) {
-        this.em = em;
-    }
-
-    public EntityManager getEm() {
+    @Named
+    public EntityManager getEntityManager() {
         return em;
     }
 }
 ```
+
+Note that we have replaced the `javax` imports with `jakarta` imports, and removed the `@Produces` annotation since it is not needed in Quarkus.

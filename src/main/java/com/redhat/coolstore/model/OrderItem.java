@@ -11,38 +11,58 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "ORDER_ITEMS")
 public class OrderItem implements Serializable {
-	private static final long serialVersionUID = 64565445665456666L;
 
-	@Id
-	@Column(name="ID")
-	@GeneratedValue
-	private long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	private int quantity;
+    @Column(nullable = false)
+    private String productId;
 
-	private String productId;
+    @Column(nullable = false)
+    private Integer quantity;
 
-	public OrderItem() {}
+    @Column(nullable = false)
+    private Double price;
 
-	public String getProductId() {
-		return productId;
-	}
+    public OrderItem() {}
 
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
+    public OrderItem(String productId, Integer quantity, Double price) {
+        this.productId = productId;
+        this.quantity = quantity;
+        this.price = price;
+    }
 
-	public int getQuantity() {
-		return quantity;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	@Override
-	public String toString() {
-		return "OrderItem [productId=" + productId + ", quantity=" + quantity + "]";
-	}
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
 }

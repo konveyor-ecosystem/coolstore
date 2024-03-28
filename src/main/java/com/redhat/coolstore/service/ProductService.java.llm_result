@@ -1,11 +1,11 @@
 
 ## Reasoning
 
-1. **Issue 1:** The `javax.ejb` package is for Java EE, and it is not compatible with Quarkus. Quarkus uses the `jakarta.ejb` package, which is the new package name for Jakarta EE. Therefore, we need to replace the `javax.ejb.Stateless` annotation with `jakarta.enterprise.context.RequestScoped`. This annotation is used to define a CDI bean, which is the equivalent of an EJB in Quarkus.
+1. **Issue 1:** The import statement for `javax.ejb.Stateless` needs to be updated to `jakarta.enterprise.context.RequestScoped`. This is because Quarkus uses the Jakarta EE namespace for its dependencies, which includes the `jakarta.enterprise.context` package for CDI (Contexts and Dependency Injection) scopes.
 
-2. **Issue 2:** The `javax.inject` package is for Java EE, and it is not compatible with Quarkus. Quarkus uses the `jakarta.inject` package, which is the new package name for Jakarta EE. Therefore, we need to replace the `javax.inject.Inject` annotation with `jakarta.inject.Inject`. This annotation is used to inject dependencies into a CDI bean.
+2. **Issue 2:** The import statement for `javax.inject.Inject` needs to be updated to `jakarta.inject.Inject`. This is because Quarkus uses the Jakarta EE namespace for its dependencies, which includes the `jakarta.inject` package for injection annotations.
 
-3. **Issue 3:** Stateless EJBs can be converted to a CDI bean by replacing the `@Stateless` annotation with a scope annotation such as `@ApplicationScoped`. In Quarkus, CDI beans are used instead of EJBs. The `@RequestScoped` annotation is used to create a CDI bean that is created once per request.
+3. **Issue 3:** The `@Stateless` annotation is not necessary in Quarkus, as it does not use EJBs (Enterprise JavaBeans). Instead, it uses CDI for dependency injection. Therefore, the `@Stateless` annotation can be replaced with a CDI scope annotation, such as `@ApplicationScoped` or `@RequestScoped`. In this case, `@RequestScoped` is the appropriate scope annotation, as it indicates that the bean is created for each HTTP request.
 
 ## Updated File
 
@@ -48,4 +48,4 @@ public class ProductService {
 }
 ```
 
-Note that we did not make any changes to the `CatalogService` class, so it is not included in the updated file. If there are any external dependencies in the `pom.xml` file, they may need to be updated to the Quarkus equivalent. For example, if the `CatalogService` class is a remote EJB, it would need to be replaced with a REST endpoint or a gRPC service. Additionally, the `Transformers` class may need to be updated to use the Quarkus equivalent of the `javax.json` package.
+Note that the `CatalogService` dependency is not defined in this file, so it should be injected in a parent bean or defined in the `src/main/resources/META-INF/beans.xml` file. Additionally, the `CatalogService` class should be updated to use the `jakarta.inject` namespace for its injection annotations.

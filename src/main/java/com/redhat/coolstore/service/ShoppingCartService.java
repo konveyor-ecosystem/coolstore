@@ -6,7 +6,6 @@ import jakarta.inject.Inject;
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
-import com.redhat.coolstore.service.ShippingServiceRemote;
 
 @SessionScoped
 public class ShoppingCartService  {
@@ -33,9 +32,55 @@ public class ShoppingCartService  {
         shoppingCartOrderProcessor.process(cart);
 
         cart.resetShoppingCartItemList();
+        priceShoppingCart(cart);
+        return cart;
+    }
 
-        ShoppingCartItem[] sciArray = cart.getShoppingCartItemList().toArray(new ShoppingCartItem[0]);
-        for (ShoppingCartItem sci : sciArray) {
+    public void priceShoppingCart(ShoppingCart sc) {
+
+        if (sc != null) {
+
+            initShoppingCartForPricing(sc);
+
+            if (sc.getShoppingCartItemList() != null && sc.getShoppingCartItemList().size() > 0) {
+
+                //ps.applyCartItemPromotions(sc);
+
+                for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
+
+                    sc.setCartItemPromoSavings(
+                            sc.getCartItemPromoSavings() + sci.getPromoSavings() * sci.getQuantity());
+                    sc.setCartItemTotal(sc.getCartItemTotal() + sci.getPrice() * sci.getQuantity());
+
+                }
+
+                //sc.setShippingTotal(lookupShippingServiceRemote().calculateShipping(sc));
+                sc.setShippingTotal(calculateShipping(sc));
+
+                if (sc.getCartItemTotal() >= 25) {
+                    sc.setShippingTotal(sc.getShippingTotal()
+                            + calculateShippingInsurance(sc));
+                }
+
+            }
+
+            //ps.applyShippingPromotions(sc);
+
+            sc.setCartTotal(sc.getCartItemTotal() + sc.getShippingTotal());
+
+        }
+
+    }
+
+    private void initShoppingCartForPricing(ShoppingCart sc) {
+
+        sc.setCartItemTotal(0);
+        sc.setCartItemPromoSavings(0);
+        sc.setShippingTotal(0);
+        sc.setShippingPromoSavings(0);
+        sc.setCartTotal(0);
+
+        for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
             Product p = getProduct(sci.getProduct().getItemId());
             //if product exist
             if (p != null) {
@@ -46,37 +91,21 @@ public class ShoppingCartService  {
             sci.setPromoSavings(0);
         }
 
-        cart.setCartItemTotal(calculateCartItemTotal(sciArray));
-        cart.setShippingTotal(calculateShippingTotal(cart));
-
-        cart.setCartTotal(cart.getCartItemTotal() + cart.getShippingTotal());
-
-        return cart;
     }
 
-    @Inject
-    private Product getProduct(String itemId) {
-        // Implementation to inject and lookup Product EJB
+    public Product getProduct(String itemId) {
+        //return productServices.getProductByItemId(itemId);
+        // Implement a new method to get the product by itemId
+        return null;
     }
 
-    private double calculateCartItemTotal(ShoppingCartItem[] sciArray) {
-        double cartItemTotal = 0;
-        for (ShoppingCartItem sci : sciArray) {
-            cartItemTotal += sci.getPrice() * sci.getQuantity();
-        }
-        return cartItemTotal;
+    private double calculateShipping(ShoppingCart sc) {
+        // Implement a new method to calculate shipping costs
+        return 0;
     }
 
-    private double calculateShippingTotal(ShoppingCart cart) {
-        double shippingTotal = 0;
-        if (cart.getCartItemTotal() >= 25) {
-            shippingTotal += lookupShippingServiceRemote().calculateShippingInsurance(cart);
-        }
-        shippingTotal += lookupShippingServiceRemote().calculateShipping(cart);
-        return shippingTotal;
+    private double calculateShippingInsurance(ShoppingCart sc) {
+        // Implement a new method to calculate shipping insurance costs
+        return 0;
     }
-
-    @Inject
-    private ShippingServiceRemote lookupShippingServiceRemote();
-
 }

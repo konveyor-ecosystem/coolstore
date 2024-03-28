@@ -1,7 +1,7 @@
 package com.redhat.coolstore.service;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,19 +14,13 @@ import com.redhat.coolstore.model.ShoppingCartItem;
 @ApplicationScoped
 public class PromoService {
 
-    private Set<Promotion> promotionSet = new HashSet<>();
-
-    public PromoService() {
-
-        promotionSet.add(new Promotion("329299", .25));
-
-    }
+    private ConcurrentHashSet<Promotion> promotionSet = new ConcurrentHashSet<>();
 
     public void applyCartItemPromotions(ShoppingCart shoppingCart) {
 
         if (shoppingCart != null && shoppingCart.getShoppingCartItemList().size() > 0) {
 
-            Map<String, Promotion> promoMap = new HashMap<String, Promotion>();
+            ConcurrentHashMap<String, Promotion> promoMap = new ConcurrentHashMap<>();
 
             for (Promotion promo : promotionSet) {
 

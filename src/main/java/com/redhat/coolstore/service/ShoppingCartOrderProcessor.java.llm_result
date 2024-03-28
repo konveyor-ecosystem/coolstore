@@ -1,19 +1,19 @@
 
 ## Reasoning
 
-1. **Issue 1:** The `javax.annotation` package is for Java EE, and it has been replaced with `jakarta.annotation` in Jakarta EE. This change is necessary to ensure compatibility with Quarkus.
+1. **Issue 1:** The import statement for `javax.annotation` needs to be updated to `jakarta.annotation` because Quarkus uses the Jakarta EE API, not Java EE. This is a breaking change in Jakarta EE 9 and onwards, where the `javax.*` package namespace was changed to `jakarta.*`.
 
-2. **Issue 2:** Similar to Issue 1, `javax.ejb` is for Java EE, and it has been replaced with `jakarta.ejb` in Jakarta EE. This change is necessary to ensure compatibility with Quarkus.
+2. **Issue 2:** Similar to Issue 1, the `javax.ejb` import statement needs to be replaced with `jakarta.ejb`. However, this is not necessary in this case because we are removing the `@Stateless` annotation in favor of a CDI scope.
 
-3. **Issue 3:** The `javax.inject` package is for Java EE, and it has been replaced with `jakarta.inject` in Jakarta EE. This change is necessary to ensure compatibility with Quarkus.
+3. **Issue 3:** The `javax.inject` import statement needs to be updated to `jakarta.inject` for the same reason as Issues 1 and 2.
 
-4. **Issue 4 & 5:** The `javax.jms` package is for Java EE, and it has been replaced with `jakarta.jms` in Jakarta EE. This change is necessary to ensure compatibility with Quarkus.
+4. **Issue 4 & 5:** The `javax.jms` import statements need to be updated to `jakarta.jms` for the same reason as Issues 1, 2, and 3.
 
-5. **Issue 6 & 7:** JMS `Topic`s should be replaced with Micrometer `Emitter`s feeding a Channel. This is a design decision in Quarkus to simplify the programming model and reduce the complexity of managing JMS resources.
+5. **Issue 6 & 7:** JMS `Topic`s should be replaced with Micrometer `Emitter`s feeding a Channel. This is because Quarkus uses the MicroProfile Reactive Messaging API, which provides a more efficient and reactive way of sending messages compared to the traditional JMS API.
 
-6. **Issue 8 & 9:** References to JavaEE/JakartaEE JMS elements should be removed and replaced with their Quarkus SmallRye/Microprofile equivalents. This is necessary to ensure compatibility with Quarkus.
+6. **Issue 8 & 9:** References to JavaEE/JakartaEE JMS elements should be removed and replaced with their Quarkus SmallRye/Microprofile equivalents. This is because Quarkus uses the MicroProfile Reactive Messaging API, which provides a more efficient and reactive way of sending messages compared to the traditional JMS API.
 
-7. **Issue 10:** Stateless EJBs can be converted to a CDI bean by replacing the `@Stateless` annotation with a scope like `@ApplicationScoped`. This is because Quarkus uses CDI for dependency injection, and the `@Stateless` annotation is not recognized.
+7. **Issue 10:** Stateless EJBs can be converted to a CDI bean by replacing the `@Stateless` annotation with a scope, such as `@ApplicationScoped`. This is because Quarkus uses CDI for dependency injection, not EJBs.
 
 ## Updated File
 
@@ -30,20 +30,31 @@ import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.utils.Transformers;
 
 @RequestScoped
-public class ShoppingCartOrderProcessor {
+public class ShoppingCartOrderProcessor  {
 
     @Inject
-    Logger log;
+    private Emitter<String> ordersTopicEmitter;
 
-    @Inject
-    @Channel("orders-topic")
-    Emitter<String> ordersTopicEmitter;
-
-    public void process(ShoppingCart cart) {
+    public void  process(ShoppingCart cart) {
         log.info("Sending order from processor: ");
         ordersTopicEmitter.send(Transformers.shoppingCartToJson(cart));
     }
 }
 ```
 
-Please note that the updated file removes the `javax` imports and replaces them with `jakarta` imports. It also replaces the `@Stateless` annotation with `@RequestScoped` and replaces the `JMSContext` and `Topic` with `Emitter`.
+Additionally, the `pom.xml` file will need to be updated to include the required Quarkus dependencies:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-reactive-messaging-kafka</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-smallrye-context-propagation</artifactId>
+    </dependency>
+</dependencies>
+```
+
+Note that the specific dependencies required will depend on the messaging system used (in this case, Kafka).

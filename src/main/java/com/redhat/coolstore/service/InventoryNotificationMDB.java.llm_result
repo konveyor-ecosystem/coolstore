@@ -1,13 +1,15 @@
 
 ## Reasoning
 
-1. **Issue 1:** The import statement `javax.inject.Inject` needs to be replaced with `jakarta.inject.Inject` because Quarkus uses the Jakarta EE API, which has renamed the `javax` package to `jakarta`. This change is necessary to ensure compatibility with Quarkus.
+1. The first issue to address is the import statement for `javax.inject.Inject`. This import statement needs to be replaced with `jakarta.inject.Inject` to be consistent with Quarkus conventions. This change is required because Quarkus uses the `jakarta` namespace instead of the `javax` namespace.
 
-2. **Issue 2:** JMS Topics should be replaced with Micrometer Emitters feeding a Channel. This is because Quarkus uses the SmallRye/MicroProfile implementation for messaging, which uses Emitters and Channels instead of JMS Topics. The `@Inject` and `@Channel` annotations are used to inject the Emitter, and the `@Incoming` annotation is used to specify the channel name.
+2. The second issue is the usage of JMS `Topic`s. In Quarkus, we should replace JMS `Topic`s with Micrometer `Emitter`s feeding a Channel. This change is necessary because Quarkus promotes the use of reactive messaging and Micrometer for monitoring purposes.
 
-3. **Issue 3:** References to JavaEE/JakartaEE JMS elements should be removed and replaced with their Quarkus SmallRye/Microprofile equivalents. This is because Quarkus uses the SmallRye/MicroProfile implementation for messaging, which does not use JMS elements such as `Topic`, `TopicConnection`, `TopicSession`, and `TopicSubscriber`. Instead, Quarkus uses Emitters and Channels.
+3. The third issue is the usage of JavaEE/JakartaEE JMS elements. These elements should be removed and replaced with their Quarkus SmallRye/Microprofile equivalents. This change is required because Quarkus uses SmallRye and Microprofile for reactive messaging and other features.
 
 ## Updated File
+
+Based on the reasoning above, the updated Quarkus file is as follows:
 
 ```java
 package com.redhat.coolstore.service;
@@ -15,13 +17,11 @@ package com.redhat.coolstore.service;
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 import io.smallrye.common.annotation.Blocking;
-import io.smallrye.reactive.messaging.annotations.Channel;
-import io.smallrye.reactive.messaging.annotations.Incoming;
+import io.smallrye.reactive.messaging.channels.Incoming;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.Message;
-
-import java.util.List;
 
 public class InventoryNotificationMDB {
 
@@ -39,8 +39,7 @@ public class InventoryNotificationMDB {
     @Transactional
     public void onMessage(String orderStr) {
         Order order = Transformers.jsonToOrder(orderStr);
-        List<Order.OrderItem> itemList = order.getItemList();
-        for (Order.OrderItem orderItem : itemList) {
+        order.getItemList().forEach(orderItem -> {
             int old_quantity = catalogService.getCatalogItemById(orderItem.getProductId()).getInventory().getQuantity();
             int new_quantity = old_quantity - orderItem.getQuantity();
             if (new_quantity < LOW_THRESHOLD) {
@@ -48,10 +47,23 @@ public class InventoryNotificationMDB {
             } else {
                 orderItem.setQuantity(new_quantity);
             }
-        }
+        });
         orderEmitter.send(Message.of(orderStr));
     }
 }
 ```
 
-Note that the `pom.xml` file will also need to be updated to include the necessary Quarkus dependencies and remove any JavaEE/JakartaEE JMS dependencies. The updated `pom.xml` file is not included in this response, but it can be generated based on the updated Java code and the Quarkus documentation.
+Additionally, the `pom.xml` file should include the following dependencies:
+
+```xml
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-reactive-messaging-smallrye</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-micrometer</artifactId>
+</dependency>
+```
+
+These dependencies are required for using SmallRye Reactive Messaging and Micrometer in Quarkus.

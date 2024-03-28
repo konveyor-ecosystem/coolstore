@@ -1,28 +1,65 @@
 
 ## Reasoning
 
-1. The first step is to address the issues found by the static source code analysis. These issues are related to the import statements that need to be updated from `javax` to `jakarta` namespace. This is necessary because Quarkus uses the `jakarta` namespace for its dependencies, following the Jakarta EE specification.
+1. The first issue to address is the import statements that are using the `javax` namespace. The Quarkus framework uses the `jakarta` namespace, so these import statements need to be updated accordingly. This is a simple find and replace operation that can be done in the code editor.
 
-2. We need to replace the following import statements:
-   - `javax.annotation.PostConstruct` with `jakarta.annotation.PostConstruct` (Issue 1)
-   - `javax.annotation.Resource` with `jakarta.annotation.Resource` (Issue 2)
-   - `javax.ejb.Singleton` with `jakarta.ejb.Singleton` (Issue 3)
-   - `javax.ejb.Startup` with `jakarta.ejb.Startup` (Issue 4)
-   - `javax.ejb.TransactionManagement` with `jakarta.ejb.TransactionManagement` (Issue 5)
-   - `javax.ejb.TransactionManagementType` with `jakarta.ejb.TransactionManagementType` (Issue 6)
-   - `javax.inject.Inject` with `jakarta.inject.Inject` (Issue 7)
+2. The `@Singleton`, `@Startup`, `@TransactionManagement`, and `@Resource` annotations are from the `javax.ejb` package, which needs to be replaced with `jakarta.ejb`. These annotations are used to define the lifecycle and transaction management of the class. In Quarkus, these annotations are still valid and can be used in the same way.
 
-3. After updating the import statements, we can see that the class `DataBaseMigrationStartup` is a Singleton EJB with a PostConstruct method that initializes and migrates the database using Flyway. Quarkus does not support EJBs, so we need to find an alternative solution for this functionality.
+3. The `@Inject` annotation is used to inject dependencies into the class. This annotation is from the `javax.inject` package, which needs to be replaced with `jakarta.inject`.
 
-4. In Quarkus, we can use the `@Startup` annotation from the `io.quarkus.arc.runtime.BeanCreator` package to replace the `@Startup` annotation from `javax.ejb`. This annotation ensures that the bean is initialized when the application starts.
+4. The `DataSource` class is used to get a reference to a database connection. This class is part of the Java EE API, but it is also available in Quarkus. Therefore, there is no need to change this class.
 
-5. We can replace the `@Singleton` annotation with the `@ApplicationScoped` annotation from `jakarta.enterprise.context`. This annotation ensures that the bean is created only once per application and its lifecycle is managed by the CDI container.
+5. The `Flyway` class is used to manage database migrations. This class is part of the Flyway library, which is a separate dependency that needs to be added to the Quarkus project. The Flyway library is available as a Quarkus extension, which can be added to the `pom.xml` file.
 
-6. Since Quarkus does not support EJBs, we need to remove the `@TransactionManagement` and `TransactionManagementType` annotations. Instead, we can use the `@Transactional` annotation from `io.quarkus.hibernate.transaction.Transactional` to manage transactions in a Quarkus-friendly way.
+6. The `QuarkusFlyway` class is used to integrate Flyway with Quarkus. This class is part of the Quarkus Flyway extension, which provides additional functionality for using Flyway in a Quarkus application.
 
-7. We can replace the `javax.sql.DataSource` with `io.deploy.micrometer.api. MicrometerRegistry` to get the datasource.
+7. The `Log` class is used to log messages. This class is part of the Quarkus logging framework, which provides a simple and efficient way to log messages in a Quarkus application.
 
-8. We need to add the following dependency in the `pom.xml` file to use Flyway in Quarkus:
+8. The `startup()` method is annotated with `@PostConstruct`, which is used to indicate that this method should be called after the class has been constructed. This annotation is part of the Java EE API, but it is also available in Quarkus. Therefore, there is no need to change this annotation.
+
+9. The `startup()` method is used to initialize the database using Flyway. This method creates a new `QuarkusFlyway` instance, sets the data source, and then calls the `baseline()` and `migrate()` methods to initialize the database. This method is still valid in Quarkus and can be used in the same way.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.utils;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
+import jakarta.inject.Inject;
+import io.quarkus.flyway.QuarkusFlyway;
+import io.quarkus.log.Log;
+import jakarta.inject.Singleton;
+import jakarta.sql.DataSource;
+import org.flywaydb.core.FlywayException;
+
+@Singleton
+@Startup
+@TransactionManagement(TransactionManagementType.BEAN)
+public class DataBaseMigrationStartup {
+
+    @Inject
+    Log log;
+
+    @Inject
+    DataSource dataSource;
+
+    @PostConstruct
+    public void startup() {
+        QuarkusFlyway flyway = new QuarkusFlyway();
+        flyway.setDataSource(dataSource);
+        flyway.baseline();
+        flyway.migrate()
+            .ifException(throwable -> log.severe("FAILED TO INITIALIZE THE DATABASE: " + throwable.getMessage(), throwable));
+    }
+
+}
+```
+
+Note: The `pom.xml` file needs to be updated to include the Flyway Quarkus extension. This can be done by adding the following dependency to the `pom.xml` file:
 
 ```xml
 <dependency>
@@ -31,54 +68,4 @@
 </dependency>
 ```
 
-## Updated File
-
-```java
-package com.redhat.coolstore.utils;
-
-import io.deploy.micrometer.api.MicrometerRegistry;
-import io.quarkus.hibernate.transaction.Transactional;
-import io.quarkus.arc.runtime.BeanCreator;
-import io.quarkus.hibernate.orm.runtime.JdbcDataSource;
-import io.quarkus.logging.Log;
-import io.quarkus.runtime.Startup;
-import org.flywaydb.core.Flyway;
-import org.flywaydb.core.api.FlywayException;
-
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
-
-@Startup
-@BeanCreator
-public class DataBaseMigrationStartup {
-
-    @Inject
-    Log logger;
-
-    @Inject
-    JdbcDataSource dataSource;
-
-    @PostConstruct
-    @Transactional
-    private void startup() {
-
-        try {
-            logger.info("Initializing/migrating the database using FlyWay");
-            Flyway flyway = new Flyway();
-            flyway.setDataSource(dataSource);
-            flyway.baseline();
-            // Start the db.migration
-            flyway.migrate();
-        } catch (FlywayException e) {
-            if(logger !=null)
-                logger.log(Level.SEVERE,"FAILED TO INITIALIZE THE DATABASE: " + e.getMessage(),e);
-            else
-                System.out.println("FAILED TO INITIALIZE THE DATABASE: " + e.getMessage() + " and injection of logger doesn't work");
-
-        }
-    }
-
-
-
-}
-```
+This dependency will add the Flyway Quarkus extension to the project and make the `QuarkusFlyway` class available for use.

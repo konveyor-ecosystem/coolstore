@@ -1,27 +1,51 @@
 
 ## Reasoning
 
-1. **Addressing Issue 1:** The first issue suggests replacing the `javax.enterprise` import statement with `jakarta.enterprise`. This change is required because Quarkus uses the Jakarta EE API, which has moved from the `javax` namespace to the `jakarta` namespace. This change is necessary to ensure compatibility with Quarkus.
+1. **Addressing Issue 1:** The import statements in the JavaEE code use `javax` namespace which is the old namespace for Java EE. In Quarkus, we use the `jakarta` namespace, which is the new namespace for Java EE. Therefore, we need to replace the `javax.enterprise.context.RequestScoped` import statement with `jakarta.enterprise.context.RequestScoped`.
 
-2. **Addressing Issue 2:** The second issue suggests replacing the `javax.inject` import statement with `jakarta.inject`. This change is also required due to the move from the `javax` namespace to the `jakarta` namespace.
+2. **Addressing Issue 2:** Similar to Issue 1, we need to replace the `javax.inject.Inject` import statement with `jakarta.inject.Inject`.
 
-3. **Addressing Issue 3:** The third issue suggests replacing the `javax.ws` import statement with `jakarta.ws`. This change is required for the same reason as Issues 1 and 2.
+3. **Addressing Issue 3:** The `javax.ws.rs` import statements need to be replaced with `jakarta.ws.rs` import statements. This includes `javax.ws.rs.*`, `javax.ws.rs.core.MediaType`, and `javax.ws.rs.Path`.
 
-4. **No changes to the pom.xml:** The provided information does not indicate any changes are needed in the pom.xml.
+4. **External Dependencies and Imports:** Since we are migrating from Java EE to Quarkus, we need to update the `pom.xml` file to include the Quarkus dependencies. The updated `pom.xml` file should include the following dependencies:
 
-5. **No changes to imports:** The provided information does not indicate any changes are needed for the other imports.
+```xml
+<dependencies>
+    <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-resteasy-reactive</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-arc</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.redhat.coolstore</groupId>
+        <artifactId>coolstore-model</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+        <groupId>com.redhat.coolstore</groupId>
+        <artifactId>coolstore-service</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+</dependencies>
+```
 
-## Updated File
+5. **Impacts to Imports:** With the updated dependencies and import statements, the updated file should look like this:
 
 ```java
 package com.redhat.coolstore.rest;
 
-import java.io.Serializable;
 import java.util.List;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import com.redhat.coolstore.model.Product;
@@ -31,7 +55,7 @@ import com.redhat.coolstore.service.ProductService;
 @Path("/products")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ProductEndpoint implements Serializable {
+public class ProductEndpoint {
 
     /**
      *
@@ -41,6 +65,53 @@ public class ProductEndpoint implements Serializable {
     @Inject
     private ProductService pm;
 
+    @GET
+    @Path("/")
+    public List<Product> listAll() {
+        return pm.getProducts();
+    }
+
+    @GET
+    @Path("/{itemId}")
+    public Product getProduct(@PathParam("itemId") String itemId) {
+        return pm.getProductByItemId(itemId);
+    }
+
+}
+```
+
+## Updated File
+
+```java
+package com.redhat.coolstore.rest;
+
+import java.util.List;
+
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+
+import com.redhat.coolstore.model.Product;
+import com.redhat.coolstore.service.ProductService;
+
+@RequestScoped
+@Path("/products")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class ProductEndpoint {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = -7227732980791688773L;
+
+    @Inject
+    private ProductService pm;
 
     @GET
     @Path("/")

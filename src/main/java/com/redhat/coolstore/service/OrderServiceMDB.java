@@ -3,9 +3,11 @@ package com.redhat.coolstore.service;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
+import org.eclipse.microprofile.reactive.messaging.annotations.Blocking;
 
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class OrderServiceMDB {

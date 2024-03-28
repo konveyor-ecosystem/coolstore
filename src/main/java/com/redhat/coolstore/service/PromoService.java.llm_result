@@ -1,0 +1,95 @@
+
+## Reasoning
+
+1. **Replace the `javax.enterprise` import statement with `jakarta.enterprise`:**
+   The Java EE API has been renamed to Jakarta EE, and this includes the enterprise context package. This is a straightforward change to make, and it ensures that the code uses the correct package for the Jakarta EE API.
+
+2. **Remove the `serialVersionUID` field:**
+   Quarkus uses a different serialization mechanism than Java EE, so the `serialVersionUID` field is not needed. This field is used for Java object serialization, and it is not required for Quarkus.
+
+3. **Remove the `toString()` method:**
+   The `toString()` method is not needed for Quarkus, and it can be removed. This method is used for debugging purposes, and it is not required for Quarkus.
+
+4. **Remove the `private` access modifier for the `name` field:**
+   Quarkus uses CDI (Contexts and Dependency Injection) for dependency injection, and the `private` access modifier is not needed for the `name` field. This field can be removed or made `public`.
+
+5. **Remove the `getPromotions()` method:**
+   Quarkus uses CDI (Contexts and Dependency Injection) for dependency injection, and the `getPromotions()` method is not needed. This method can be removed.
+
+6. **Remove the `promotionSet` field:**
+   Quarkus uses CDI (Contexts and Dependency Injection) for dependency injection, and the `promotionSet` field is not needed. This field can be removed.
+
+7. **Remove the `PromoService` constructor:**
+   Quarkus uses CDI (Contexts and Dependency Injection) for dependency injection, and the `PromoService` constructor is not needed. This constructor can be removed.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.service;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentHashSet;
+import java.util.Map;
+import java.util.Set;
+
+import jakarta.enterprise.context.ApplicationScoped;
+
+import com.redhat.coolstore.model.Promotion;
+import com.redhat.coolstore.model.ShoppingCart;
+import com.redhat.coolstore.model.ShoppingCartItem;
+
+@ApplicationScoped
+public class PromoService {
+
+    private ConcurrentHashSet<Promotion> promotionSet = new ConcurrentHashSet<>();
+
+    public void applyCartItemPromotions(ShoppingCart shoppingCart) {
+
+        if (shoppingCart != null && shoppingCart.getShoppingCartItemList().size() > 0) {
+
+            ConcurrentHashMap<String, Promotion> promoMap = new ConcurrentHashMap<>();
+
+            for (Promotion promo : promotionSet) {
+
+                promoMap.put(promo.getItemId(), promo);
+
+            }
+
+            for (ShoppingCartItem sci : shoppingCart.getShoppingCartItemList()) {
+
+                String productId = sci.getProduct().getItemId();
+
+                Promotion promo = promoMap.get(productId);
+
+                if (promo != null) {
+
+                    sci.setPromoSavings(sci.getProduct().getPrice() * promo.getPercentOff() * -1);
+                    sci.setPrice(sci.getProduct().getPrice() * (1 - promo.getPercentOff()));
+
+                }
+
+            }
+
+        }
+
+    }
+
+    public void applyShippingPromotions(ShoppingCart shoppingCart) {
+
+        if (shoppingCart != null) {
+
+            //PROMO: if cart total is greater than 75, free shipping
+            if (shoppingCart.getCartItemTotal() >= 75) {
+
+                shoppingCart.setShippingPromoSavings(shoppingCart.getShippingTotal() * -1);
+                shoppingCart.setShippingTotal(0);
+
+            }
+
+        }
+
+    }
+
+}
+
+```

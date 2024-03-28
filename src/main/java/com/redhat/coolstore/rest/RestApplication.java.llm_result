@@ -1,0 +1,21 @@
+
+## Reasoning
+
+1. **Issue 1 and 2:** The Java EE code is using the `javax.ws.rs` package for importing JAX-RS classes. However, Quarkus uses the `jakarta.ws.rs` package for JAX-RS classes. Therefore, we need to replace the `javax.ws` import statements with `jakarta.ws` on lines 3 and 4.
+
+2. **Issue 3 and 4:** JAX-RS activation is no longer necessary in Quarkus. The `@ApplicationPath` annotation is used to set the base URI for the JAX-RS application. In Quarkus, we can set a root path, but it is not necessary. Therefore, we can remove the `@ApplicationPath("/services")` annotation on lines 7 and 8.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.rest;
+
+import jakarta.ws.rs.core.Application;
+
+public class RestApplication extends Application {
+}
+```
+
+Regarding the `pom.xml` file, we don't need to make any changes since we are not adding or removing any external dependencies. However, if there were any dependencies related to JAX-RS, we would need to remove them.
+
+Regarding imports, we only need to update the `jakarta.ws.rs` package import, which we have already done in the updated file.

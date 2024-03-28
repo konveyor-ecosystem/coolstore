@@ -1,0 +1,51 @@
+
+## Reasoning
+
+1. The first issue highlights the need to replace `javax.ejb` import statements with `jakarta.ejb`. This change is necessary because Quarkus uses the Jakarta EE API and not the older Java EE API. The `javax.ejb` package is part of the Java EE API, while `jakarta.ejb` is the equivalent package in the Jakarta EE API.
+
+2. The second issue highlights the need to replace `javax.inject` import statements with `jakarta.inject`. This change is necessary because Quarkus uses the Jakarta EE API, and the `javax.inject` package is part of the older Java EE API.
+
+3. The third issue highlights the need to replace `javax.persistence` import statements with `jakarta.persistence`. This change is necessary because Quarkus uses the Jakarta EE API, and the `javax.persistence` package is part of the older Java EE API.
+
+4. The fourth issue highlights the need to remove the `@Produces` annotation from the `EntityManager` and inject it instead. This change is necessary because Quarkus automatically creates the `EntityManager` bean when the datasource is correctly configured. Therefore, there is no need for a `@Produces` annotation.
+
+5. The fifth issue highlights the need to replace the `@Stateless` annotation with a scope annotation such as `@ApplicationScoped`. This change is necessary because Quarkus uses CDI for dependency injection, and `@ApplicationScoped` is the equivalent scope annotation in Quarkus.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.service;
+
+import com.redhat.coolstore.model.Order;
+import java.util.List;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+
+@ApplicationScoped
+public class OrderService {
+
+  @PersistenceContext
+  private EntityManager em;
+
+  public void save(Order order) {
+    em.persist(order);
+  }
+
+  public List<Order> getOrders() {
+    CriteriaBuilder cb = em.getCriteriaBuilder();
+    CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
+    Root<Order> member = criteria.from(Order.class);
+    criteria.select(member);
+    return em.createQuery(criteria).getResultList();
+  }
+
+  public Order getOrderById(long id) {
+    return em.find(Order.class, id);
+  }
+}
+```
+Note that the updated file no longer includes the `javax.ejb`, `javax.inject`, and `javax.persistence` import statements. Instead, it uses the equivalent `jakarta.ejb`, `jakarta.inject`, and `jakarta.persistence` import statements. Additionally, the `@Stateless` annotation has been replaced with the `@ApplicationScoped` annotation. Finally, the `@Produces` annotation has been removed from the `EntityManager`.

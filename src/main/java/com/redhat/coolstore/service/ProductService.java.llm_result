@@ -1,0 +1,51 @@
+
+## Reasoning
+
+1. **Issue 1:** The import statement for `javax.ejb.Stateless` needs to be updated to `jakarta.enterprise.context.RequestScoped`. This is because Quarkus uses the Jakarta EE namespace for its dependencies, which includes the `jakarta.enterprise.context` package for CDI (Contexts and Dependency Injection) scopes.
+
+2. **Issue 2:** The import statement for `javax.inject.Inject` needs to be updated to `jakarta.inject.Inject`. This is because Quarkus uses the Jakarta EE namespace for its dependencies, which includes the `jakarta.inject` package for injection annotations.
+
+3. **Issue 3:** The `@Stateless` annotation is not necessary in Quarkus, as it does not use EJBs (Enterprise JavaBeans). Instead, it uses CDI for dependency injection. Therefore, the `@Stateless` annotation can be replaced with a CDI scope annotation, such as `@ApplicationScoped` or `@RequestScoped`. In this case, `@RequestScoped` is the appropriate scope annotation, as it indicates that the bean is created for each HTTP request.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.service;
+
+import com.redhat.coolstore.model.CatalogItemEntity;
+import com.redhat.coolstore.model.Product;
+import com.redhat.coolstore.utils.Transformers;
+
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.redhat.coolstore.utils.Transformers.toProduct;
+
+@RequestScoped
+public class ProductService {
+
+    @Inject
+    CatalogService cm;
+
+    public ProductService() {
+    }
+
+    public List<Product> getProducts() {
+        return cm.getCatalogItems().stream().map(entity -> toProduct(entity)).collect(Collectors.toList());
+    }
+
+    public Product getProductByItemId(String itemId) {
+        CatalogItemEntity entity = cm.getCatalogItemById(itemId);
+        if (entity == null)
+            return null;
+
+        // Return the entity
+        return Transformers.toProduct(entity);
+    }
+
+}
+```
+
+Note that the `CatalogService` dependency is not defined in this file, so it should be injected in a parent bean or defined in the `src/main/resources/META-INF/beans.xml` file. Additionally, the `CatalogService` class should be updated to use the `jakarta.inject` namespace for its injection annotations.

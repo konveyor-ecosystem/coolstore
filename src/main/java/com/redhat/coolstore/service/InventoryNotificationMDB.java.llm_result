@@ -1,0 +1,69 @@
+
+## Reasoning
+
+1. The first issue to address is the import statement for `javax.inject.Inject`. This import statement needs to be replaced with `jakarta.inject.Inject` to be consistent with Quarkus conventions. This change is required because Quarkus uses the `jakarta` namespace instead of the `javax` namespace.
+
+2. The second issue is the usage of JMS `Topic`s. In Quarkus, we should replace JMS `Topic`s with Micrometer `Emitter`s feeding a Channel. This change is necessary because Quarkus promotes the use of reactive messaging and Micrometer for monitoring purposes.
+
+3. The third issue is the usage of JavaEE/JakartaEE JMS elements. These elements should be removed and replaced with their Quarkus SmallRye/Microprofile equivalents. This change is required because Quarkus uses SmallRye and Microprofile for reactive messaging and other features.
+
+## Updated File
+
+Based on the reasoning above, the updated Quarkus file is as follows:
+
+```java
+package com.redhat.coolstore.service;
+
+import com.redhat.coolstore.model.Order;
+import com.redhat.coolstore.utils.Transformers;
+import io.smallrye.common.annotation.Blocking;
+import io.smallrye.reactive.messaging.channels.Incoming;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+import org.eclipse.microprofile.reactive.messaging.Message;
+
+public class InventoryNotificationMDB {
+
+    private static final int LOW_THRESHOLD = 50;
+
+    @Inject
+    private CatalogService catalogService;
+
+    @Inject
+    @Channel("orders-incoming")
+    Emitter<Message<String>> orderEmitter;
+
+    @Incoming("orders-incoming")
+    @Blocking
+    @Transactional
+    public void onMessage(String orderStr) {
+        Order order = Transformers.jsonToOrder(orderStr);
+        order.getItemList().forEach(orderItem -> {
+            int old_quantity = catalogService.getCatalogItemById(orderItem.getProductId()).getInventory().getQuantity();
+            int new_quantity = old_quantity - orderItem.getQuantity();
+            if (new_quantity < LOW_THRESHOLD) {
+                System.out.println("Inventory for item " + orderItem.getProductId() + " is below threshold (" + LOW_THRESHOLD + "), contact supplier!");
+            } else {
+                orderItem.setQuantity(new_quantity);
+            }
+        });
+        orderEmitter.send(Message.of(orderStr));
+    }
+}
+```
+
+Additionally, the `pom.xml` file should include the following dependencies:
+
+```xml
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-reactive-messaging-smallrye</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-micrometer</artifactId>
+</dependency>
+```
+
+These dependencies are required for using SmallRye Reactive Messaging and Micrometer in Quarkus.

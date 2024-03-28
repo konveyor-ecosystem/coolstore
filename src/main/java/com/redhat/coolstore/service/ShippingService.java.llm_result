@@ -1,0 +1,95 @@
+
+## Reasoning
+
+1. **Issue 1 & 2:** The import statements for `javax.enterprise.context.ApplicationScoped` and `jakarta.ws.rs.GET` are correct and do not need to be changed. However, the import statements for `javax.ejb.Stateless` and `javax.ejb.Remote` are incorrect for Quarkus. They need to be replaced with the equivalent `jakarta` packages. Since this class is not an EJB in Quarkus, we can remove the `@Stateless` annotation and replace it with a scope annotation like `@ApplicationScoped`. The `@Remote` annotation is not needed in Quarkus as it does not support remote EJBs. Instead, we will convert the EJB to a REST service using the `@Path` and `@GET` annotations.
+
+2. **Issue 3:** To convert the EJB to a REST service, we need to remove the `@Stateless` annotation and add the `@Path` annotation to the class with an endpoint. We will also add the `@GET` annotation to the methods that calculate shipping and shipping insurance. Since these methods take a `ShoppingCart` parameter, we will add the `@QueryParam` annotation to the method parameter to indicate that it is a query parameter in the REST service.
+
+3. **Issue 4:** Since this class is not an EJB in Quarkus, we can remove the `@Stateless` annotation and replace it with a scope annotation like `@ApplicationScoped`.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.service;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.QueryParam;
+
+import com.redhat.coolstore.model.ShoppingCart;
+
+@ApplicationScoped
+@Path("/shipping")
+public class ShippingService {
+
+    @GET
+    @Path("/calculate-shipping")
+    public double calculateShipping(@QueryParam("sc") ShoppingCart sc) {
+
+        if (sc != null) {
+
+            if (sc.getCartItemTotal() >= 0 && sc.getCartItemTotal() < 25) {
+
+                return 2.99;
+
+            } else if (sc.getCartItemTotal() >= 25 && sc.getCartItemTotal() < 50) {
+
+                return 4.99;
+
+            } else if (sc.getCartItemTotal() >= 50 && sc.getCartItemTotal() < 75) {
+
+                return 6.99;
+
+            } else if (sc.getCartItemTotal() >= 75 && sc.getCartItemTotal() < 100) {
+
+                return 8.99;
+
+            } else if (sc.getCartItemTotal() >= 100 && sc.getCartItemTotal() < 10000) {
+
+                return 10.99;
+
+            }
+
+        }
+
+        return 0;
+
+    }
+
+    @GET
+    @Path("/calculate-shipping-insurance")
+    public double calculateShippingInsurance(@QueryParam("sc") ShoppingCart sc) {
+
+        if (sc != null) {
+
+            if (sc.getCartItemTotal() >= 25 && sc.getCartItemTotal() < 100) {
+
+                return getPercentOfTotal(sc.getCartItemTotal(), 0.02);
+
+            } else if (sc.getCartItemTotal() >= 100 && sc.getCartItemTotal() < 500) {
+
+                return getPercentOfTotal(sc.getCartItemTotal(), 0.015);
+
+            } else if (sc.getCartItemTotal() >= 500 && sc.getCartItemTotal() < 10000) {
+
+                return getPercentOfTotal(sc.getCartItemTotal(), 0.01);
+
+            }
+
+        }
+
+        return 0;
+    }
+
+    private static double getPercentOfTotal(double value, double percentOfTotal) {
+        return BigDecimal.valueOf(value * percentOfTotal)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
+    }
+
+}
+```

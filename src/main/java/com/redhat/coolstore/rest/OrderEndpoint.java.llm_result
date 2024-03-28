@@ -1,0 +1,68 @@
+
+## Reasoning
+
+1. The first step in migrating Java EE code to Quarkus is to update the import statements to use the `jakarta` namespace instead of the `javax` namespace. This is because Quarkus uses the Jakarta EE API, which has moved to the `jakarta` namespace. This change is required to ensure that the code is compatible with Quarkus.
+
+2. The import statements that need to be updated are:
+
+- `javax.enterprise.context.RequestScoped` to `jakarta.enterprise.context.RequestScoped` (Issue 1)
+- `javax.inject.Inject` to `jakarta.inject.Inject` (Issue 2)
+- `javax.ws.rs.Consumes` to `jakarta.ws.rs.Consumes` (Issue 3)
+- `javax.ws.rs.GET` to `jakarta.ws.rs.GET` (Issue 4)
+- `javax.ws.rs.Path` to `jakarta.ws.rs.Path` (Issue 5)
+- `javax.ws.rs.PathParam` to `jakarta.ws.rs.PathParam` (Issue 6)
+- `javax.ws.rs.Produces` to `jakarta.ws.rs.Produces` (Issue 7)
+- `javax.ws.rs.core.MediaType` to `jakarta.ws.rs.core.MediaType` (Issue 8)
+
+3. These changes are necessary to ensure that the code is compatible with Quarkus and uses the Jakarta EE API.
+
+4. There are no changes required in the `pom.xml` file, as the dependencies used in the Java EE code are also used in Quarkus.
+
+5. There are no changes required in the imports, as all the required classes are available in the Jakarta EE API.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.rest;
+
+import java.io.Serializable;
+import java.util.List;
+
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+
+import com.redhat.coolstore.model.Order;
+import com.redhat.coolstore.service.OrderService;
+
+@RequestScoped
+@Path("/orders")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class OrderEndpoint implements Serializable {
+
+    private static final long serialVersionUID = -7227732980791688774L;
+
+    @Inject
+    private OrderService os;
+
+
+    @GET
+    @Path("/")
+    public List<Order> listAll() {
+        return os.getOrders();
+    }
+
+    @GET
+    @Path("/{orderId}")
+    public Order getOrder(@PathParam("orderId") long orderId) {
+        return os.getOrderById(orderId);
+    }
+
+}
+```

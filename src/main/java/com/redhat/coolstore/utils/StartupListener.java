@@ -1,20 +1,21 @@
 package com.redhat.coolstore.utils;
 
 import jakarta.inject.Inject;
-import io.quarkus.runtime.ShutdownEvent;
-import io.quarkus.runtime.StartupEvent;
 import org.jboss.logging.Logger;
 
-public class StartupListener {
+public class StartupListener implements org.eclipse.microprofile.config.spi.ConfigSource {
 
     @Inject
     Logger log;
 
-    void onStart(StartupEvent startupEvent) {
-        log.info("AppListener(started)");
+    @Override
+    public void postStart(org.eclipse.microprofile.config.spi.ConfigSource.Event evt) {
+        log.info("AppListener(postStart)");
     }
 
-    void onStop(ShutdownEvent shutdownEvent) {
-        log.info("AppListener(stopped)");
+    @Override
+    public void preStop(org.eclipse.microprofile.config.spi.ConfigSource.Event evt) {
+        log.info("AppListener(preStop)");
     }
+
 }

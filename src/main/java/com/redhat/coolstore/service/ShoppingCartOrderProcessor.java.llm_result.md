@@ -8,13 +8,19 @@ Model ID: ibm-mistralai/mixtral-8x7b-instruct-v01-q
 
 3. **Issue 3:** Similar to Issue 1, the `javax.inject` package is replaced by `jakarta.inject` in Quarkus.
 
-4. **Issue 4 & 5:** Similar to Issue 1, the `javax.jms` package is replaced by `jakarta.jms` in Quarkus.
+4. **Issue 4:** Similar to Issue 1, the `javax.jms` package is replaced by `jakarta.jms` in Quarkus.
 
-5. **Issue 6 & 7:** Quarkus uses Micrometer for metrics and tracing. Topics are replaced by Emitters and Channels. The `Topic` is injected with the `@Channel` annotation and the `@Resource` annotation is no longer needed.
+5. **Issue 5:** Similar to Issue 1, the `javax.jms` package is replaced by `jakarta.jms` in Quarkus.
 
-6. **Issue 8 & 9:** Similar to Issue 4, JMS elements should be replaced with their Quarkus SmallRye/Microprofile equivalents.
+6. **Issue 6:** Quarkus uses Micrometer for metrics and tracing. Topics are replaced by Emitters and Channels. The `Topic` is injected with `@Channel` and the `@Resource` annotation is not needed.
 
-7. **Issue 10:** This is covered in Issue 2.
+7. **Issue 7:** Similar to Issue 6, the `Topic` is replaced by an `Emitter` and `@Resource` is replaced by `@Channel`.
+
+8. **Issue 8:** Quarkus uses SmallRye and MicroProfile for JMS. The JMS `Topic` is replaced by an `Emitter` and `@Resource` is replaced by `@Channel`.
+
+9. **Issue 9:** Similar to Issue 8, the JMS `Topic` is replaced by an `Emitter` and `@Resource` is replaced by `@Channel`.
+
+10. **Issue 10:** Similar to Issue 2, the `@Stateless` annotation is replaced by a CDI scope annotation such as `@ApplicationScoped`.
 
 ## Updated File
 
@@ -27,8 +33,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.jms.JMSContext;
 import jakarta.jms.Emitter;
-import io.smallrye.mutiny.Uni;
-import org.jboss.logging.Logger;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.utils.Transformers;
@@ -40,14 +45,15 @@ public class ShoppingCartOrderProcessor  {
     Logger log;
 
     @Inject
-    private JMSContext context;
-
-    @Resource(name = "java:/topic/orders")
+    @ConfigProperty(name = "orders.topic")
     private Emitter<String> ordersEmitter;
 
-    public Uni<Void> process(ShoppingCart cart) {
+    @Resource(name = "mp:/jms-resource/java:/jms/cf/my-connection-factory")
+    private JMSContext context;
+
+    public void  process(ShoppingCart cart) {
         log.info("Sending order from processor: ");
-        return Uni.createFrom().voidItem(() -> ordersEmitter.emit(Transformers.shoppingCartToJson(cart)));
+        ordersEmitter.emit(Transformers.shoppingCartToJson(cart));
     }
 
 }
@@ -55,8 +61,8 @@ public class ShoppingCartOrderProcessor  {
 
 ## Additional Information
 
-The updated file uses the `Uni` class from Mutiny to handle asynchronous processing. The `process` method now returns a `Uni<Void>` which represents a deferred computation that can complete with a result or fail with an exception. The `Uni.createFrom().voidItem()` method is used to create a `Uni` that completes immediately with no result. The `emit` method is used to send a message to the Emitter.
+The `@ConfigProperty` annotation is used to inject configuration properties from the application configuration file. In this example, the topic name is injected from the `application.properties` file.
 
-The `@Resource` annotation is used with the `name` attribute instead of the `lookup` attribute to specify the JNDI name of the Emitter.
+The `JMSContext` is injected using a connection factory. The connection factory is configured in the `application.properties` file.
 
-The `jboss.logging.Logger` is used instead of `java.util.logging.Logger` to ensure compatibility with Quarkus.
+The `Transformers` class is not part of the input file, but it is assumed to be available in the Quarkus project. If it is not available, it needs to be added to the project.

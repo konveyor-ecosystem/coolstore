@@ -4,7 +4,7 @@ Model ID: ibm-mistralai/mixtral-8x7b-instruct-v01-q
 
 1. **Issue 1:** Java EE and Jakarta EE use different packages for the `javax.inject` and `jakarta.inject` namespaces. Quarkus uses the Jakarta EE namespace, so we need to replace the `javax.inject` import statement with `jakarta.inject`.
 
-2. **Issue 2:** Quarkus uses a different approach for handling messages. Instead of using JMS `Topic`s, Quarkus uses Micrometer `Emitter`s feeding a Channel. We need to replace the `Topic` with an `Emitter` and update the injection point accordingly.
+2. **Issue 2:** Quarkus uses a different approach for handling messages. Instead of using JMS `Topic`s, Quarkus uses Micrometer `Emitter`s that feed a `Channel`. We need to replace the `Topic` with an `Emitter` and update the code accordingly.
 
 3. **Issue 3:** Java EE/Jakarta EE and Quarkus use different JMS implementations. We need to remove all references to Java EE/Jakarta EE JMS elements and replace them with their Quarkus SmallRye/Microprofile equivalents.
 
@@ -46,19 +46,46 @@ public class InventoryNotificationMDB {
     }
 
     public void init() {
+        // Quarkus handles initialization automatically, so we don't need an init method
     }
 
     public void close() {
+        // Quarkus handles cleanup automatically, so we don't need a close method
+    }
+
+    private static InitialContext getInitialContext() throws NamingException {
+        Hashtable<String, String> env = new Hashtable<>();
+        env.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
+        env.put(Context.PROVIDER_URL, "http-remoting://localhost:8080");
+        env.put("jboss.naming.client.ejb.context", "true");
+        return new InitialContext(env);
     }
 }
 ```
 
 ## Additional Information
 
-* We no longer need the `javax.jms` and `javax.naming` imports, as well as the `MessageListener` interface.
-* We also no longer need the `getInitialContext()` method, as Quarkus handles injection differently.
-* The `onMessage` method now takes an `Order` object as a parameter, instead of a `Message` object.
-* We no longer need to handle JMS exceptions, as Quarkus handles exceptions differently.
-* We inject the `Emitter` using the `@Channel` annotation, which specifies the name of the channel to use.
-* We send the `Order` object to the channel using the `send` method of the `Emitter`.
-* The `init` and `close` methods are empty, as Quarkus handles initialization and cleanup differently.
+We also need to update the `pom.xml` file to remove any Java EE/Jakarta EE dependencies and add the necessary Quarkus dependencies. We also need to update the `src/main/resources/application.properties` file to configure the SmallRye Reactive Messaging system.
+
+Here's an example of what the updated `pom.xml` file might look like:
+
+```xml
+<dependencies>
+    <!-- Remove any Java EE/Jakarta EE dependencies and add the necessary Quarkus dependencies -->
+    <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-reactive-messaging-smallrye</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-smallrye-context-propagation</artifactId>
+    </dependency>
+</dependencies>
+```
+
+And here's an example of what the updated `src/main/resources/application.properties` file might look like:
+
+```properties
+# Configure the SmallRye Reactive Messaging system
+mp.messaging.in-memory.address=topic/orders
+```

@@ -6,15 +6,17 @@ Model ID: ibm-mistralai/mixtral-8x7b-instruct-v01-q
 
 2. **Issue 2:** Similarly, the second issue is the import statement for `javax.inject`. We need to replace it with `jakarta.inject` for the same reason as Issue 1.
 
-3. **Stateless Session Bean:** The `@Stateful` annotation is not supported in Quarkus. Instead, we should use `@ApplicationScoped` or `@RequestScoped` depending on the desired behavior. In this case, since the shopping cart service is stateful, we can use `@SessionScoped` from the `jakarta.enterprise.context` package.
+3. **Stateless Session Bean:** The `@Stateful` annotation is not supported in Quarkus. Instead, we should use `@ApplicationScoped` or `@RequestScoped` depending on the desired behavior. In this case, since the shopping cart service is stateful, we can use `@SessionScoped` to achieve similar behavior.
 
-4. **Dependency Injection:** Quarkus uses Arc, a CDI (Contexts and Dependency Injection) implementation for dependency injection. The `@Inject` annotation is supported in Quarkus, so no changes are needed for the existing dependency injection annotations.
+4. **Dependency Injection:** Quarkus uses Arc, a CDI implementation, for dependency injection. Therefore, we need to ensure that the `@Inject` annotation is used correctly.
 
-5. **JNDI Lookup:** The JNDI lookup for the `ShippingServiceRemote` is not supported in Quarkus. Instead, we can use MicroProfile Reactive Messaging or MicroProfile Config to inject the `ShippingServiceRemote` as a CDI bean.
+5. **JNDI Lookup:** JNDI lookups are not supported in Quarkus. Instead, we should use MicroProfile Config or a Dependency Injection approach to obtain the `ShippingServiceRemote` instance.
 
-6. **Logging:** Quarkus uses the SmallRye logging framework, which is based on SLF4J. We can replace the `java.util.logging.Logger` with `org.slf4j.Logger`.
+6. **Logging:** Quarkus uses the SmallRye logging framework, which is based on SLF4J. Therefore, we need to replace the `java.util.logging.Logger` with `org.slf4j.Logger`.
 
-7. **External Dependencies:** We need to add the required Quarkus extensions and dependencies in the `pom.xml` file.
+7. **External Dependencies:** We need to ensure that the required dependencies are added to the `pom.xml` file.
+
+8. **Imports:** We need to update the imports to use the Quarkus-compatible packages.
 
 ## Updated File
 
@@ -24,7 +26,7 @@ package com.redhat.coolstore.service;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-import jakarta.enterprise.context.SessionScoped;
+import jakarta.ejb.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.naming.Context;
 import jakarta.naming.InitialContext;
@@ -33,7 +35,6 @@ import jakarta.naming.NamingException;
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
-import com.redhat.coolstore.service.ShippingServiceRemote;
 import org.slf4j.Logger;
 
 @SessionScoped
@@ -148,65 +149,38 @@ public class ShoppingCartService  {
 
 ## Additional Information
 
-1. We need to add the required Quarkus extensions and dependencies in the `pom.xml` file.
-
-2. The `pom.xml` file should include the following dependencies:
+We need to update the `pom.xml` file to include the required dependencies for Quarkus. Here's an example of the dependencies that need to be added:
 
 ```xml
 <dependencies>
     <!-- Other dependencies -->
+
     <dependency>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-arc</artifactId>
     </dependency>
+
     <dependency>
         <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-smallrye-context-propagation</artifactId>
+        <artifactId>quarkus-smallrye-config</artifactId>
     </dependency>
+
     <dependency>
         <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-resteasy-jsonb</artifactId>
+        <artifactId>quarkus-resteasy-reactive</artifactId>
     </dependency>
+
     <dependency>
         <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-jdbc-oracle</artifactId>
+        <artifactId>quarkus-undertow</artifactId>
     </dependency>
+
+    <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-jdbc-postgresql</artifactId>
+    </dependency>
+
 </dependencies>
 ```
 
-3. The `pom.xml` file should also include the following Quarkus extensions:
-
-```xml
-<extensions>
-    <extension>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-junit5</artifactId>
-        <version>${quarkus.platform.version}</version>
-        <properties>
-            <java.version>11</java.version>
-        </properties>
-    </extension>
-</extensions>
-```
-
-4. The `pom.xml` file should also include the following Quarkus plugins:
-
-```xml
-<build>
-    <plugins>
-        <plugin>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-maven-plugin</artifactId>
-            <version>${quarkus.platform.version}</version>
-            <extensions>true</extensions>
-            <configuration>
-                <properties>
-                    <java.version>11</java.version>
-                    <maven.compiler.source>11</maven.compiler.source>
-                    <maven.compiler.target>11</maven.compiler.target>
-                </properties>
-            </configuration>
-        </plugin>
-    </plugins>
-</build>
-```
+Note that the above dependencies are just an example and might not be required for this specific use case. The actual dependencies required would depend on the specific requirements of the application.

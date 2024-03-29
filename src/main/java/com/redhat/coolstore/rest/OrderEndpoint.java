@@ -25,6 +25,7 @@ public class OrderEndpoint implements Serializable {
     @Inject
     private OrderService os;
 
+
     @GET
     @Path("/")
     public List<Order> listAll() {
@@ -38,3 +39,4 @@ public class OrderEndpoint implements Serializable {
     }
 
 }
+

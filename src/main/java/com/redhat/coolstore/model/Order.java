@@ -105,10 +105,6 @@ public class Order implements Serializable {
         return shippingDiscount;
     }
 
-    public void setShippingDiscount(double shippingDiscount) {
-        this.shippingDiscount = shippingDiscount;
-    }
-
     public void setItemList(List<OrderItem> itemList) {
         this.itemList = itemList;
     }

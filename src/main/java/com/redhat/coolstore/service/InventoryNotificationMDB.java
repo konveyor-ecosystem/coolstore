@@ -33,8 +33,18 @@ public class InventoryNotificationMDB {
     }
 
     public void init() {
+        // Quarkus handles initialization automatically, so we don't need an init method
     }
 
     public void close() {
+        // Quarkus handles cleanup automatically, so we don't need a close method
+    }
+
+    private static InitialContext getInitialContext() throws NamingException {
+        Hashtable<String, String> env = new Hashtable<>();
+        env.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
+        env.put(Context.PROVIDER_URL, "http-remoting://localhost:8080");
+        env.put("jboss.naming.client.ejb.context", "true");
+        return new InitialContext(env);
     }
 }

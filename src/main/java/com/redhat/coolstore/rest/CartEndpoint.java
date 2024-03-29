@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.coolstore.model.Product;
+import com.redhat.coolstore.model.ShoppingCart;
+import com.redhat.coolstore.model.ShoppingCartItem;
+import com.redhat.coolstore.service.ShoppingCartService;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DELETE;
@@ -14,11 +19,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-
-import com.redhat.coolstore.model.Product;
-import com.redhat.coolstore.model.ShoppingCart;
-import com.redhat.coolstore.model.ShoppingCartItem;
-import com.redhat.coolstore.service.ShoppingCartService;
 
 @ApplicationScoped
 @Path("/cart")
@@ -45,8 +45,8 @@ public class CartEndpoint {
     @Path("/{cartId}/{itemId}/{quantity}")
     @Produces(MediaType.APPLICATION_JSON)
     public ShoppingCart add(@PathParam("cartId") String cartId,
-                            @PathParam("itemId") String itemId,
-                            @PathParam("quantity") int quantity) throws Exception {
+            @PathParam("itemId") String itemId,
+            @PathParam("quantity") int quantity) throws Exception {
         ShoppingCart cart = shoppingCartService.getShoppingCart(cartId);
 
         Product product = shoppingCartService.getProduct(itemId);
@@ -72,7 +72,7 @@ public class CartEndpoint {
     @Path("/{cartId}/{tmpId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ShoppingCart set(@PathParam("cartId") String cartId,
-                            @PathParam("tmpId") String tmpId) throws Exception {
+            @PathParam("tmpId") String tmpId) throws Exception {
 
         ShoppingCart cart = shoppingCartService.getShoppingCart(cartId);
         ShoppingCart tmpCart = shoppingCartService.getShoppingCart(tmpId);
@@ -96,8 +96,8 @@ public class CartEndpoint {
     @Path("/{cartId}/{itemId}/{quantity}")
     @Produces(MediaType.APPLICATION_JSON)
     public ShoppingCart delete(@PathParam("cartId") String cartId,
-                               @PathParam("itemId") String itemId,
-                               @PathParam("quantity") int quantity) throws Exception {
+            @PathParam("itemId") String itemId,
+            @PathParam("quantity") int quantity) throws Exception {
 
         List<ShoppingCartItem> toRemoveList = new ArrayList<>();
 
@@ -118,8 +118,6 @@ public class CartEndpoint {
         shoppingCartService.priceShoppingCart(cart);
         return cart;
     }
-
-
 
     private List<ShoppingCartItem> dedupeCartItems(List<ShoppingCartItem> cartItems) {
         List<ShoppingCartItem> result = new ArrayList<>();
@@ -143,4 +141,3 @@ public class CartEndpoint {
         return result;
     }
 }
-

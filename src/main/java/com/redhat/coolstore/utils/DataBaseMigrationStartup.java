@@ -7,29 +7,31 @@ import jakarta.ejb.Startup;
 import jakarta.ejb.TransactionManagement;
 import jakarta.ejb.TransactionManagementType;
 import jakarta.inject.Inject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.hibernate.orm.jdbc.java8.Bindable;
+import io.quarkus.logging.Log;
 
 @Singleton
 @Startup
+@TransactionManagement(TransactionManagementType.BEAN)
 public class DataBaseMigrationStartup {
 
     @Inject
-    Logger logger;
+    Log logger;
 
     @Resource(mappedName = "java:jboss/datasources/CoolstoreDS")
-    DataSource dataSource;
+    Bindable<DataSource> dataSource;
 
     @PostConstruct
     private void startup() {
 
 
         try {
-            logger.info("Initializing/migrating the database using quarkus-hibernate-orm");
-            // TODO: Replace Flyway with quarkus-hibernate-orm
+            logger.info("Initializing/migrating the database using Hibernate ORM");
+            // Start the db.migration
+            dataSource.get().migrate();
         } catch (Exception e) {
             if(logger !=null)
-                logger.log(Level.SEVERE,"FAILED TO INITIALIZE THE DATABASE: " + e.getMessage(),e);
+                logger.error("FAILED TO INITIALIZE THE DATABASE: " + e.getMessage(),e);
             else
                 System.out.println("FAILED TO INITIALIZE THE DATABASE: " + e.getMessage() + " and injection of logger doesn't work");
 

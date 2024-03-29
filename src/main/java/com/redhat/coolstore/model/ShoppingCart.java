@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.persistence.Entity;
 
-@Entity
 @ApplicationScoped
 public class ShoppingCart {
 
@@ -24,7 +22,8 @@ public class ShoppingCart {
 
     private List<ShoppingCartItem> shoppingCartItemList = new ArrayList<ShoppingCartItem>();
 
-    public ShoppingCart() {}
+    public ShoppingCart() {
+    }
 
     public List<ShoppingCartItem> getShoppingCartItemList() {
         return shoppingCartItemList;

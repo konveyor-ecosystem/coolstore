@@ -3,7 +3,7 @@ package com.redhat.coolstore.service;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-import jakarta.enterprise.context.SessionScoped;
+import jakarta.ejb.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.naming.Context;
 import jakarta.naming.InitialContext;
@@ -12,7 +12,6 @@ import jakarta.naming.NamingException;
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
-import com.redhat.coolstore.service.ShippingServiceRemote;
 import org.slf4j.Logger;
 
 @SessionScoped

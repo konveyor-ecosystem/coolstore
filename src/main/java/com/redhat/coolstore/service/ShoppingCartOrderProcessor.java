@@ -6,8 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.jms.JMSContext;
 import jakarta.jms.Emitter;
-import io.smallrye.mutiny.Uni;
-import org.jboss.logging.Logger;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.utils.Transformers;
@@ -19,14 +18,15 @@ public class ShoppingCartOrderProcessor  {
     Logger log;
 
     @Inject
-    private JMSContext context;
-
-    @Resource(name = "java:/topic/orders")
+    @ConfigProperty(name = "orders.topic")
     private Emitter<String> ordersEmitter;
 
-    public Uni<Void> process(ShoppingCart cart) {
+    @Resource(name = "mp:/jms-resource/java:/jms/cf/my-connection-factory")
+    private JMSContext context;
+
+    public void  process(ShoppingCart cart) {
         log.info("Sending order from processor: ");
-        return Uni.createFrom().voidItem(() -> ordersEmitter.emit(Transformers.shoppingCartToJson(cart)));
+        ordersEmitter.emit(Transformers.shoppingCartToJson(cart));
     }
 
 }

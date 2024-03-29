@@ -1,10 +1,10 @@
 package com.redhat.coolstore.rest;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import jakarta.ws.rs.core.Application;
 
+import io.quarkus.arc.processor.BeanArchive;
 
-@ApplicationPath("/services")
+@BeanArchive
 public class RestApplication extends Application {
 
 }

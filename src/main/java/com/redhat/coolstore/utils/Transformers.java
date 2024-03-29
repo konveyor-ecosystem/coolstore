@@ -5,18 +5,16 @@ import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.model.OrderItem;
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
-import java.io.StringReader;
-import java.io.StringWriter;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonWriter;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonWriter;
-
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 import java.util.logging.Logger;
 
 /**
@@ -54,7 +52,7 @@ public class Transformers {
             );
         });
 
-        int randomNameAndEmailIndex = ThreadLocalRandom.current().nextInt(RANDOM_NAMES.length);
+        int randomNameAndEmailIndex = new Random().nextInt(RANDOM_NAMES.length);
 
         JsonObject jsonObject = Json.createObjectBuilder()
             .add("orderValue", Double.valueOf(cart.getCartTotal()))
@@ -81,20 +79,4 @@ public class Transformers {
         order.setCustomerEmail(rootObject.getString("customerEmail"));
         order.setOrderValue(rootObject.getJsonNumber("orderValue").doubleValue());
         order.setRetailPrice(rootObject.getJsonNumber("retailPrice").doubleValue());
-        order.setDiscount(rootObject.getJsonNumber("discount").doubleValue());
-        order.setShippingFee(rootObject.getJsonNumber("shippingFee").doubleValue());
-        order.setShippingDiscount(rootObject.getJsonNumber("shippingDiscount").doubleValue());
-        JsonArray jsonItems = rootObject.getJsonArray("items");
-        List<OrderItem> items = new ArrayList<OrderItem>(jsonItems.size());
-        for (JsonObject jsonItem : jsonItems.getValuesAs(JsonObject.class)) {
-            OrderItem oi = new OrderItem();
-            oi.setProductId(jsonItem.getString("productSku"));
-            oi.setQuantity(jsonItem.getInt("quantity"));
-            items.add(oi);
-        }
-        order.setItemList(items); 
-        return order;
-    }
-
-
-}
+        order.setDiscount(rootObject.getJsonNumber("dis

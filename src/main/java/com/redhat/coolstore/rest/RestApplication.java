@@ -1,10 +1,8 @@
 package com.redhat.coolstore.rest;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+// No import statements needed for JAX-RS activation
 
+// No need to extend Application class
 
-@ApplicationPath("/services")
-public class RestApplication extends Application {
-
-}
+// Define the root path in application.properties file
+// quarkus.rest.path=/services

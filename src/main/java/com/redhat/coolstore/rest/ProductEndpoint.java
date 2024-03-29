@@ -1,21 +1,24 @@
 package com.redhat.coolstore.rest;
 
-import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 
-import com.redhat.coolstore.model.Product;
-import com.redhat.coolstore.service.ProductService;
+import io.quarkus.arc.Arc;
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import io.quarkus.vertx.http.runtime.StaticResources;
 
 @RequestScoped
 @Path("/products")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public class ProductEndpoint implements Serializable {
+@Consumes("application/json")
+@Produces("application/json")
+public class ProductEndpoint implements StaticResources {
 
     /**
      *
@@ -23,19 +26,23 @@ public class ProductEndpoint implements Serializable {
     private static final long serialVersionUID = -7227732980791688773L;
 
     @Inject
-    private ProductService pm;
-
+    private Arc arc;
 
     @GET
     @Path("/")
     public List<Product> listAll() {
-        return pm.getProducts();
+        return arc.beanManager().createInstance(ProductService.class).getProducts();
     }
 
     @GET
     @Path("/{itemId}")
     public Product getProduct(@PathParam("itemId") String itemId) {
-        return pm.getProductByItemId(itemId);
+        return arc.beanManager().createInstance(ProductService.class).getProductByItemId(itemId);
     }
 
 }
+
+@RegisterForReflection
+class Product {}
+
+class ProductService {}

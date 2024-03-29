@@ -1,0 +1,75 @@
+Model ID: mistralai/mixtral-8x7b-instruct-v0-1
+
+## Reasoning
+
+1. **Issue 1-7:** The Java EE packages have been replaced by Jakarta EE packages in Jakarta EE 9 and onwards. Quarkus being a Jakarta EE compatible framework, we need to replace `javax` with `jakarta` for all the imports.
+
+2. **Issue 8:** Enterprise Java Beans (EJBs) are not supported in Quarkus. Instead, we use Contexts and Dependency Injection (CDI) which is a standardized way to use dependency injection in Jakarta EE. We will replace the `@MessageDriven` annotation with a CDI scope annotation like `@ApplicationScoped`.
+
+3. **Issue 9-11:** The `@MessageDriven` annotation with `activationConfig` properties is used in Java EE to specify the JMS destination. In Quarkus, we can use the `@Incoming` annotation from MicroProfile Reactive Messaging to specify the JMS destination.
+
+4. **Issue 12-15:** Quarkus uses SmallRye/Microprofile implementation for JMS which is different from the Java EE/Jakarta EE JMS implementation. We need to remove and replace all references to JavaEE/JakartaEE JMS elements with their Quarkus SmallRye/Microprofile equivalents.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.service;
+
+import jakarta.inject.Inject;
+import jakarta.jms.TextMessage;
+import com.redhat.coolstore.model.Order;
+import com.redhat.coolstore.utils.Transformers;
+import org.eclipse.microprofile.reactive.messaging.Incoming;
+
+@ApplicationScoped
+public class OrderServiceMDB {
+
+    @Inject
+    OrderService orderService;
+
+    @Inject
+    CatalogService catalogService;
+
+    @Incoming("topic/orders")
+    public void onMessage(TextMessage rcvMessage) {
+        System.out.println("\nMessage recd !");
+        TextMessage msg = null;
+        try {
+                if (rcvMessage instanceof TextMessage) {
+                    msg = rcvMessage;
+                    String orderStr = msg.getBody(String.class);
+                    System.out.println("Received order: " + orderStr);
+                    Order order = Transformers.jsonToOrder(orderStr);
+                    System.out.println("Order object is " + order);
+                    orderService.save(order);
+                    order.getItemList().forEach(orderItem -> {
+                        catalogService.updateInventoryItems(orderItem.getProductId(), orderItem.getQuantity());
+                    });
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+    }
+}
+```
+
+In the updated file, we have replaced all the `javax` imports with `jakarta` imports. We have replaced the `@MessageDriven` annotation with `@ApplicationScoped` which is a CDI scope annotation. We have also replaced the `activationConfig` properties with the `@Incoming` annotation to specify the JMS destination.
+
+Please note that you will need to add the SmallRye Reactive Messaging dependency in your `pom.xml` to use the `@Incoming` annotation.
+
+```xml
+<dependency>
+    <groupId>io.smallrye.reactive</groupId>
+    <artifactId>smallrye-reactive-messaging-amqp</artifactId>
+</dependency>
+```
+
+Additionally, you might need to configure the AMQP connection in your `application.properties` file.
+
+```properties
+mp.messaging.incoming.topic-orders.connector=smallrye-amqp
+mp.messaging.incoming.topic-orders.address=topic/orders
+mp.messaging.incoming.topic-orders.queue=queue-name
+```
+
+Replace `queue-name` with the name of the queue you want to connect to.

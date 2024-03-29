@@ -1,0 +1,156 @@
+Model ID: mistralai/mixtral-8x7b-instruct-v0-1
+
+## Reasoning
+
+1. **Replace `javax.enterprise` import statement with `jakarta.enterprise`:**
+
+   Java EE and Jakarta EE namespaces are different. Java EE uses `javax` namespace while Jakarta EE uses `jakarta` namespace. Quarkus is based on Jakarta EE, so we need to replace the `javax.enterprise` import statement with `jakarta.enterprise`.
+
+   The line `import javax.enterprise.context.ApplicationScoped;` needs to be changed to `import jakarta.enterprise.context.ApplicationScoped;`.
+
+2. **Replace `java.io.Serializable` import statement:**
+
+   `java.io.Serializable` is not required in Quarkus as it uses a different mechanism for dependency injection and serialization.
+
+   The line `import java.io.Serializable;` can be safely removed.
+
+3. **Update `pom.xml` dependencies:**
+
+   Quarkus uses different dependencies than Java EE. We need to update the `pom.xml` file to include Quarkus dependencies.
+
+   Add the following dependencies to the `pom.xml` file:
+
+   ```xml
+   <dependency>
+       <groupId>io.quarkus</groupId>
+       <artifactId>quarkus-agroal</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>io.quarkus</groupId>
+       <artifactId>quarkus-jdbc-postgresql</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>io.quarkus</groupId>
+       <artifactId>quarkus-resteasy-jsonb</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>io.quarkus</groupId>
+       <artifactId>quarkus-arc</artifactId>
+   </dependency>
+   ```
+
+   These dependencies include the necessary components for database connectivity, JSON serialization, and dependency injection.
+
+## Updated File
+
+```java
+package com.redhat.coolstore.service;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import jakarta.enterprise.context.ApplicationScoped;
+
+import com.redhat.coolstore.model.Promotion;
+import com.redhat.coolstore.model.ShoppingCart;
+import com.redhat.coolstore.model.ShoppingCartItem;
+
+@ApplicationScoped
+public class PromoService {
+
+    private static final long serialVersionUID = 2088590587856645568L;
+
+    private String name = null;
+
+    private Set<Promotion> promotionSet = null;
+
+    public PromoService() {
+
+        promotionSet = new HashSet<>();
+
+        promotionSet.add(new Promotion("329299", .25));
+
+    }
+
+    public void applyCartItemPromotions(ShoppingCart shoppingCart) {
+
+        if (shoppingCart != null && shoppingCart.getShoppingCartItemList().size() > 0) {
+
+            Map<String, Promotion> promoMap = new HashMap<String, Promotion>();
+
+            for (Promotion promo : getPromotions()) {
+
+                promoMap.put(promo.getItemId(), promo);
+
+            }
+
+            for (ShoppingCartItem sci : shoppingCart.getShoppingCartItemList()) {
+
+                String productId = sci.getProduct().getItemId();
+
+                Promotion promo = promoMap.get(productId);
+
+                if (promo != null) {
+
+                    sci.setPromoSavings(sci.getProduct().getPrice() * promo.getPercentOff() * -1);
+                    sci.setPrice(sci.getProduct().getPrice() * (1 - promo.getPercentOff()));
+
+                }
+
+            }
+
+        }
+
+    }
+
+    public void applyShippingPromotions(ShoppingCart shoppingCart) {
+
+        if (shoppingCart != null) {
+
+            //PROMO: if cart total is greater than 75, free shipping
+            if (shoppingCart.getCartItemTotal() >= 75) {
+
+                shoppingCart.setShippingPromoSavings(shoppingCart.getShippingTotal() * -1);
+                shoppingCart.setShippingTotal(0);
+
+            }
+
+        }
+
+    }
+
+    public Set<Promotion> getPromotions() {
+
+        if (promotionSet == null) {
+
+            promotionSet = new HashSet<>();
+
+        }
+
+        return new HashSet<>(promotionSet);
+
+    }
+
+    public void setPromotions(Set<Promotion> promotionSet) {
+
+        if (promotionSet != null) {
+
+            this.promotionSet = new HashSet<>(promotionSet);
+
+        } else {
+
+            this.promotionSet = new HashSet<>();
+
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return "PromoService [name=" + name + ", promotionSet=" + promotionSet + "]";
+    }
+
+}
+```

@@ -1,19 +1,18 @@
 package com.redhat.coolstore.service;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import com.redhat.coolstore.model.Promotion;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
 
 @ApplicationScoped
-public class PromoService implements Serializable {
+public class PromoService {
 
     private static final long serialVersionUID = 2088590587856645568L;
 

@@ -4,42 +4,42 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.enterprise.context.Dependent;
+import jakarta.enterprise.context.Dependent;
 
 @Dependent
 public class ShoppingCart implements Serializable {
 
-	private static final long serialVersionUID = -1108043957592113528L;
+    private static final long serialVersionUID = -1108043957592113528L;
 
-	private double cartItemTotal;
+    private double cartItemTotal;
 
-	private double cartItemPromoSavings;
-	
-	private double shippingTotal;
-	
-	private double shippingPromoSavings;
-	
-	private double cartTotal;
-			
-	private List<ShoppingCartItem> shoppingCartItemList = new ArrayList<ShoppingCartItem>();
-
-	public ShoppingCart() {
+    private double cartItemPromoSavings;
+   
+    private double shippingTotal;
+   
+    private double shippingPromoSavings;
+   
+    private double cartTotal;
 		
-	}
+    private List<ShoppingCartItem> shoppingCartItemList = new ArrayList<ShoppingCartItem>();
+
+    public ShoppingCart() {
+		
+    }
 	
-	public List<ShoppingCartItem> getShoppingCartItemList() {
+    public List<ShoppingCartItem> getShoppingCartItemList() {
 		return shoppingCartItemList;
-	}
+    }
 
-	public void setShoppingCartItemList(List<ShoppingCartItem> shoppingCartItemList) {
+    public void setShoppingCartItemList(List<ShoppingCartItem> shoppingCartItemList) {
 		this.shoppingCartItemList = shoppingCartItemList;
-	}
+    }
 
-	public void resetShoppingCartItemList() {
+    public void resetShoppingCartItemList() {
 		shoppingCartItemList = new ArrayList<ShoppingCartItem>();
-	}
+    }
 
-	public void addShoppingCartItem(ShoppingCartItem sci) {
+    public void addShoppingCartItem(ShoppingCartItem sci) {
 		
 		if ( sci != null ) {
 			
@@ -47,9 +47,9 @@ public class ShoppingCart implements Serializable {
 			
 		}
 		
-	}
+    }
 	
-	public boolean removeShoppingCartItem(ShoppingCartItem sci) {
+    public boolean removeShoppingCartItem(ShoppingCartItem sci) {
 		
 		boolean removed = false;
 		
@@ -61,55 +61,55 @@ public class ShoppingCart implements Serializable {
 		
 		return removed;
 		
-	}
+    }
 
-	public double getCartItemTotal() {
+    public double getCartItemTotal() {
 		return cartItemTotal;
-	}
+    }
 
-	public void setCartItemTotal(double cartItemTotal) {
+    public void setCartItemTotal(double cartItemTotal) {
 		this.cartItemTotal = cartItemTotal;
-	}
+    }
 
-	public double getShippingTotal() {
+    public double getShippingTotal() {
 		return shippingTotal;
-	}
+    }
 
-	public void setShippingTotal(double shippingTotal) {
+    public void setShippingTotal(double shippingTotal) {
 		this.shippingTotal = shippingTotal;
-	}
+    }
 
-	public double getCartTotal() {
+    public double getCartTotal() {
 		return cartTotal;
-	}
+    }
 
-	public void setCartTotal(double cartTotal) {
+    public void setCartTotal(double cartTotal) {
 		this.cartTotal = cartTotal;
-	}
+    }
 
-	public double getCartItemPromoSavings() {
+    public double getCartItemPromoSavings() {
 		return cartItemPromoSavings;
-	}
+    }
 
-	public void setCartItemPromoSavings(double cartItemPromoSavings) {
+    public void setCartItemPromoSavings(double cartItemPromoSavings) {
 		this.cartItemPromoSavings = cartItemPromoSavings;
-	}
+    }
 
-	public double getShippingPromoSavings() {
+    public double getShippingPromoSavings() {
 		return shippingPromoSavings;
-	}
+    }
 
-	public void setShippingPromoSavings(double shippingPromoSavings) {
+    public void setShippingPromoSavings(double shippingPromoSavings) {
 		this.shippingPromoSavings = shippingPromoSavings;
-	}
+    }
 
-	@Override
-	public String toString() {
+    @Override
+    public String toString() {
 		return "ShoppingCart [cartItemTotal=" + cartItemTotal
 				+ ", cartItemPromoSavings=" + cartItemPromoSavings
 				+ ", shippingTotal=" + shippingTotal
 				+ ", shippingPromoSavings=" + shippingPromoSavings
 				+ ", cartTotal=" + cartTotal + ", shoppingCartItemList="
 				+ shoppingCartItemList + "]";
-	}
+    }
 }

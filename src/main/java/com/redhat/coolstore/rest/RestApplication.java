@@ -1,10 +1,12 @@
 package com.redhat.coolstore.rest;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import jakarta.ws.rs.core.Application;
+import io.quarkus.runtime.QuarkusApplication;
 
+public class RestApplication implements QuarkusApplication {
 
-@ApplicationPath("/services")
-public class RestApplication extends Application {
-
+    @Override
+    public void run(String... args) {
+        // You can add your initialization code here
+    }
 }

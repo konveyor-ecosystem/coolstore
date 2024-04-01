@@ -3,17 +3,18 @@ package com.redhat.coolstore.service;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateful;
-import javax.inject.Inject;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
+import com.redhat.coolstore.service.promo.PromoService;
+import com.redhat.coolstore.service.shipping.ShippingServiceRemote;
+import com.redhat.coolstore.service.order.ShoppingCartOrderProcessor;
 
-@Stateful
+import jakarta.inject.Inject;
+import jakarta.naming.Context;
+import jakarta.naming.InitialContext;
+import jakarta.naming.NamingException;
+
 public class ShoppingCartService  {
 
     @Inject
@@ -25,13 +26,10 @@ public class ShoppingCartService  {
     @Inject
     PromoService ps;
 
-
     @Inject
     ShoppingCartOrderProcessor shoppingCartOrderProcessor;
 
     private ShoppingCart cart  = new ShoppingCart(); //Each user can have multiple shopping carts (tabbed browsing)
-
-   
 
     public ShoppingCartService() {
     }
@@ -45,66 +43,21 @@ public class ShoppingCartService  {
       
         log.info("Sending  order: ");
         shoppingCartOrderProcessor.process(cart);
-   
+
         cart.resetShoppingCartItemList();
-        priceShoppingCart(cart);
+
+        cart.setShippingTotal(lookupShippingServiceRemote().calculateShipping(cart));
+
+        if (cart.getCartItemTotal() >= 25) {
+            cart.setShippingTotal(cart.getShippingTotal()
+                    + lookupShippingServiceRemote().calculateShippingInsurance(cart));
+        }
+
+        ps.applyShippingPromotions(cart);
+
+        cart.setCartTotal(cart.getCartItemTotal() + cart.getShippingTotal());
+
         return cart;
-    }
-
-    public void priceShoppingCart(ShoppingCart sc) {
-
-        if (sc != null) {
-
-            initShoppingCartForPricing(sc);
-
-            if (sc.getShoppingCartItemList() != null && sc.getShoppingCartItemList().size() > 0) {
-
-                ps.applyCartItemPromotions(sc);
-
-                for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
-
-                    sc.setCartItemPromoSavings(
-                            sc.getCartItemPromoSavings() + sci.getPromoSavings() * sci.getQuantity());
-                    sc.setCartItemTotal(sc.getCartItemTotal() + sci.getPrice() * sci.getQuantity());
-
-                }
-
-                sc.setShippingTotal(lookupShippingServiceRemote().calculateShipping(sc));
-
-                if (sc.getCartItemTotal() >= 25) {
-                    sc.setShippingTotal(sc.getShippingTotal()
-                            + lookupShippingServiceRemote().calculateShippingInsurance(sc));
-                }
-
-            }
-
-            ps.applyShippingPromotions(sc);
-
-            sc.setCartTotal(sc.getCartItemTotal() + sc.getShippingTotal());
-
-        }
-
-    }
-
-    private void initShoppingCartForPricing(ShoppingCart sc) {
-
-        sc.setCartItemTotal(0);
-        sc.setCartItemPromoSavings(0);
-        sc.setShippingTotal(0);
-        sc.setShippingPromoSavings(0);
-        sc.setCartTotal(0);
-
-        for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
-            Product p = getProduct(sci.getProduct().getItemId());
-            //if product exist
-            if (p != null) {
-                sci.setProduct(p);
-                sci.setPrice(p.getPrice());
-            }
-
-            sci.setPromoSavings(0);
-        }
-
     }
 
     public Product getProduct(String itemId) {
@@ -124,3 +77,4 @@ public class ShoppingCartService  {
         }
     }
 }
+

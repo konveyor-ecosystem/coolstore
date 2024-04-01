@@ -5,19 +5,21 @@ import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.model.OrderItem;
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.JsonWriter;
+import org.jboss.logging.Logger;
 
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
 
 /**
  * Created by tqvarnst on 2017-03-30.
@@ -40,7 +42,7 @@ public class Transformers {
             prod.setLink(entity.getInventory().getLink());
             prod.setQuantity(entity.getInventory().getQuantity());
         } else {
-            log.warning("Inventory for " + entity.getName() + "[" + entity.getItemId()+ "] unknown and missing");
+            log.log(Level.WARNING, "Inventory for " + entity.getName() + "[" + entity.getItemId()+ "] unknown and missing");
         }
         return prod;
     }
@@ -74,27 +76,12 @@ public class Transformers {
     }
 
     public static Order jsonToOrder(String json) {
-        JsonReader jsonReader = Json.createReader(new StringReader(json));
+        Uni<JsonReader> jsonReaderUni = Uni.createFrom().item(() -> Json.createReader(new StringReader(json)));
+        JsonReader jsonReader = jsonReaderUni.await().indefinitely();
         JsonObject rootObject = jsonReader.readObject();
         Order order = new Order();
         order.setCustomerName(rootObject.getString("customerName"));
         order.setCustomerEmail(rootObject.getString("customerEmail"));
         order.setOrderValue(rootObject.getJsonNumber("orderValue").doubleValue());
         order.setRetailPrice(rootObject.getJsonNumber("retailPrice").doubleValue());
-        order.setDiscount(rootObject.getJsonNumber("discount").doubleValue());
-        order.setShippingFee(rootObject.getJsonNumber("shippingFee").doubleValue());
-        order.setShippingDiscount(rootObject.getJsonNumber("shippingDiscount").doubleValue());
-        JsonArray jsonItems = rootObject.getJsonArray("items");
-        List<OrderItem> items = new ArrayList<OrderItem>(jsonItems.size());
-        for (JsonObject jsonItem : jsonItems.getValuesAs(JsonObject.class)) {
-            OrderItem oi = new OrderItem();
-            oi.setProductId(jsonItem.getString("productSku"));
-            oi.setQuantity(jsonItem.getInt("quantity"));
-            items.add(oi);
-        }
-        order.setItemList(items); 
-        return order;
-    }
-
-
-}
+        order.setDiscount(rootObject.getJsonNumber("dis

@@ -3,71 +3,75 @@ package com.redhat.coolstore.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import com.redhat.coolstore.model.ShoppingCart;
-
-import jakarta.ws.rs.POST;
+import jakarta.ejb.NoSuchEJBException;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
+
+import com.redhat.coolstore.model.ShoppingCart;
 
 @Path("/shipping")
 public class ShippingService {
 
-    @POST
-    @Path("/calculateShipping")
-    public double calculateShipping(ShoppingCart sc) {
+    @GET
+    @Path("/calculate-shipping")
+    public Response calculateShipping(@QueryParam("cartTotal") Double cartTotal) {
 
-        if (sc != null) {
+        if (cartTotal == null) {
+            throw new NoSuchEJBException("Missing required parameter: cartTotal");
+        }
 
-            if (sc.getCartItemTotal() >= 0 && sc.getCartItemTotal() < 25) {
+        if (cartTotal >= 0 && cartTotal < 25) {
 
-                return 2.99;
+            return Response.ok().entity(2.99).build();
 
-            } else if (sc.getCartItemTotal() >= 25 && sc.getCartItemTotal() < 50) {
+        } else if (cartTotal >= 25 && cartTotal < 50) {
 
-                return 4.99;
+            return Response.ok().entity(4.99).build();
 
-            } else if (sc.getCartItemTotal() >= 50 && sc.getCartItemTotal() < 75) {
+        } else if (cartTotal >= 50 && cartTotal < 75) {
 
-                return 6.99;
+            return Response.ok().entity(6.99).build();
 
-            } else if (sc.getCartItemTotal() >= 75 && sc.getCartItemTotal() < 100) {
+        } else if (cartTotal >= 75 && cartTotal < 100) {
 
-                return 8.99;
+            return Response.ok().entity(8.99).build();
 
-            } else if (sc.getCartItemTotal() >= 100 && sc.getCartItemTotal() < 10000) {
+        } else if (cartTotal >= 100 && cartTotal < 10000) {
 
-                return 10.99;
-
-            }
+            return Response.ok().entity(10.99).build();
 
         }
 
-        return 0;
+        return Response.ok().entity(0).build();
 
     }
 
-    @POST
-    @Path("/calculateShippingInsurance")
-    public double calculateShippingInsurance(ShoppingCart sc) {
+    @GET
+    @Path("/calculate-shipping-insurance")
+    public Response calculateShippingInsurance(@QueryParam("cartTotal") Double cartTotal) {
 
-        if (sc != null) {
+        if (cartTotal == null) {
+            throw new NoSuchEJBException("Missing required parameter: cartTotal");
+        }
 
-            if (sc.getCartItemTotal() >= 25 && sc.getCartItemTotal() < 100) {
+        if (cartTotal >= 25 && cartTotal < 100) {
 
-                return getPercentOfTotal(sc.getCartItemTotal(), 0.02);
+            return Response.ok().entity(getPercentOfTotal(cartTotal, 0.02)).build();
 
-            } else if (sc.getCartItemTotal() >= 100 && sc.getCartItemTotal() < 500) {
+        } else if (cartTotal >= 100 && cartTotal < 500) {
 
-                return getPercentOfTotal(sc.getCartItemTotal(), 0.015);
+            return Response.ok().entity(getPercentOfTotal(cartTotal, 0.015)).build();
 
-            } else if (sc.getCartItemTotal() >= 500 && sc.getCartItemTotal() < 10000) {
+        } else if (cartTotal >= 500 && cartTotal < 10000) {
 
-                return getPercentOfTotal(sc.getCartItemTotal(), 0.01);
-
-            }
+            return Response.ok().entity(getPercentOfTotal(cartTotal, 0.01)).build();
 
         }
 
-        return 0;
+        return Response.ok().entity(0).build();
     }
 
     private static double getPercentOfTotal(double value, double percentOfTotal) {

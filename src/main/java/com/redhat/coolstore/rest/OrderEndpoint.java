@@ -1,6 +1,5 @@
 package com.redhat.coolstore.rest;
 
-import java.io.Serializable;
 import java.util.List;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -19,17 +18,15 @@ import com.redhat.coolstore.service.OrderService;
 @Path("/orders")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class OrderEndpoint implements Serializable {
+public class OrderEndpoint {
 
     private static final long serialVersionUID = -7227732980791688774L;
 
     @Inject
     private OrderService os;
 
-
     @GET
-    @Path("/")
-    public List<Order> listAll() {
+    public List<Order> listAllOrders() {
         return os.getOrders();
     }
 

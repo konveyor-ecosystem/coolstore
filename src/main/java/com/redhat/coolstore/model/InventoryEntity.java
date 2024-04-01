@@ -1,16 +1,15 @@
 package com.redhat.coolstore.model;
 
 import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @Entity
-@XmlRootElement
+@RegisterForReflection
 @Table(name = "INVENTORY", uniqueConstraints = @UniqueConstraint(columnNames = "itemId"))
 public class InventoryEntity implements Serializable {
 

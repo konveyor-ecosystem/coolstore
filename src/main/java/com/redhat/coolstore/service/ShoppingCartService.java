@@ -1,18 +1,14 @@
 package com.redhat.coolstore.service;
 
-import java.util.logging.Logger;
-
-import jakarta.enterprise.context.SessionScoped;
+import jakarta.ejb.ApplicationScoped;
 import jakarta.inject.Inject;
-
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
-import com.redhat.coolstore.rest.client.ShippingServiceClient;
+import com.redhat.coolstore.service.ShippingServiceRemote;
+import org.jboss.logging.Logger;
 
-@SessionScoped
+@ApplicationScoped
 public class ShoppingCartService  {
 
     @Inject
@@ -24,15 +20,10 @@ public class ShoppingCartService  {
     @Inject
     PromoService ps;
 
-    @RestClient
-    ShippingServiceClient ss;
-
     @Inject
     ShoppingCartOrderProcessor shoppingCartOrderProcessor;
 
     private ShoppingCart cart  = new ShoppingCart(); //Each user can have multiple shopping carts (tabbed browsing)
-
-   
 
     public ShoppingCartService() {
     }
@@ -46,7 +37,7 @@ public class ShoppingCartService  {
       
         log.info("Sending  order: ");
         shoppingCartOrderProcessor.process(cart);
-   
+
         cart.resetShoppingCartItemList();
         priceShoppingCart(cart);
         return cart;
@@ -70,11 +61,11 @@ public class ShoppingCartService  {
 
                 }
 
-                sc.setShippingTotal(ss.calculateShipping(sc));
+                sc.setShippingTotal(shippingServiceRemote.calculateShipping(sc));
 
                 if (sc.getCartItemTotal() >= 25) {
                     sc.setShippingTotal(sc.getShippingTotal()
-                            + ss.calculateShippingInsurance(sc));
+                            + shippingServiceRemote.calculateShippingInsurance(sc));
                 }
 
             }
@@ -111,4 +102,7 @@ public class ShoppingCartService  {
     public Product getProduct(String itemId) {
         return productServices.getProductByItemId(itemId);
     }
+
+    @Inject
+    ShippingServiceRemote shippingServiceRemote;
 }

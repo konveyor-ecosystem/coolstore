@@ -2,12 +2,11 @@ package com.redhat.coolstore.service;
 
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
-
-import io.smallrye.common.annotation.Blocking;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
 
-import org.eclipse.microprofile.reactive.messaging.Incoming;
+import java.util.Hashtable;
 
 public class InventoryNotificationMDB {
 
@@ -16,13 +15,11 @@ public class InventoryNotificationMDB {
     @Inject
     private CatalogService catalogService;
 
-    @Incoming("orders")
-    @Blocking
-    @Transactional
-    public void onMessage(String orderStr) {
-        System.out.println("received message inventory");
+    @Inject
+    @Channel("topic/orders")
+    Emitter<Order> topicEmitter;
 
-        Order order = Transformers.jsonToOrder(orderStr);
+    public void onMessage(Order order) {
         order.getItemList().forEach(orderItem -> {
             int old_quantity = catalogService.getCatalogItemById(orderItem.getProductId()).getInventory().getQuantity();
             int new_quantity = old_quantity - orderItem.getQuantity();
@@ -32,5 +29,12 @@ public class InventoryNotificationMDB {
                 orderItem.setQuantity(new_quantity);
             }
         });
+        topicEmitter.send(order);
+    }
+
+    public void init() {
+    }
+
+    public void close() {
     }
 }

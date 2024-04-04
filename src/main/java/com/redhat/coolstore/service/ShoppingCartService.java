@@ -3,16 +3,19 @@ package com.redhat.coolstore.service;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-import jakarta.ejb.Stateful;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
+import jakarta.enterprise.context.SessionScoped;
+
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
-import com.redhat.coolstore.service.ShippingServiceRemote;
 
-@Singleton
+import com.redhat.coolstore.rest.client.ShippingServiceClient;
+
+
+@SessionScoped
 public class ShoppingCartService  {
 
     @Inject
@@ -26,6 +29,9 @@ public class ShoppingCartService  {
 
     @Inject
     ShoppingCartOrderProcessor shoppingCartOrderProcessor;
+
+    @RestClient
+    ShippingServiceClient ss;
 
     private ShoppingCart cart  = new ShoppingCart(); //Each user can have multiple shopping carts (tabbed browsing)
 
@@ -65,11 +71,12 @@ public class ShoppingCartService  {
 
                 }
 
-                sc.setShippingTotal(shippingServiceRemote.calculateShipping(sc));
+                sc.setShippingTotal(ss.calculateShipping(sc));
 
                 if (sc.getCartItemTotal() >= 25) {
                     sc.setShippingTotal(sc.getShippingTotal()
-                            + shippingServiceRemote.calculateShippingInsurance(sc));
+                        + ss.calculateShippingInsurance(sc));
+                        //    + shippingServiceRemote.calculateShippingInsurance(sc));
                 }
 
             }
@@ -107,7 +114,7 @@ public class ShoppingCartService  {
         return productServices.getProductByItemId(itemId);
     }
 
-    @Inject
-    ShippingServiceRemote shippingServiceRemote;
+    //@Inject
+    //ShippingServiceRemote shippingServiceRemote;
 
 }

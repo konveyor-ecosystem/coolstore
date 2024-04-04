@@ -3,7 +3,8 @@ package com.redhat.coolstore.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import jakarta.ejb.NoSuchEJBException;
+//import jakarta.ejb.NoSuchEJBException;
+
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
@@ -20,7 +21,8 @@ public class ShippingService {
     public Response calculateShipping(@QueryParam("cartTotal") Double cartTotal) {
 
         if (cartTotal == null) {
-            throw new NoSuchEJBException("Missing required parameter: cartTotal");
+            return Response.serverError().status(Status.BAD_REQUEST).entity("Missing required parameter: cartTotal").build();   
+            //throw new Exception("Missing required parameter: cartTotal");
         }
 
         if (cartTotal >= 0 && cartTotal < 25) {
@@ -54,7 +56,7 @@ public class ShippingService {
     public Response calculateShippingInsurance(@QueryParam("cartTotal") Double cartTotal) {
 
         if (cartTotal == null) {
-            throw new NoSuchEJBException("Missing required parameter: cartTotal");
+            return Response.serverError().status(Status.BAD_REQUEST).entity("Missing required parameter: cartTotal").build();   
         }
 
         if (cartTotal >= 25 && cartTotal < 100) {

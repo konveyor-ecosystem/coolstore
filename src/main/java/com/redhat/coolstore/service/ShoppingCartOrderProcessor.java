@@ -4,12 +4,17 @@ import java.util.logging.Logger;
 import jakarta.annotation.Resource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.jms.JMSContext;
-import jakarta.jms.Emitter;
+/* JMS isn't part of Quarkus */
+//import jakarta.jms.JMSContext;
+//import jakarta.jms.Emitter;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.utils.Transformers;
+
+import io.smallrye.reactive.messaging.annotations.Broadcast;
 
 @ApplicationScoped
 public class ShoppingCartOrderProcessor  {
@@ -18,15 +23,17 @@ public class ShoppingCartOrderProcessor  {
     Logger log;
 
     @Inject
-    @ConfigProperty(name = "quarkus.jms.topic.orders")
+    @Broadcast
+    @Channel("orders")
+    //@ConfigProperty(name = "quarkus.jms.topic.orders")
     private Emitter<String> ordersEmitter;
 
-    @Resource(name = "quarkus.jms.topic.orders")
-    private String ordersTopic;
+    //@Resource(name = "quarkus.jms.topic.orders")
+    //private String ordersTopic;
 
     public void  process(ShoppingCart cart) {
         log.info("Sending order from processor: ");
-        ordersEmitter.emit(Transformers.shoppingCartToJson(cart));
+        ordersEmitter.send(Transformers.shoppingCartToJson(cart));
     }
 
 }

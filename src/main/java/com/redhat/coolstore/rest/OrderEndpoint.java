@@ -1,5 +1,6 @@
 package com.redhat.coolstore.rest;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.enterprise.context.RequestScoped;

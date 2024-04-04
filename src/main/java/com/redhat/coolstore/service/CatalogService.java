@@ -13,6 +13,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 import com.redhat.coolstore.model.*;
 
+//https://quarkus.io/guides/hibernate-orm
+import jakarta.persistence.EntityManager;
+
 @ApplicationScoped
 public class CatalogService {
 

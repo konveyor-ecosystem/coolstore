@@ -7,14 +7,13 @@ import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ProductImpl;
 import com.redhat.coolstore.model.ShoppingCart;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.JsonWriter;
-import io.quarkus.logging.Log;
+import java.util.logging.Logger;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -28,7 +27,7 @@ public class Transformers {
     private static final String[] RANDOM_NAMES = {"Sven Karlsson","Johan Andersson","Karl Svensson","Anders Johansson","Stefan Olson","Martin Ericsson"};
     private static final String[] RANDOM_EMAILS = {"sven@gmail.com","johan@gmail.com","karl@gmail.com","anders@gmail.com","stefan@gmail.com","martin@gmail.com"};
 
-    private static Log log = Log.log(Transformers.class);
+    private static Logger log = Logger.getLogger(Transformers.class.getName());
 
     public static Product toProduct(CatalogItemEntity entity) {
         ProductImpl prod = new ProductImpl();
@@ -41,18 +40,23 @@ public class Transformers {
             prod.setLink(entity.getInventory().getLink());
             prod.setQuantity(entity.getInventory().getQuantity());
         } else {
-            log.warn("Inventory for " + entity.getName() + "[" + entity.getItemId()+ "] unknown and missing");
+            log.warning("Inventory for " + entity.getName() + "[" + entity.getItemId()+ "] unknown and missing");
         }
         return prod;
     }
 
     public static String shoppingCartToJson(ShoppingCart cart) {
-        JsonArrayBuilder cartItems = JsonbBuilder.create().toJson(cart.getShoppingCartItemList());
+        JsonArrayBuilder cartItems = Json.createArrayBuilder();
+        cart.getShoppingCartItemList().forEach(item -> {
+            cartItems.add(Json.createObjectBuilder()
+                .add("productSku",item.getProduct().getItemId())
+                .add("quantity",item.getQuantity())
+            );
+        });
 
         int randomNameAndEmailIndex = ThreadLocalRandom.current().nextInt(RANDOM_NAMES.length);
 
-        JsonObject jsonObject = JsonbBuilder.create()
-            .createObjectBuilder()
+        JsonObject jsonObject = Json.createObjectBuilder()
             .add("orderValue", cart.getCartTotal())
             .add("customerName",RANDOM_NAMES[randomNameAndEmailIndex])
             .add("customerEmail",RANDOM_EMAILS[randomNameAndEmailIndex])

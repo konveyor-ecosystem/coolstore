@@ -1,7 +1,7 @@
 package com.redhat.coolstore.persistence;
 
 import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.inject.Inject;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 @Dependent

@@ -3,35 +3,31 @@ package com.redhat.coolstore.service;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateful;
-import javax.inject.Inject;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import jakarta.ejb.Stateful;
+import jakarta.inject.Inject;
+import jakarta.inject.Injected;
 
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
+import com.redhat.coolstore.service.ShippingServiceRemote;
 
 @Stateful
 public class ShoppingCartService  {
 
-    @Inject
+    @Injected
     Logger log;
 
-    @Inject
+    @Injected
     ProductService productServices;
 
-    @Inject
+    @Injected
     PromoService ps;
 
-
-    @Inject
+    @Injected
     ShoppingCartOrderProcessor shoppingCartOrderProcessor;
 
     private ShoppingCart cart  = new ShoppingCart(); //Each user can have multiple shopping carts (tabbed browsing)
-
-   
 
     public ShoppingCartService() {
     }
@@ -45,7 +41,7 @@ public class ShoppingCartService  {
       
         log.info("Sending  order: ");
         shoppingCartOrderProcessor.process(cart);
-   
+
         cart.resetShoppingCartItemList();
         priceShoppingCart(cart);
         return cart;
@@ -69,11 +65,11 @@ public class ShoppingCartService  {
 
                 }
 
-                sc.setShippingTotal(lookupShippingServiceRemote().calculateShipping(sc));
+                sc.setShippingTotal(shippingServiceRemote.calculateShipping(sc));
 
                 if (sc.getCartItemTotal() >= 25) {
                     sc.setShippingTotal(sc.getShippingTotal()
-                            + lookupShippingServiceRemote().calculateShippingInsurance(sc));
+                            + shippingServiceRemote.calculateShippingInsurance(sc));
                 }
 
             }
@@ -111,16 +107,7 @@ public class ShoppingCartService  {
         return productServices.getProductByItemId(itemId);
     }
 
-	private static ShippingServiceRemote lookupShippingServiceRemote() {
-        try {
-            final Hashtable<String, String> jndiProperties = new Hashtable<>();
-            jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
+    @Inject
+    ShippingServiceRemote shippingServiceRemote;
 
-            final Context context = new InitialContext(jndiProperties);
-
-            return (ShippingServiceRemote) context.lookup("ejb:/ROOT/ShippingService!" + ShippingServiceRemote.class.getName());
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

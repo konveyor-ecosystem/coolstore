@@ -1,8 +1,6 @@
 package com.redhat.coolstore.service;
 
 import java.util.logging.Logger;
-import javax.ejb.Stateless;
-import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
 import javax.jms.Topic;
@@ -10,7 +8,7 @@ import javax.jms.Topic;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.utils.Transformers;
 
-@Stateless
+@ApplicationScoped
 public class ShoppingCartOrderProcessor  {
 
     @Inject
@@ -20,8 +18,9 @@ public class ShoppingCartOrderProcessor  {
     @Inject
     private transient JMSContext context;
 
-    @Resource(lookup = "java:/topic/orders")
-    private Topic ordersTopic;
+    @Inject
+    @Channel("orders")
+    Emitter<String> ordersTopic;
 
     
   
@@ -33,3 +32,4 @@ public class ShoppingCartOrderProcessor  {
 
 
 }
+

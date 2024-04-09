@@ -1,10 +1,9 @@
 package com.redhat.coolstore.utils;
 
-import weblogic.application.ApplicationLifecycleEvent;
-import weblogic.application.ApplicationLifecycleListener;
-
-import javax.inject.Inject;
-import java.util.logging.Logger;
+import jakarta.inject.Inject;
+import jakarta.application.ApplicationLifecycleEvent;
+import jakarta.application.ApplicationLifecycleListener;
+import jakarta.util.logging.Logger;
 
 public class StartupListener extends ApplicationLifecycleListener {
 

@@ -1,18 +1,29 @@
 package com.redhat.coolstore.persistence;
 
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Default;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Qualifier;
+import jakarta.persistence.EntityManager;
 
+@Default
 @Dependent
 public class Resources {
 
-    @PersistenceContext
+    @Inject
+    @ExtendedContext
     private EntityManager em;
 
-    @Produces
+    @Named("ExtendedContext")
+    @ExtendedContext
     public EntityManager getEntityManager() {
         return em;
     }
+}
+
+@Qualifier
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ExtendedContext {
 }

@@ -3,12 +3,18 @@ package com.redhat.coolstore.service;
 import java.util.List;
 import java.util.logging.Logger;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
+
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
+import jakarta.persistence.EntityManager;
+
+import com.redhat.coolstore.model.*;
+
+@ApplicationScoped
 public class CatalogService {
 
     @Inject

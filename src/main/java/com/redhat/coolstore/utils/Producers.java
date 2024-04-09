@@ -1,19 +1,15 @@
 package com.redhat.coolstore.utils;
 
-import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Produces;
 import jakarta.enterprise.inject.spi.InjectionPoint;
 import java.util.logging.Logger;
 
+
 public class Producers {
 
-    Logger log;
+    Logger log = Logger.getLogger(Producers.class.getName());
 
-    @Inject
-    public void setLog(Instance<Logger> logger) {
-        this.log = logger.get();
-    }
-
-    @Singleton
+    @Produces
     public Logger produceLog(InjectionPoint injectionPoint) {
         return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
     }

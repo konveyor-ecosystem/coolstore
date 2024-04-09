@@ -3,68 +3,71 @@ package com.redhat.coolstore.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import javax.ejb.Remove;
-import javax.ejb.Stateful;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
-
 import com.redhat.coolstore.model.ShoppingCart;
 
-@Stateful
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+
 @Path("/shipping")
 public class ShippingService {
 
-    @GET
-    @Path("/calculate-shipping")
-    public Response calculateShipping(@QueryParam("cartItemTotal") double cartItemTotal) {
+    @POST
+    @Path("/calculateShipping")
+    public double calculateShipping(ShoppingCart sc) {
 
-        if (cartItemTotal >= 0 && cartItemTotal < 25) {
+        if (sc != null) {
 
-            return Response.ok(2.99).build();
+            if (sc.getCartItemTotal() >= 0 && sc.getCartItemTotal() < 25) {
 
-        } else if (cartItemTotal >= 25 && cartItemTotal < 50) {
+                return 2.99;
 
-            return Response.ok(4.99).build();
+            } else if (sc.getCartItemTotal() >= 25 && sc.getCartItemTotal() < 50) {
 
-        } else if (cartItemTotal >= 50 && cartItemTotal < 75) {
+                return 4.99;
 
-            return Response.ok(6.99).build();
+            } else if (sc.getCartItemTotal() >= 50 && sc.getCartItemTotal() < 75) {
 
-        } else if (cartItemTotal >= 75 && cartItemTotal < 100) {
+                return 6.99;
 
-            return Response.ok(8.99).build();
+            } else if (sc.getCartItemTotal() >= 75 && sc.getCartItemTotal() < 100) {
 
-        } else if (cartItemTotal >= 100 && cartItemTotal < 10000) {
+                return 8.99;
 
-            return Response.ok(10.99).build();
+            } else if (sc.getCartItemTotal() >= 100 && sc.getCartItemTotal() < 10000) {
+
+                return 10.99;
+
+            }
 
         }
 
-        return Response.ok(0).build();
+        return 0;
 
     }
 
-    @GET
-    @Path("/calculate-shipping-insurance")
-    public Response calculateShippingInsurance(@QueryParam("cartItemTotal") double cartItemTotal) {
+    @POST
+    @Path("/calculateShippingInsurance")
+    public double calculateShippingInsurance(ShoppingCart sc) {
 
-        if (cartItemTotal >= 25 && cartItemTotal < 100) {
+        if (sc != null) {
 
-            return Response.ok(getPercentOfTotal(cartItemTotal, 0.02)).build();
+            if (sc.getCartItemTotal() >= 25 && sc.getCartItemTotal() < 100) {
 
-        } else if (cartItemTotal >= 100 && cartItemTotal < 500) {
+                return getPercentOfTotal(sc.getCartItemTotal(), 0.02);
 
-            return Response.ok(getPercentOfTotal(cartItemTotal, 0.015)).build();
+            } else if (sc.getCartItemTotal() >= 100 && sc.getCartItemTotal() < 500) {
 
-        } else if (cartItemTotal >= 500 && cartItemTotal < 10000) {
+                return getPercentOfTotal(sc.getCartItemTotal(), 0.015);
 
-            return Response.ok(getPercentOfTotal(cartItemTotal, 0.01)).build();
+            } else if (sc.getCartItemTotal() >= 500 && sc.getCartItemTotal() < 10000) {
+
+                return getPercentOfTotal(sc.getCartItemTotal(), 0.01);
+
+            }
 
         }
 
-        return Response.ok(0).build();
+        return 0;
     }
 
     private static double getPercentOfTotal(double value, double percentOfTotal) {

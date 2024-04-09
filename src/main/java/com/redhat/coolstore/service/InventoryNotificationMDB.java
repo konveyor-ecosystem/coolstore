@@ -2,28 +2,26 @@ package com.redhat.coolstore.service;
 
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
-import jakarta.inject.Inject;
-import jakarta.naming.InitialContext;
-import jakarta.naming.NamingException;
-import io.smallrye.mutiny.Uni;
-import io.smallrye.reactive.messaging.Channel;
-import io.smallrye.reactive.messaging.Emitter;
-import org.eclipse.microprofile.reactive.messaging.Message;
 
-public class InventoryNotificationMDB implements MessageListener {
+import io.smallrye.common.annotation.Blocking;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+
+import org.eclipse.microprofile.reactive.messaging.Incoming;
+
+public class InventoryNotificationMDB {
 
     private static final int LOW_THRESHOLD = 50;
 
     @Inject
     private CatalogService catalogService;
 
-    @Inject
-    @Channel("topic/orders")
-    Emitter<String> orderEmitter;
+    @Incoming("orders")
+    @Blocking
+    @Transactional
+    public void onMessage(String orderStr) {
+        System.out.println("received message inventory");
 
-    @Override
-    public void onMessage(Message<String> rcvMessage) {
-        String orderStr = rcvMessage.getPayload();
         Order order = Transformers.jsonToOrder(orderStr);
         order.getItemList().forEach(orderItem -> {
             int old_quantity = catalogService.getCatalogItemById(orderItem.getProductId()).getInventory().getQuantity();
@@ -34,10 +32,5 @@ public class InventoryNotificationMDB implements MessageListener {
                 orderItem.setQuantity(new_quantity);
             }
         });
-
-        // Emit the updated order to the "topic/orders" channel
-        orderEmitter.send(Message.of(Transformers.orderToJson(order)));
     }
-
-    // ... init() and close() methods remain unchanged
 }

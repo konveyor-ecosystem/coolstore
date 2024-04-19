@@ -1,35 +1,32 @@
 package com.redhat.coolstore.service;
 
 import java.util.logging.Logger;
-import javax.ejb.Stateless;
-import javax.annotation.Resource;
-import javax.inject.Inject;
-import javax.jms.JMSContext;
-import javax.jms.Topic;
+import jakarta.annotation.Resource;
+import jakarta.inject.Inject;
+import jakarta.jms.JMSContext;
+import io.smallrye.reactive.messaging.Channel;
+import io.smallrye.reactive.messaging.Emitter;
 
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.utils.Transformers;
 
-@Stateless
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
 public class ShoppingCartOrderProcessor  {
 
     @Inject
     Logger log;
 
+    @Inject
+    private transient jakarta.jms.JMSContext context;
 
     @Inject
-    private transient JMSContext context;
+    @Channel("java:/topic/orders")
+    private Emitter<String> ordersTopicEmitter;
 
-    @Resource(lookup = "java:/topic/orders")
-    private Topic ordersTopic;
-
-    
-  
     public void  process(ShoppingCart cart) {
         log.info("Sending order from processor: ");
-        context.createProducer().send(ordersTopic, Transformers.shoppingCartToJson(cart));
+        ordersTopicEmitter.send(Transformers.shoppingCartToJson(cart));
     }
-
-
-
 }

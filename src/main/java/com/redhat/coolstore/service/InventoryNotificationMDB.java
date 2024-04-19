@@ -3,7 +3,7 @@ package com.redhat.coolstore.service;
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject; // Replaced javax.inject with jakarta.inject
 import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;

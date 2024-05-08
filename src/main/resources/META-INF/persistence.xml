@@ -1,17 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1"
-             xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="
-        http://xmlns.jcp.org/xml/ns/persistence
-        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-    <persistence-unit name="primary">
-        <jta-data-source>java:jboss/datasources/CoolstoreDS</jta-data-source>
-        <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="none"/>
-            <property name="hibernate.show_sql" value="false" />
-            <property name="hibernate.format_sql" value="true" />
-            <property name="hibernate.use_sql_comments" value="true" />
-            <property name="hibernate.jdbc.use_get_generated_keys" value="false" />
-        </properties>
-    </persistence-unit>
-</persistence>
+quarkus.datasource.jdbc.url=jdbc:h2:mem:CoolstoreDS;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1
+quarkus.datasource.db-kind=h2
+quarkus.datasource.username=sa
+quarkus.datasource.password=sa
+
+quarkus.hibernate-orm.database.generation=none
+quarkus.hibernate-orm.log.sql=false
+quarkus.hibernate-orm.format_sql=true
+quarkus.hibernate-orm.sql_comments=true
+quarkus.hibernate-orm.jdbc.use_get_generated_keys=false

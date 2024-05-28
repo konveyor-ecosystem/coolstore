@@ -1,6 +1,6 @@
-<!--suppress ServletWithoutMappingInspection -->
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
-    <distributable />
-</web-app>
+&lt;!--suppress ServletWithoutMappingInspection --&gt;
+&lt;web-app xmlns=&#34;http://xmlns.jcp.org/xml/ns/javaee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
+         xsi:schemaLocation=&#34;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&#34;
+         version=&#34;3.1&#34;&gt;
+    &lt;distributable/&gt;
+&lt;/web-app&gt;

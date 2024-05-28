@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import com.redhat.coolstore.model.Promotion;
 import com.redhat.coolstore.model.ShoppingCart;
@@ -33,7 +33,7 @@ public class PromoService implements Serializable {
 
         if (shoppingCart != null && shoppingCart.getShoppingCartItemList().size() > 0) {
 
-            Map<String, Promotion> promoMap = new HashMap<String, Promotion>();
+            Map<String, Promotion> promoMap = new HashMap<>();
 
             for (Promotion promo : getPromotions()) {
 

@@ -3,7 +3,6 @@ package com.redhat.coolstore.service;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -29,7 +28,7 @@ public class ShoppingCartService  {
     @Inject
     ShoppingCartOrderProcessor shoppingCartOrderProcessor;
 
-    private ShoppingCart cart  = new ShoppingCart(); //Each user can have multiple shopping carts (tabbed browsing)
+    private ShoppingCart cart  = new ShoppingCart(); //Each user can have multiple shopping carts
 
    
 
@@ -43,7 +42,7 @@ public class ShoppingCartService  {
     public ShoppingCart checkOutShoppingCart(String cartId) {
         ShoppingCart cart = this.getShoppingCart(cartId);
       
-        log.info("Sending  order: ");
+        log.info(&#34;Sending  order: &#34;);
         shoppingCartOrderProcessor.process(cart);
    
         cart.resetShoppingCartItemList();
@@ -57,7 +56,7 @@ public class ShoppingCartService  {
 
             initShoppingCartForPricing(sc);
 
-            if (sc.getShoppingCartItemList() != null && sc.getShoppingCartItemList().size() > 0) {
+            if (sc.getShoppingCartItemList() != null &amp;&amp; sc.getShoppingCartItemList().size() &gt; 0) {
 
                 ps.applyCartItemPromotions(sc);
 
@@ -71,7 +70,7 @@ public class ShoppingCartService  {
 
                 sc.setShippingTotal(lookupShippingServiceRemote().calculateShipping(sc));
 
-                if (sc.getCartItemTotal() >= 25) {
+                if (sc.getCartItemTotal() &gt;= 25) {
                     sc.setShippingTotal(sc.getShippingTotal()
                             + lookupShippingServiceRemote().calculateShippingInsurance(sc));
                 }
@@ -113,12 +112,12 @@ public class ShoppingCartService  {
 
 	private static ShippingServiceRemote lookupShippingServiceRemote() {
         try {
-            final Hashtable<String, String> jndiProperties = new Hashtable<>();
-            jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
+            final Hashtable&lt;String, String&gt; jndiProperties = new Hashtable&lt;&gt;();
+            jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, &#34;org.wildfly.naming.client.WildFlyInitialContextFactory&#34;);
 
             final Context context = new InitialContext(jndiProperties);
 
-            return (ShippingServiceRemote) context.lookup("ejb:/ROOT/ShippingService!" + ShippingServiceRemote.class.getName());
+            return (ShippingServiceRemote) context.lookup(&#34;ejb:/ROOT/ShippingService!&#34; + ShippingServiceRemote.class.getName());
         } catch (NamingException e) {
             throw new RuntimeException(e);
         }

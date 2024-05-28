@@ -3,7 +3,7 @@ package com.redhat.coolstore.service;
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -18,9 +18,9 @@ public class InventoryNotificationMDB implements MessageListener {
     @Inject
     private CatalogService catalogService;
 
-    private final static String JNDI_FACTORY = "weblogic.jndi.WLInitialContextFactory";
-    private final static String JMS_FACTORY = "TCF";
-    private final static String TOPIC = "topic/orders";
+    private final static String JNDI_FACTORY = &#34;weblogic.jndi.WLInitialContextFactory&#34;;
+    private final static String JMS_FACTORY = &#34;TCF&#34;;
+    private final static String TOPIC = &#34;topic/orders&#34;;
     private TopicConnection tcon;
     private TopicSession tsession;
     private TopicSubscriber tsubscriber;
@@ -29,16 +29,16 @@ public class InventoryNotificationMDB implements MessageListener {
         TextMessage msg;
         {
             try {
-                System.out.println("received message inventory");
+                System.out.println(&#34;received message inventory&#34;);
                 if (rcvMessage instanceof TextMessage) {
                     msg = (TextMessage) rcvMessage;
                     String orderStr = msg.getBody(String.class);
                     Order order = Transformers.jsonToOrder(orderStr);
-                    order.getItemList().forEach(orderItem -> {
+                    order.getItemList().forEach(orderItem -&gt; {
                         int old_quantity = catalogService.getCatalogItemById(orderItem.getProductId()).getInventory().getQuantity();
                         int new_quantity = old_quantity - orderItem.getQuantity();
-                        if (new_quantity < LOW_THRESHOLD) {
-                            System.out.println("Inventory for item " + orderItem.getProductId() + " is below threshold (" + LOW_THRESHOLD + "), contact supplier!");
+                        if (new_quantity &lt; LOW_THRESHOLD) {
+                            System.out.println(&#34;Inventory for item &#34; + orderItem.getProductId() + &#34; is below threshold (&#34; + LOW_THRESHOLD + &#34;), contact supplier!&#34;);
                         } else {
                             orderItem.setQuantity(new_quantity);
                         }
@@ -47,7 +47,7 @@ public class InventoryNotificationMDB implements MessageListener {
 
 
             } catch (JMSException jmse) {
-                System.err.println("An exception occurred: " + jmse.getMessage());
+                System.err.println(&#34;An exception occurred: &#34; + jmse.getMessage());
             }
         }
     }
@@ -70,10 +70,10 @@ public class InventoryNotificationMDB implements MessageListener {
     }
 
     private static InitialContext getInitialContext() throws NamingException {
-        Hashtable<String, String> env = new Hashtable<>();
+        Hashtable&lt;String, String&gt; env = new Hashtable&lt;&gt;();
         env.put(Context.INITIAL_CONTEXT_FACTORY, JNDI_FACTORY);
-        env.put(Context.PROVIDER_URL, "t3://localhost:7001");
-        env.put("weblogic.jndi.createIntermediateContexts", "true");
+        env.put(Context.PROVIDER_URL, &#34;t3://localhost:7001&#34;);
+        env.put(&#34;weblogic.jndi.createIntermediateContexts&#34;, &#34;true&#34;);
         return new InitialContext(env);
     }
 }

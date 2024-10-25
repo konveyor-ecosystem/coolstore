@@ -1,3 +1,4 @@
+
 package com.redhat.coolstore.utils;
 
 import org.flywaydb.core.Flyway;
@@ -9,7 +10,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-import javax.inject.Inject;
+import jakarta.inject.Inject; // Updated import statement
 import javax.sql.DataSource;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +32,6 @@ public class DataBaseMigrationStartup {
     @PostConstruct
     private void startup() {
 
-
         try {
             logger.info("Initializing/migrating the database using FlyWay");
             Flyway flyway = new Flyway();
@@ -47,7 +47,4 @@ public class DataBaseMigrationStartup {
 
         }
     }
-
-
-
 }

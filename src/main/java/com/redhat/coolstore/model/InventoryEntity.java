@@ -1,3 +1,4 @@
+
 package com.redhat.coolstore.model;
 
 import java.io.Serializable;
@@ -7,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement

@@ -1,3 +1,4 @@
+
 package com.redhat.coolstore.service;
 
 import java.util.List;
@@ -5,16 +6,13 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-
 import com.redhat.coolstore.model.*;
 
-@Stateless
 public class CatalogService {
 
     @Inject

@@ -1,17 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1"
-             xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="
-        http://xmlns.jcp.org/xml/ns/persistence
-        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-    <persistence-unit name="primary">
-        <jta-data-source>java:jboss/datasources/CoolstoreDS</jta-data-source>
-        <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="none"/>
-            <property name="hibernate.show_sql" value="false" />
-            <property name="hibernate.format_sql" value="true" />
-            <property name="hibernate.use_sql_comments" value="true" />
-            <property name="hibernate.jdbc.use_get_generated_keys" value="false" />
-        </properties>
-    </persistence-unit>
-</persistence>
+
+
+The `persistence.xml` file should be removed, as it is no longer needed in Quarkus.
+
+Instead, we will create an `application.properties` file with the following contents:
+quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:5432/coolstore
+quarkus.datasource.username=myuser
+quarkus.datasource.password=mypassword
+quarkus.hibernate-orm.sql-load-script=false
+quarkus.hibernate-orm.format-sql=true
+quarkus.hibernate-orm.use-sql-comments=true
+quarkus.hibernate-orm.use-get-generated-keys=false
+Note that we need to specify the JDBC URL, username, and password for the datasource, as they are not provided in the original `persistence.xml` file.

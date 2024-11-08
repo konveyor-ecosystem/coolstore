@@ -1,15 +1,16 @@
+
 package com.redhat.coolstore.utils;
 
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;
 
+import jakarta.inject.Inject; // Updated import statement
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.util.logging.Level;
 import java.util.logging.Logger;

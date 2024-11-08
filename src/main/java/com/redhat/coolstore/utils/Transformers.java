@@ -1,3 +1,4 @@
+
 package com.redhat.coolstore.utils;
 
 import com.redhat.coolstore.model.CatalogItemEntity;
@@ -9,12 +10,12 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonWriter;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonWriter;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
@@ -95,6 +96,4 @@ public class Transformers {
         order.setItemList(items); 
         return order;
     }
-
-
 }

@@ -1,9 +1,10 @@
+
 package com.redhat.coolstore.service;
 
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateful;
+import javax.enterprise.context.SessionScoped; // Updated import
 import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -13,7 +14,7 @@ import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.model.ShoppingCartItem;
 
-@Stateful
+@SessionScoped // Replaced @Stateful with @SessionScoped
 public class ShoppingCartService  {
 
     @Inject
@@ -24,7 +25,6 @@ public class ShoppingCartService  {
 
     @Inject
     PromoService ps;
-
 
     @Inject
     ShoppingCartOrderProcessor shoppingCartOrderProcessor;
@@ -111,7 +111,7 @@ public class ShoppingCartService  {
         return productServices.getProductByItemId(itemId);
     }
 
-	private static ShippingServiceRemote lookupShippingServiceRemote() {
+    private static ShippingServiceRemote lookupShippingServiceRemote() {
         try {
             final Hashtable<String, String> jndiProperties = new Hashtable<>();
             jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");

@@ -1,9 +1,10 @@
+
 package com.redhat.coolstore.rest;
 
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -15,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.service.OrderService;
 
-@RequestScoped
+@jakarta.enterprise.context.RequestScoped
 @Path("/orders")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)

@@ -1,9 +1,10 @@
+
 package com.redhat.coolstore.service;
 
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateful;
+import jakarta.ejb.Stateful; // Updated import statement
 import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;

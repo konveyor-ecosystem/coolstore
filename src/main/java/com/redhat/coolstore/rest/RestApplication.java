@@ -1,10 +1,9 @@
+
 package com.redhat.coolstore.rest;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import io.quarkus.runtime.annotations.QuarkusMain;
 
-
-@ApplicationPath("/services")
-public class RestApplication extends Application {
+@QuarkusMain
+public class RestApplication {
 
 }

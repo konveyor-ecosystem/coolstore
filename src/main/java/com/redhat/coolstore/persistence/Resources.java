@@ -1,9 +1,11 @@
+
 package com.redhat.coolstore.persistence;
 
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Produces;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import javax.inject.Named;
 
 @Dependent
 public class Resources {
@@ -11,7 +13,7 @@ public class Resources {
     @PersistenceContext
     private EntityManager em;
 
-    @Produces
+    @Named
     public EntityManager getEntityManager() {
         return em;
     }

@@ -1,13 +1,14 @@
+
 package com.redhat.coolstore.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.persistence.Column; // Updated import statement to jakarta.persistence
+import jakarta.persistence.Entity; // Updated import statement to jakarta.persistence
+import jakarta.persistence.Id; // Updated import statement to jakarta.persistence
+import jakarta.persistence.Table; // Updated import statement to jakarta.persistence
+import jakarta.persistence.UniqueConstraint; // Updated import statement to jakarta.persistence
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement

@@ -1,10 +1,11 @@
+
 package com.redhat.coolstore.rest;
 
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 

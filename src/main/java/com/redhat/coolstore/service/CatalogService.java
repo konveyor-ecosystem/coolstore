@@ -1,16 +1,17 @@
+
 package com.redhat.coolstore.service;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject; // Replaced javax.inject with jakarta.inject
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder; // Replaced javax.persistence with jakarta.persistence
+import jakarta.persistence.criteria.CriteriaQuery; // Replaced javax.persistence with jakarta.persistence
+import jakarta.persistence.criteria.Root; // Replaced javax.persistence with jakarta.persistence
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager; // Replaced javax.persistence with jakarta.persistence
 
 import com.redhat.coolstore.model.*;
 

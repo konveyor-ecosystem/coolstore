@@ -1,6 +1,22 @@
-<!--suppress ServletWithoutMappingInspection -->
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
-    <distributable />
-</web-app>
+
+// The web.xml file is not used in Quarkus. Session handling and replication in Quarkus is typically configured through annotations or application.properties.
+// To address the session replication issue in Quarkus, we need to use Quarkus specific configuration.
+// One approach in Quarkus is to use the @SessionScoped annotation to manage session scoped beans.
+// We can also configure session handling properties in the application.properties file.
+
+// Example of using @SessionScoped in a Quarkus bean:
+import javax.enterprise.context.SessionScoped;
+import java.io.Serializable;
+
+@SessionScoped
+public class MySessionBean implements Serializable {
+    // Bean logic here
+}
+
+// Example of configuring session handling in application.properties:
+quarkus.http.session.cookie-name=my-session-cookie
+quarkus.http.session.cookie-path=/
+quarkus.http.session.cookie-secure=true
+quarkus.http.session.cookie-http-only=true
+quarkus.http.session.persistent=true
+quarkus.http.session.max-age=3600

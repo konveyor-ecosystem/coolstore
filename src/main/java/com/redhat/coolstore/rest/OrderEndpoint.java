@@ -1,16 +1,17 @@
+
 package com.redhat.coolstore.rest;
 
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.RequestScoped; // Updated import from javax to jakarta
+import jakarta.inject.Inject; // Updated import from javax to jakarta
+import jakarta.ws.rs.Consumes; // Updated import from javax to jakarta
+import jakarta.ws.rs.GET; // Updated import from javax to jakarta
+import jakarta.ws.rs.Path; // Updated import from javax to jakarta
+import jakarta.ws.rs.PathParam; // Updated import from javax to jakarta
+import jakarta.ws.rs.Produces; // Updated import from javax to jakarta
+import jakarta.ws.rs.core.MediaType; // Updated import from javax to jakarta
 
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.service.OrderService;
@@ -25,7 +26,6 @@ public class OrderEndpoint implements Serializable {
 
     @Inject
     private OrderService os;
-
 
     @GET
     @Path("/")

@@ -1,9 +1,9 @@
 package com.redhat.coolstore.service;
 
 import java.util.logging.Logger;
-import javax.ejb.Stateless;
-import javax.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.annotation.Resource;
+import jakarta.inject.Inject;
 import javax.jms.JMSContext;
 import javax.jms.Topic;
 

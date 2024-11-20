@@ -1,47 +1,35 @@
 package com.redhat.coolstore.service;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
-import javax.inject.Inject;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import io.smallrye.reactive.messaging.Message;
+import io.smallrye.reactive.messaging.MessageListener;
+import io.smallrye.reactive.messaging.Incoming;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 
-@MessageDriven(name = "OrderServiceMDB", activationConfig = {
-	@ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "topic/orders"),
-	@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
-	@ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")})
-public class OrderServiceMDB implements MessageListener { 
+@ApplicationScoped
+public class OrderServiceMDB {
 
-	@Inject
-	OrderService orderService;
+    @Inject
+    OrderService orderService;
 
-	@Inject
-	CatalogService catalogService;
+    @Inject
+    CatalogService catalogService;
 
-	@Override
-	public void onMessage(Message rcvMessage) {
-		System.out.println("\nMessage recd !");
-		TextMessage msg = null;
-		try {
-				if (rcvMessage instanceof TextMessage) {
-						msg = (TextMessage) rcvMessage;
-						String orderStr = msg.getBody(String.class);
-						System.out.println("Received order: " + orderStr);
-						Order order = Transformers.jsonToOrder(orderStr);
-						System.out.println("Order object is " + order);
-						orderService.save(order);
-						order.getItemList().forEach(orderItem -> {
-							catalogService.updateInventoryItems(orderItem.getProductId(), orderItem.getQuantity());
-						});
-				}
-		} catch (JMSException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Incoming("orders")
+    public void onMessage(Message<String> rcvMessage) {
+        System.out.println("\nMessage recd !");
+        String orderStr = rcvMessage.getPayload();
+        System.out.println("Received order: " + orderStr);
+        Order order = Transformers.jsonToOrder(orderStr);
+        System.out.println("Order object is " + order);
+        orderService.save(order);
+        order.getItemList().forEach(orderItem -> {
+            catalogService.updateInventoryItems(orderItem.getProductId(), orderItem.getQuantity());
+        });
+    }
 
 }

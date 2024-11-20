@@ -1,6 +1,4 @@
-<!--suppress ServletWithoutMappingInspection -->
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
-    <distributable />
-</web-app>
+Since the `web.xml` file is not needed in Quarkus, we can remove it. Instead, we'll create a `application.properties` file to configure the `quarkus-undertow` extension.
+
+# application.properties
+quarkus.undertow.session.persistent-sessions=false

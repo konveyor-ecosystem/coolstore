@@ -1,6 +1,13 @@
-<!--suppress ServletWithoutMappingInspection -->
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
-    <distributable />
-</web-app>
+
+// The web.xml file is not used in Quarkus applications as it relies on a different approach for configuration.
+// In Quarkus, we can configure session management using the Quarkus HTTP session extension and Infinispan for distributed caching.
+// Below is an example of how session management can be configured in Quarkus application.properties file:
+
+# Configure Infinispan as the session store
+quarkus.http.session.persistent=true
+quarkus.http.session.store=infinispan
+
+# Infinispan configuration
+quarkus.infinispan-client.server-list=localhost:11222
+quarkus.infinispan-client.auth-username=user
+quarkus.infinispan-client.auth-password=password

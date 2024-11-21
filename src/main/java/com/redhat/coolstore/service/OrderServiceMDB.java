@@ -1,21 +1,18 @@
+
 package com.redhat.coolstore.service;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
-import javax.inject.Inject;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import jakarta.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.MessageListener;
+import jakarta.jms.TextMessage;
 
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 
-@MessageDriven(name = "OrderServiceMDB", activationConfig = {
-	@ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "topic/orders"),
-	@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
-	@ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")})
-public class OrderServiceMDB implements MessageListener { 
+@ApplicationScoped
+public class OrderServiceMDB implements MessageListener {
 
 	@Inject
 	OrderService orderService;
@@ -24,6 +21,7 @@ public class OrderServiceMDB implements MessageListener {
 	CatalogService catalogService;
 
 	@Override
+	@Incoming("topic/orders") // Migrating destinationLookup property
 	public void onMessage(Message rcvMessage) {
 		System.out.println("\nMessage recd !");
 		TextMessage msg = null;

@@ -1,11 +1,10 @@
+
 package com.redhat.coolstore.service;
 
 import java.util.logging.Logger;
-import javax.ejb.Stateless;
-import javax.annotation.Resource;
+import jakarta.ejb.Stateless;
+import jakarta.annotation.Resource; // Replaced javax.annotation with jakarta.annotation
 import javax.inject.Inject;
-import javax.jms.JMSContext;
-import javax.jms.Topic;
 
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.utils.Transformers;
@@ -16,20 +15,13 @@ public class ShoppingCartOrderProcessor  {
     @Inject
     Logger log;
 
-
     @Inject
-    private transient JMSContext context;
+    @Channel("orders") // Added @Channel annotation
+    Emitter<String> ordersTopicEmitter; // Replaced Topic with Emitter
 
-    @Resource(lookup = "java:/topic/orders")
-    private Topic ordersTopic;
-
-    
-  
-    public void  process(ShoppingCart cart) {
+    public void process(ShoppingCart cart) {
         log.info("Sending order from processor: ");
-        context.createProducer().send(ordersTopic, Transformers.shoppingCartToJson(cart));
+        ordersTopicEmitter.send(Transformers.shoppingCartToJson(cart));
     }
-
-
 
 }

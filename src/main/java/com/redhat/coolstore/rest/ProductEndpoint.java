@@ -1,12 +1,18 @@
+
 package com.redhat.coolstore.rest;
 
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.inject.Inject; // Updated import statement
+
+import jakarta.enterprise.context.RequestScoped; // Updated import statement
+import jakarta.ws.rs.GET; // Updated import statement
+import jakarta.ws.rs.Path; // Updated import statement
+import jakarta.ws.rs.Produces; // Updated import statement
+import jakarta.ws.rs.Consumes; // Updated import statement
+import jakarta.ws.rs.core.MediaType; // Updated import statement
+import jakarta.ws.rs.PathParam; // Updated import statement
 
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.service.ProductService;

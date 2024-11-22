@@ -1,18 +1,19 @@
 package com.redhat.coolstore.service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
+@Path("/shipping")
+public class ShippingService {
 
-import com.redhat.coolstore.model.ShoppingCart;
-
-@Stateless
-@Remote
-public class ShippingService implements ShippingServiceRemote {
-
-    @Override
+    @POST
+    @Path("/calculateShipping")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     public double calculateShipping(ShoppingCart sc) {
 
         if (sc != null) {
@@ -45,7 +46,10 @@ public class ShippingService implements ShippingServiceRemote {
 
     }
 
-    @Override
+    @POST
+    @Path("/calculateShippingInsurance")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     public double calculateShippingInsurance(ShoppingCart sc) {
 
         if (sc != null) {
@@ -70,9 +74,7 @@ public class ShippingService implements ShippingServiceRemote {
     }
 
     private static double getPercentOfTotal(double value, double percentOfTotal) {
-        return BigDecimal.valueOf(value * percentOfTotal)
-                .setScale(2, RoundingMode.HALF_UP)
-                .doubleValue();
+        return value * percentOfTotal;
     }
 
 }

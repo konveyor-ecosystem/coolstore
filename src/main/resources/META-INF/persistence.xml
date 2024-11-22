@@ -1,17 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1"
-             xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="
-        http://xmlns.jcp.org/xml/ns/persistence
-        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-    <persistence-unit name="primary">
-        <jta-data-source>java:jboss/datasources/CoolstoreDS</jta-data-source>
-        <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="none"/>
-            <property name="hibernate.show_sql" value="false" />
-            <property name="hibernate.format_sql" value="true" />
-            <property name="hibernate.use_sql_comments" value="true" />
-            <property name="hibernate.jdbc.use_get_generated_keys" value="false" />
-        </properties>
-    </persistence-unit>
-</persistence>
+# This file should be renamed to application.properties
+quarkus.datasource.jdbc.url=jdbc:mysql://localhost:3306/coolstore
+quarkus.datasource.db-kind=mysql
+quarkus.datasource.username=root
+quarkus.datasource.password=password
+
+quarkus.hibernate-orm.database.generation=none
+quarkus.hibernate-orm.sql-load-script=import.sql
+quarkus.hibernate-orm.show-sql=false
+quarkus.hibernate-orm.format-sql=true
+quarkus.hibernate-orm.use-sql-comments=true
+quarkus.hibernate-orm.jdbc.use-get-generated-keys=false

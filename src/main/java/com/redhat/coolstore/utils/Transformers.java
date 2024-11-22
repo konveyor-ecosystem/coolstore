@@ -1,3 +1,4 @@
+
 package com.redhat.coolstore.utils;
 
 import com.redhat.coolstore.model.CatalogItemEntity;
@@ -9,12 +10,12 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonWriter;
+import jakarta.json.Json; // Updated import
+import jakarta.json.JsonArray; // Updated import
+import jakarta.json.JsonArrayBuilder; // Updated import
+import jakarta.json.JsonObject; // Updated import
+import jakarta.json.JsonReader; // Updated import
+import jakarta.json.JsonWriter; // Updated import
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;

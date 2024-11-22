@@ -1,8 +1,9 @@
+
 package com.redhat.coolstore.service;
 
 import com.redhat.coolstore.model.Order;
 import java.util.List;
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless; // Updated import statement
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;

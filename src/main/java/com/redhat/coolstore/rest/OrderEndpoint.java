@@ -1,9 +1,10 @@
+
 package com.redhat.coolstore.rest;
 
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.RequestScoped; // Updated import statement
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -25,7 +26,6 @@ public class OrderEndpoint implements Serializable {
 
     @Inject
     private OrderService os;
-
 
     @GET
     @Path("/")

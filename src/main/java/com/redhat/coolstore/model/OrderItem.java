@@ -1,3 +1,4 @@
+
 package com.redhat.coolstore.model;
 
 import java.io.Serializable;
@@ -5,7 +6,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -15,7 +18,8 @@ public class OrderItem implements Serializable {
 
 	@Id
 	@Column(name="ID")
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderitem_seq")
+	@SequenceGenerator(name = "orderitem_seq", sequenceName = "orderitem_seq", allocationSize = 1)
 	private long id;
 
 	private int quantity;

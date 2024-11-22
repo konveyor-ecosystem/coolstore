@@ -1,3 +1,4 @@
+
 package com.redhat.coolstore.service;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless; // Updated import statement
 import javax.persistence.EntityManager;
 
 import com.redhat.coolstore.model.*;

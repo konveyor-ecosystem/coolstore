@@ -1,3 +1,4 @@
+
 package com.redhat.coolstore.service;
 
 import java.util.List;
@@ -9,12 +10,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
+import jakarta.ejb.Stateless; // updated import statement
+import jakarta.persistence.EntityManager;
 
 import com.redhat.coolstore.model.*;
 
-@Stateless
+@jakarta.ejb.Stateless // updated annotation
 public class CatalogService {
 
     @Inject

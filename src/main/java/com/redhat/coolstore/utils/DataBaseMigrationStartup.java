@@ -3,14 +3,15 @@ package com.redhat.coolstore.utils;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import javax.inject.Inject;
-import javax.sql.DataSource;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.sql.DataSource;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,9 +24,10 @@ import java.util.logging.Logger;
 public class DataBaseMigrationStartup {
 
     @Inject
+    @Named("java:global/logger")
     Logger logger;
 
-    @Resource(mappedName = "java:jboss/datasources/CoolstoreDS")
+    @Resource(lookup = "java:global/CoolstoreDS")
     DataSource dataSource;
 
     @PostConstruct

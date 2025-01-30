@@ -6,15 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.DELETE; // Replaced javax.ws.rs with jakarta.ws.rs
+import jakarta.ws.rs.GET; // Replaced javax.ws.rs with jakarta.ws.rs
+import jakarta.ws.rs.POST; // Replaced javax.ws.rs with jakarta.ws.rs
+import jakarta.ws.rs.Path; // Replaced javax.ws.rs with jakarta.ws.rs
+import jakarta.ws.rs.PathParam; // Replaced javax.ws.rs with jakarta.ws.rs
+import jakarta.ws.rs.Produces; // Replaced javax.ws.rs with jakarta.ws.rs
+import jakarta.ws.rs.core.MediaType; // Replaced javax.ws.rs.core with jakarta.ws.rs.core
 
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;

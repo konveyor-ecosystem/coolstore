@@ -1,16 +1,19 @@
 package com.redhat.coolstore.utils;
 
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
+import jakarta.enterprise.context.Named;
+import jakarta.enterprise.inject.spi.InjectionPoint;
 import java.util.logging.Logger;
 
-
+/**
+ * A class that uses CDI to alias Java EE resources, such as the @Resource annotation
+ * 
+ */
 public class Producers {
 
-    Logger log = Logger.getLogger(Producers.class.getName());
+    private Logger log = Logger.getLogger(Producers.class.getName());
 
-    @Produces
-    public Logger produceLog(InjectionPoint injectionPoint) {
+    @Named("logger")
+    public Logger getLogger(InjectionPoint injectionPoint) {
         return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
     }
 

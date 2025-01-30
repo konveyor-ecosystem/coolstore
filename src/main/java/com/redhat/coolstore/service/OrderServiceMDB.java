@@ -1,47 +1,38 @@
 package com.redhat.coolstore.service;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
+import io.smallrye.reactive.messaging.annotations.Incoming;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 
-@MessageDriven(name = "OrderServiceMDB", activationConfig = {
-	@ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "topic/orders"),
-	@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
-	@ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")})
-public class OrderServiceMDB implements MessageListener { 
+@ApplicationScoped
+public class OrderServiceMDB {
 
-	@Inject
-	OrderService orderService;
+    @Inject
+    OrderService orderService;
 
-	@Inject
-	CatalogService catalogService;
+    @Inject
+    CatalogService catalogService;
 
-	@Override
-	public void onMessage(Message rcvMessage) {
-		System.out.println("\nMessage recd !");
-		TextMessage msg = null;
-		try {
-				if (rcvMessage instanceof TextMessage) {
-						msg = (TextMessage) rcvMessage;
-						String orderStr = msg.getBody(String.class);
-						System.out.println("Received order: " + orderStr);
-						Order order = Transformers.jsonToOrder(orderStr);
-						System.out.println("Order object is " + order);
-						orderService.save(order);
-						order.getItemList().forEach(orderItem -> {
-							catalogService.updateInventoryItems(orderItem.getProductId(), orderItem.getQuantity());
-						});
-				}
-		} catch (JMSException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Inject
+    Jsonb jsonb;
 
+    @Incoming("orders")
+    public void onMessage(String message) {
+        System.out.println("\nMessage recd !");
+        try {
+            Order order = jsonb.fromJson(message, Order.class);
+            System.out.println("Received order: " + order);
+            orderService.save(order);
+            order.getItemList().forEach(orderItem -> {
+                catalogService.updateInventoryItems(orderItem.getProductId(), orderItem.getQuantity());
+            });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

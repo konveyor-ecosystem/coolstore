@@ -3,13 +3,14 @@ package com.redhat.coolstore.service;
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 
-import javax.inject.Inject;
-import javax.jms.*;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
+import jakarta.inject.Inject;
+import jakarta.jms.*;
+import jakarta.naming.Context;
+import jakarta.naming.InitialContext;
+import jakarta.naming.NamingException;
+import jakarta.rmi.PortableRemoteObject;
 import java.util.Hashtable;
+import java.util.logging.Logger;
 
 public class InventoryNotificationMDB implements MessageListener {
 
@@ -18,6 +19,9 @@ public class InventoryNotificationMDB implements MessageListener {
     @Inject
     private CatalogService catalogService;
 
+    @Inject
+    private Logger logger;
+
     private final static String JNDI_FACTORY = "weblogic.jndi.WLInitialContextFactory";
     private final static String JMS_FACTORY = "TCF";
     private final static String TOPIC = "topic/orders";
@@ -25,30 +29,16 @@ public class InventoryNotificationMDB implements MessageListener {
     private TopicSession tsession;
     private TopicSubscriber tsubscriber;
 
-    public void onMessage(Message rcvMessage) {
-        TextMessage msg;
-        {
-            try {
-                System.out.println("received message inventory");
-                if (rcvMessage instanceof TextMessage) {
-                    msg = (TextMessage) rcvMessage;
-                    String orderStr = msg.getBody(String.class);
-                    Order order = Transformers.jsonToOrder(orderStr);
-                    order.getItemList().forEach(orderItem -> {
-                        int old_quantity = catalogService.getCatalogItemById(orderItem.getProductId()).getInventory().getQuantity();
-                        int new_quantity = old_quantity - orderItem.getQuantity();
-                        if (new_quantity < LOW_THRESHOLD) {
-                            System.out.println("Inventory for item " + orderItem.getProductId() + " is below threshold (" + LOW_THRESHOLD + "), contact supplier!");
-                        } else {
-                            orderItem.setQuantity(new_quantity);
-                        }
-                    });
-                }
-
-
-            } catch (JMSException jmse) {
-                System.err.println("An exception occurred: " + jmse.getMessage());
+    @Override
+    public void onMessage(Message message) {
+        try {
+            if (message instanceof TextMessage) {
+                TextMessage textMessage = (TextMessage) message;
+                String text = textMessage.getText();
+                logger.info("Received message: " + text);
             }
+        } catch (JMSException e) {
+            logger.severe("Error processing message: " + e.getMessage());
         }
     }
 

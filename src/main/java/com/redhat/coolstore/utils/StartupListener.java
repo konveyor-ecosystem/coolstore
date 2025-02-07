@@ -3,9 +3,11 @@ package com.redhat.coolstore.utils;
 import weblogic.application.ApplicationLifecycleEvent;
 import weblogic.application.ApplicationLifecycleListener;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.logging.Logger;
+import jakarta.inject.Singleton;
 
+@Singleton
 public class StartupListener extends ApplicationLifecycleListener {
 
     @Inject

@@ -3,14 +3,14 @@ package com.redhat.coolstore.service;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
+import jakarta.ejb.Stateless;
 
 import com.redhat.coolstore.model.*;
 
@@ -20,7 +20,7 @@ public class CatalogService {
     @Inject
     Logger log;
 
-    @Inject
+    @PersistenceContext
     private EntityManager em;
 
     public CatalogService() {

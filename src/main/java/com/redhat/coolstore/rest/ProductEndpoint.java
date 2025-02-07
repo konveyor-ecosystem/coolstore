@@ -3,13 +3,14 @@ package com.redhat.coolstore.rest;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.service.ProductService;
+import com.redhat.coolstore.service.CatalogService;
 
 @RequestScoped
 @Path("/products")
@@ -25,17 +26,20 @@ public class ProductEndpoint implements Serializable {
     @Inject
     private ProductService pm;
 
+    @Inject
+    private CatalogService catalogService;
 
     @GET
-    @Path("/")
-    public List<Product> listAll() {
-        return pm.getProducts();
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Product> getProducts() {
+        return catalogService.getCatalogItems();
     }
 
     @GET
-    @Path("/{itemId}")
-    public Product getProduct(@PathParam("itemId") String itemId) {
-        return pm.getProductByItemId(itemId);
+    @Path("/{productId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Product getProduct(@PathParam("productId") String productId) {
+        return catalogService.getCatalogItemById(productId);
     }
 
 }

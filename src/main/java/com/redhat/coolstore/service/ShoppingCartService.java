@@ -3,11 +3,11 @@ package com.redhat.coolstore.service;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateful;
-import javax.inject.Inject;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import jakarta.ejb.Stateful;
+import jakarta.inject.Inject;
+import jakarta.naming.Context;
+import jakarta.naming.InitialContext;
+import jakarta.naming.NamingException;
 
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
@@ -25,9 +25,17 @@ public class ShoppingCartService  {
     @Inject
     PromoService ps;
 
-
     @Inject
     ShoppingCartOrderProcessor shoppingCartOrderProcessor;
+
+    @Inject
+    private CatalogService catalogService;
+
+    @Inject
+    private PromoService promoService;
+
+    @Inject
+    private ShippingService shippingService;
 
     private ShoppingCart cart  = new ShoppingCart(); //Each user can have multiple shopping carts (tabbed browsing)
 
@@ -69,11 +77,11 @@ public class ShoppingCartService  {
 
                 }
 
-                sc.setShippingTotal(lookupShippingServiceRemote().calculateShipping(sc));
+                sc.setShippingTotal(shippingService.calculateShipping(sc));
 
                 if (sc.getCartItemTotal() >= 25) {
                     sc.setShippingTotal(sc.getShippingTotal()
-                            + lookupShippingServiceRemote().calculateShippingInsurance(sc));
+                            + shippingService.calculateShippingInsurance(sc));
                 }
 
             }

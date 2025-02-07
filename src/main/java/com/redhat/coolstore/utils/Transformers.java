@@ -18,6 +18,8 @@ import javax.json.JsonWriter;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.Jsonb;
 
 /**
  * Created by tqvarnst on 2017-03-30.
@@ -27,7 +29,8 @@ public class Transformers {
     private static final String[] RANDOM_NAMES = {"Sven Karlsson","Johan Andersson","Karl Svensson","Anders Johansson","Stefan Olson","Martin Ericsson"};
     private static final String[] RANDOM_EMAILS = {"sven@gmail.com","johan@gmail.com","karl@gmail.com","anders@gmail.com","stefan@gmail.com","martin@gmail.com"};
 
-    private static Logger log = Logger.getLogger(Transformers.class.getName());
+    private static final Logger log = Logger.getLogger(Transformers.class.getName());
+    private static final Jsonb jsonb = JsonbBuilder.create();
 
     public static Product toProduct(CatalogItemEntity entity) {
         Product prod = new Product();
@@ -46,54 +49,11 @@ public class Transformers {
     }
 
     public static String shoppingCartToJson(ShoppingCart cart) {
-        JsonArrayBuilder cartItems = Json.createArrayBuilder();
-        cart.getShoppingCartItemList().forEach(item -> {
-            cartItems.add(Json.createObjectBuilder()
-                .add("productSku",item.getProduct().getItemId())
-                .add("quantity",item.getQuantity())
-            );
-        });
-
-        int randomNameAndEmailIndex = ThreadLocalRandom.current().nextInt(RANDOM_NAMES.length);
-
-        JsonObject jsonObject = Json.createObjectBuilder()
-            .add("orderValue", Double.valueOf(cart.getCartTotal()))
-            .add("customerName",RANDOM_NAMES[randomNameAndEmailIndex])
-            .add("customerEmail",RANDOM_EMAILS[randomNameAndEmailIndex])
-            .add("retailPrice", cart.getShoppingCartItemList().stream().mapToDouble(i -> i.getQuantity()*i.getPrice()).sum())
-            .add("discount", Double.valueOf(cart.getCartItemPromoSavings()))
-            .add("shippingFee", Double.valueOf(cart.getShippingTotal()))
-            .add("shippingDiscount", Double.valueOf(cart.getShippingPromoSavings()))
-            .add("items",cartItems) 
-            .build();
-        StringWriter w = new StringWriter();
-        try (JsonWriter writer = Json.createWriter(w)) {
-            writer.write(jsonObject);
-        }
-        return w.toString();
+        return jsonb.toJson(cart);
     }
 
     public static Order jsonToOrder(String json) {
-        JsonReader jsonReader = Json.createReader(new StringReader(json));
-        JsonObject rootObject = jsonReader.readObject();
-        Order order = new Order();
-        order.setCustomerName(rootObject.getString("customerName"));
-        order.setCustomerEmail(rootObject.getString("customerEmail"));
-        order.setOrderValue(rootObject.getJsonNumber("orderValue").doubleValue());
-        order.setRetailPrice(rootObject.getJsonNumber("retailPrice").doubleValue());
-        order.setDiscount(rootObject.getJsonNumber("discount").doubleValue());
-        order.setShippingFee(rootObject.getJsonNumber("shippingFee").doubleValue());
-        order.setShippingDiscount(rootObject.getJsonNumber("shippingDiscount").doubleValue());
-        JsonArray jsonItems = rootObject.getJsonArray("items");
-        List<OrderItem> items = new ArrayList<OrderItem>(jsonItems.size());
-        for (JsonObject jsonItem : jsonItems.getValuesAs(JsonObject.class)) {
-            OrderItem oi = new OrderItem();
-            oi.setProductId(jsonItem.getString("productSku"));
-            oi.setQuantity(jsonItem.getInt("quantity"));
-            items.add(oi);
-        }
-        order.setItemList(items); 
-        return order;
+        return jsonb.fromJson(json, Order.class);
     }
 
 

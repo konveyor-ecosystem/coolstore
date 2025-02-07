@@ -6,16 +6,18 @@ import java.math.RoundingMode;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import com.redhat.coolstore.model.ShoppingCart;
 
 @Path("/shipping")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ShippingService {
 
     @POST
     @Path("/calculateShipping")
-    @Consumes(MediaType.APPLICATION_JSON)
     public double calculateShipping(ShoppingCart sc) {
         if (sc != null) {
             if (sc.getCartItemTotal() >= 0 && sc.getCartItemTotal() < 25) {
@@ -35,7 +37,6 @@ public class ShippingService {
 
     @POST
     @Path("/calculateShippingInsurance")
-    @Consumes(MediaType.APPLICATION_JSON)
     public double calculateShippingInsurance(ShoppingCart sc) {
         if (sc != null) {
             if (sc.getCartItemTotal() >= 25 && sc.getCartItemTotal() < 100) {

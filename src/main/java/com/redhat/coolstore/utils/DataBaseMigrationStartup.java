@@ -3,16 +3,17 @@ package com.redhat.coolstore.utils;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import javax.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
+import jakarta.inject.Inject;
 import javax.sql.DataSource;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jakarta.transaction.Transactional;
 
 /**
  * Created by tqvarnst on 2017-04-04.
@@ -29,9 +30,8 @@ public class DataBaseMigrationStartup {
     DataSource dataSource;
 
     @PostConstruct
-    private void startup() {
-
-
+    @Transactional
+    public void init() {
         try {
             logger.info("Initializing/migrating the database using FlyWay");
             Flyway flyway = new Flyway();
@@ -44,10 +44,6 @@ public class DataBaseMigrationStartup {
                 logger.log(Level.SEVERE,"FAILED TO INITIALIZE THE DATABASE: " + e.getMessage(),e);
             else
                 System.out.println("FAILED TO INITIALIZE THE DATABASE: " + e.getMessage() + " and injection of logger doesn't work");
-
         }
     }
-
-
-
 }

@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project 
-    xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.redhat.coolstore</groupId>
     <artifactId>monolith</artifactId>
@@ -42,7 +39,7 @@
             <artifactId>jboss-rmi-api_1.0_spec</artifactId>
             <version>1.0.2.Final</version>
         </dependency>
-    </dependencies>
+    <dependency><artifactId>jakarta.persistence-api</artifactId><groupId>jakarta.persistence</groupId><version>3.2.0</version></dependency><dependency><artifactId>jakarta.persistence-api</artifactId><groupId>jakarta.persistence</groupId><version>3.2.0</version></dependency><dependency><artifactId>jakarta.persistence-api</artifactId><groupId>jakarta.persistence</groupId><version>3.2.0</version></dependency><dependency><artifactId>jakarta.persistence-api</artifactId><groupId>jakarta.persistence</groupId><version>3.2.0</version></dependency><dependency><artifactId>jakarta.xml.bind-api</artifactId><groupId>jakarta.xml.bind</groupId><version>4.0.2</version></dependency><dependency><artifactId>jakarta.enterprise.cdi-api</artifactId><groupId>jakarta.enterprise</groupId><version>4.1.0</version></dependency><dependency><artifactId>jakarta.ws.rs-api</artifactId><groupId>jakarta.ws.rs</groupId><version>4.0.0</version></dependency><dependency><artifactId>jakarta.ejb-api</artifactId><groupId>jakarta.ejb</groupId><version>4.0.1</version></dependency><dependency><artifactId>jakarta.jms-api</artifactId><groupId>jakarta.jms</groupId><version>3.1.0</version></dependency></dependencies>
     <build>
         <finalName>ROOT</finalName>
         <plugins>

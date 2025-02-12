@@ -3,10 +3,11 @@ package com.redhat.coolstore.rest;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.service.ProductService;
@@ -14,7 +15,6 @@ import com.redhat.coolstore.service.ProductService;
 @RequestScoped
 @Path("/products")
 @Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
 public class ProductEndpoint implements Serializable {
 
     /**
@@ -25,6 +25,10 @@ public class ProductEndpoint implements Serializable {
     @Inject
     private ProductService pm;
 
+    @Named
+    public ProductService getProductService() {
+        return pm;
+    }
 
     @GET
     @Path("/")

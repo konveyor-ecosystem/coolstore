@@ -3,14 +3,31 @@
     <groupId>com.redhat.coolstore</groupId>
     <artifactId>monolith</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>coolstore-monolith</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
         <project.encoding>UTF-8</project.encoding>
         <maven.test.skip>true</maven.test.skip>
+        <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+        <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
+        <quarkus.platform.version>3.1.0.Final</quarkus.platform.version>
+        <compiler-plugin.version>3.10.1</compiler-plugin.version>
+        <maven.compiler.release>11</maven.compiler.release>
+        <surefire-plugin.version>3.0.0</surefire-plugin.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${quarkus.platform.group-id}</groupId>
+                <artifactId>${quarkus.platform.artifact-id}</artifactId>
+                <version>${quarkus.platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
@@ -39,17 +56,65 @@
             <artifactId>jboss-rmi-api_1.0_spec</artifactId>
             <version>1.0.2.Final</version>
         </dependency>
-    <dependency><artifactId>jakarta.persistence-api</artifactId><groupId>jakarta.persistence</groupId><version>3.2.0</version></dependency><dependency><artifactId>jakarta.persistence-api</artifactId><groupId>jakarta.persistence</groupId><version>3.2.0</version></dependency><dependency><artifactId>jakarta.persistence-api</artifactId><groupId>jakarta.persistence</groupId><version>3.2.0</version></dependency><dependency><artifactId>jakarta.persistence-api</artifactId><groupId>jakarta.persistence</groupId><version>3.2.0</version></dependency><dependency><artifactId>jakarta.xml.bind-api</artifactId><groupId>jakarta.xml.bind</groupId><version>4.0.2</version></dependency><dependency><artifactId>jakarta.enterprise.cdi-api</artifactId><groupId>jakarta.enterprise</groupId><version>4.1.0</version></dependency><dependency><artifactId>jakarta.ws.rs-api</artifactId><groupId>jakarta.ws.rs</groupId><version>4.0.0</version></dependency><dependency><artifactId>jakarta.ejb-api</artifactId><groupId>jakarta.ejb</groupId><version>4.0.1</version></dependency><dependency><artifactId>jakarta.jms-api</artifactId><groupId>jakarta.jms</groupId><version>3.1.0</version></dependency><dependency><artifactId>microprofile-reactive-messaging-api</artifactId><groupId>org.eclipse.microprofile.reactive.messaging</groupId><version>3.0.1</version></dependency><dependency><artifactId>microprofile-reactive-messaging-api</artifactId><groupId>org.eclipse.microprofile.reactive.messaging</groupId><version>3.0.1</version></dependency><dependency><artifactId>microprofile-reactive-messaging-api</artifactId><groupId>org.eclipse.microprofile.reactive.messaging</groupId><version>3.0.1</version></dependency><dependency><artifactId>microprofile-reactive-messaging-api</artifactId><groupId>org.eclipse.microprofile.reactive.messaging</groupId><version>3.0.1</version></dependency><dependency><artifactId>smallrye-reactive-messaging</artifactId><groupId>io.smallrye.reactive</groupId><version>4.27.0</version></dependency><dependency><artifactId>smallrye-reactive-messaging</artifactId><groupId>io.smallrye.reactive</groupId><version>4.27.0</version></dependency><dependency><artifactId>smallrye-reactive-messaging</artifactId><groupId>io.smallrye.reactive</groupId><version>4.27.0</version></dependency></dependencies>
+        <dependency>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <groupId>jakarta.persistence</groupId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <groupId>jakarta.xml.bind</groupId>
+            <version>4.0.2</version>
+        </dependency>
+        <dependency>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <groupId>jakarta.enterprise</groupId>
+            <version>4.1.0</version>
+        </dependency>
+        <dependency>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <groupId>jakarta.ws.rs</groupId>
+            <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <artifactId>jakarta.ejb-api</artifactId>
+            <groupId>jakarta.ejb</groupId>
+            <version>4.0.1</version>
+        </dependency>
+        <dependency>
+            <artifactId>jakarta.jms-api</artifactId>
+            <groupId>jakarta.jms</groupId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <artifactId>microprofile-reactive-messaging-api</artifactId>
+            <groupId>org.eclipse.microprofile.reactive.messaging</groupId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <artifactId>smallrye-reactive-messaging</artifactId>
+            <groupId>io.smallrye.reactive.messaging</groupId>
+            <version>3.1.0.Final</version>
+        </dependency>
+    </dependencies>
+    <repositories>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
     <build>
         <finalName>ROOT</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
+                <version>${compiler-plugin.version}</version>
                 <configuration>
                     <encoding>${project.encoding}</encoding>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
@@ -57,9 +122,65 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.0</version>
             </plugin>
+            <plugin>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <version>${quarkus.platform.version}</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>generate-code</goal>
+                            <goal>generate-code-tests</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire-plugin.version}</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                        <maven.home>${maven.home}</maven.home>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${surefire-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+                                <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                                <maven.home>${maven.home}</maven.home>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <profiles>
-<!-- TODO: Add OpenShift profile here -->
+        <profile>
+            <id>native</id>
+            <activation>
+                <property>
+                    <name>native</name>
+                </property>
+            </activation>
+            <properties>
+                <skipITs>false</skipITs>
+                <quarkus.package.type>native</quarkus.package.type>
+            </properties>
+        </profile>
+        <!-- TODO: Add OpenShift profile here -->
     </profiles>
 </project>

@@ -27,11 +27,6 @@ public class OrderEndpoint implements Serializable {
     @Inject
     private OrderService os;
 
-    @Named
-    public OrderService getOrderService() {
-        return os;
-    }
-
     @GET
     @Path("/")
     public List<Order> listAll() {

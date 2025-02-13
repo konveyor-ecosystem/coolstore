@@ -5,7 +5,7 @@ import org.flywaydb.core.api.FlywayException;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
-import jakarta.ejb.Singleton;
+import jakarta.inject.Singleton;
 import jakarta.ejb.Startup;
 import jakarta.ejb.TransactionManagement;
 import jakarta.ejb.TransactionManagementType;

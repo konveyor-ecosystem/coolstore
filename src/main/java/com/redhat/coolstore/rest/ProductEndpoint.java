@@ -5,7 +5,6 @@ import java.util.List;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
@@ -24,11 +23,6 @@ public class ProductEndpoint implements Serializable {
 
     @Inject
     private ProductService pm;
-
-    @Named
-    public ProductService getProductService() {
-        return pm;
-    }
 
     @GET
     @Path("/")

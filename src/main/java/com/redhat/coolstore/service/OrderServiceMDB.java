@@ -18,12 +18,11 @@ public class OrderServiceMDB {
     CatalogService catalogService;
 
     @Incoming("orders")
-    public void processOrder(Message<String> rcvMessage) {
+    public void processOrder(String rcvMessage) {
         System.out.println("\nMessage received!");
         try {
-            String orderStr = rcvMessage.getPayload();
-            System.out.println("Received order: " + orderStr);
-            Order order = Transformers.jsonToOrder(orderStr);
+            System.out.println("Received order: " + rcvMessage);
+            Order order = Transformers.jsonToOrder(rcvMessage);
             System.out.println("Order object is " + order);
             orderService.save(order);
             order.getItemList().forEach(orderItem -> {

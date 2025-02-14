@@ -49,7 +49,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>4.1.2</version>
+            <version>9.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.rmi</groupId>
@@ -99,6 +99,17 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-reactive-messaging</artifactId>
+        </dependency>
+            <!-- Quarkus JDBC Driver for PostgreSQL -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jdbc-postgresql</artifactId>
+        </dependency>
+    
+        <!-- Quarkus Hibernate ORM -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-orm</artifactId>
         </dependency>
     </dependencies>
     <repositories>

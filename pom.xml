@@ -42,6 +42,14 @@
             <artifactId>jboss-rmi-api_1.0_spec</artifactId>
             <version>1.0.2.Final</version>
         </dependency>
+        <!-- Audit logging library from local Maven repo -->
+        <dependency>
+            <groupId>com.enterprise</groupId>
+            <artifactId>audit-logging-library</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/audit-logging-library-1.0.0.jar</systemPath>
+        </dependency>        
     </dependencies>
     <build>
         <finalName>ROOT</finalName>

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType; // Importing GenerationType
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -15,7 +16,7 @@ public class OrderItem implements Serializable {
 
 	@Id
 	@Column(name="ID")
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // Specifying GenerationType.IDENTITY
 	private long id;
 
 	private int quantity;

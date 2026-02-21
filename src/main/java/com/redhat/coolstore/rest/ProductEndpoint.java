@@ -3,10 +3,10 @@ package com.redhat.coolstore.rest;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.RequestScoped; // Replaced javax.enterprise with jakarta.enterprise
+import jakarta.inject.Inject; // Replaced javax.inject with jakarta.inject
+import jakarta.ws.rs.*; // Replaced javax.ws.rs with jakarta.ws.rs
+import jakarta.ws.rs.core.MediaType;
 
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.service.ProductService;

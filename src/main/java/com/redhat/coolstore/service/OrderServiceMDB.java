@@ -1,47 +1,35 @@
 package com.redhat.coolstore.service;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
-import javax.inject.Inject;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import io.smallrye.reactive.messaging.annotations.Channel;
+import io.smallrye.reactive.messaging.annotations.Incoming;
 
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 
-@MessageDriven(name = "OrderServiceMDB", activationConfig = {
-	@ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "topic/orders"),
-	@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
-	@ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")})
-public class OrderServiceMDB implements MessageListener { 
+import jakarta.inject.Inject;
+import jakarta.jms.Message; // Updated import statement
 
-	@Inject
-	OrderService orderService;
+import javax.enterprise.context.ApplicationScoped; // Added import for CDI ApplicationScoped annotation
 
-	@Inject
-	CatalogService catalogService;
+@ApplicationScoped
+public class OrderServiceMDB {
 
-	@Override
-	public void onMessage(Message rcvMessage) {
-		System.out.println("\nMessage recd !");
-		TextMessage msg = null;
-		try {
-				if (rcvMessage instanceof TextMessage) {
-						msg = (TextMessage) rcvMessage;
-						String orderStr = msg.getBody(String.class);
-						System.out.println("Received order: " + orderStr);
-						Order order = Transformers.jsonToOrder(orderStr);
-						System.out.println("Order object is " + order);
-						orderService.save(order);
-						order.getItemList().forEach(orderItem -> {
-							catalogService.updateInventoryItems(orderItem.getProductId(), orderItem.getQuantity());
-						});
-				}
-		} catch (JMSException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Inject
+    OrderService orderService;
+
+    @Inject
+    CatalogService catalogService;
+
+    @Incoming("orders") // Updated annotation to use @Incoming
+    public void onMessage(String orderStr) {
+        System.out.println("\nMessage recd !");
+        System.out.println("Received order: " + orderStr);
+        Order order = Transformers.jsonToOrder(orderStr);
+        System.out.println("Order object is " + order);
+        orderService.save(order);
+        order.getItemList().forEach(orderItem -> {
+            catalogService.updateInventoryItems(orderItem.getProductId(), orderItem.getQuantity());
+        });
+    }
 
 }

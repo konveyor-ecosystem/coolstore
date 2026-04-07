@@ -1,6 +1,6 @@
 {
   "recommendations": [
-    "Konveyor.konveyor",
-    "Konveyor.konveyor-java" 
+	"redhat.mta-core",
+	"redhat.mta-java"
   ]
 }

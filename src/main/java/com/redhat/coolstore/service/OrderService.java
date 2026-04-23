@@ -8,21 +8,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import io.quarkus.runtime.Shutdown;
+import io.quarkus.runtime.Startup;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 
-@Stateless
+@ApplicationScoped
 public class OrderService {
 
   @Inject
-  private EntityManager em;
+  EntityManager em;
 
+  @Transactional
   public void save(Order order) {
     em.persist(order);
   }
@@ -41,20 +43,27 @@ public class OrderService {
 
   private FileSystemAuditLogger auditLogger;
 
-  @PostConstruct
-  public void init() throws AuditLoggingException {
-    // Initialize audit logger
-    AuditConfiguration config = new AuditConfiguration();
-    config.setLogDirectory("./device-inventory-audit-logs");
-    config.setAutoCreateDirectory(true);
-    auditLogger = new FileSystemAuditLogger(config);
-
+  @Startup
+  void init() {
+    try {
+      // Initialize audit logger
+      AuditConfiguration config = new AuditConfiguration();
+      config.setLogDirectory("./device-inventory-audit-logs");
+      config.setAutoCreateDirectory(true);
+      auditLogger = new FileSystemAuditLogger(config);
+    } catch (AuditLoggingException e) {
+      throw new RuntimeException("Failed to initialize audit logger", e);
+    }
   }
 
-  @PreDestroy
-  public void cleanup() throws AuditLoggingException {
-    if (auditLogger != null) {
-      auditLogger.close();
+  @Shutdown
+  void cleanup() {
+    try {
+      if (auditLogger != null) {
+        auditLogger.close();
+      }
+    } catch (AuditLoggingException e) {
+      throw new RuntimeException("Failed to close audit logger", e);
     }
   }
 

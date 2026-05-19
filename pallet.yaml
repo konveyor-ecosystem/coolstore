@@ -1,0 +1,10 @@
+sources:
+  - name: source-1
+    type: git
+    url: https://github.com/hhpatel14/migration-harness
+    ref: main
+    paths:
+      - skill-bundle/goose-migration/references/javaee-quarkus.md
+
+agents:
+  auto_detect: true

@@ -41,3 +41,18 @@
 - audit-logging-library 1.0.0 (system scope) with `FileSystemAuditLogger` → must move to 2.0.0 (`StreamableAuditLogger`, `AuditEvent` record, `logEventAsync`), Java 21 (class major 65).
 
 ---
+
+### Phase 2: Requirements Gathering - COMPLETED
+**Output**: mig-prompt-workspace/migration-prompt.md (commit 4f39b58)
+- Source: Java EE 7 WAR (JBoss EAP/WebLogic remnants), Java 8
+- Target: Quarkus 3.15.x LTS, Java 21, Jakarta EE 10, OpenShift on UBI 9 OpenJDK 21
+- Approach: big-bang single-pass refactor (small monolith)
+- Team size: unknown (autonomous run); risk tolerance moderate
+
+### Phase 3: Migration Planning - COMPLETED
+**Outputs**: mig-plan-workspace/tasks.md, mig-plan-workspace/UserStory.md (commit 4f39b58)
+- User Stories: 8 (~21 SP); Task Groups: 10; Subtasks: 100
+- Integration hooks (mig-test-gen / mig-containerize / mig-deploy) deferred to Phase 4 tasks
+- Plan auto-approved (autonomous run)
+
+---

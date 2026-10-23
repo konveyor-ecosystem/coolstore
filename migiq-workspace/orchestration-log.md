@@ -41,3 +41,36 @@ model(15) -> utils(16) -> service(17) -> rest(18) -> webapp app services/control
 - Konveyor `.konveyor/analysis.json`: mandatory finding `session-00000` (`<distributable/>` in web.xml). Custom rules `rules/rule.yaml` (audit-logging-0001..0005): upgrade audit lib 1.x to 2.0.0 + Java 21, replace builder with record ctor, FileSystemAuditLogger -> StreamableAuditLogger (TCP), logEvent -> logEventAsync, drop logSuccess/logFailure
 
 ---
+
+### Phase 2: Requirements Gathering - COMPLETED
+**Timestamp**: Fri Oct 23 14:24:00 UTC 2026
+**Skill**: mig-prompt-builder (autonomous; requirements came from the orchestrator and assumptions are recorded in the prompt)
+**rgctl queries**: `metrics --pagerank --communities` OK, `communities list` OK (33 coolstore/weblogic communities), `gql MATCH (n:Function)` OK, `inventory` OK. The `[r:USES|DEPENDSON]` GQL form failed with the parse error "expected ':'", and the Class-USES/DEPENDSON variants returned 0 rows, so integration points were taken from the source and pom instead.
+**Outputs**:
+- `mig-prompt-workspace/migration-prompt.md`
+
+**Migration Details**:
+- Source: Java EE 7 / JBoss EAP 7.4 (WebLogic stubs), Java 8, WAR
+- Target: Quarkus 3.15.x LTS, Java 21, UBI9 OpenJDK 21 images, Red Hat OpenShift 4.x
+- Approach: Big bang, in-place, single module
+- Key decisions: in-process SmallRye Reactive Messaging channel `orders` (config-only path to AMQP/Kafka); remote EJB → local CDI; quarkus-flyway; DB_* env datasource; quarkus-oidc service app for realm `eap` (`OIDC_ENABLED`, API stays anonymous); audit lib 2.0.0 via install-file + `StreamableAuditLogger` TCP (record ctor, `logEventAsync`, failure-tolerant); `<distributable/>` removed, cart becomes an application-scoped `ConcurrentHashMap` keyed by cartId; UI moves to META-INF/resources (index.jsp → index.html); weblogic.* deleted
+- Audit 2.0.0 API (read from the jar constant pool with Python zipfile, since unzip/javap are unavailable): `AuditEvent` record (timestamp, eventType, userId, sessionId, application, component, action, resource, AuditResult result, message, Map details, correlationId, sourceIp, userAgent); `AuditLogger.logEventAsync` / `logEventAsyncSafe` / `logEvent` (deprecated); `AuditConfiguration.setStreamHost/Port/Protocol`
+
+---
+
+### Phase 3: Migration Planning - COMPLETED
+**Timestamp**: Fri Oct 23 14:24:00 UTC 2026
+**Skill**: mig-plan
+**Outputs**:
+- `mig-plan-workspace/tasks.md`
+- `mig-plan-workspace/UserStory.md`
+
+**Plan Statistics**:
+- User stories: 5
+- Task groups: 10 (Build, Persistence/Flyway, Services/Cart, Messaging, Audit, REST/OIDC, UI/Cleanup, Tests, Containerize, Deploy)
+- Subtasks: 83 (every group has mig-test-gen, mig-containerize, mig-deploy and Documentation hooks)
+
+**Deviation**: mig-test-gen, mig-containerize and mig-deploy were not run during planning; they are referenced as hooks and will run in Phase 4 execution, because java/mvn/podman/oc are not installed yet.
+**Open risks**: in-memory cart/messaging (replicas=1 or sticky until Data Grid/AMQ); audit TCP collector endpoint unknown (default localhost:5170); Jackson/Hibernate 6 JSON and ID-generator drift; podman/oc unavailable, so validation is static only.
+
+---

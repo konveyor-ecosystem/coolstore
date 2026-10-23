@@ -74,3 +74,19 @@ model(15) -> utils(16) -> service(17) -> rest(18) -> webapp app services/control
 **Open risks**: in-memory cart/messaging (replicas=1 or sticky until Data Grid/AMQ); audit TCP collector endpoint unknown (default localhost:5170); Jackson/Hibernate 6 JSON and ID-generator drift; podman/oc unavailable, so validation is static only.
 
 ---
+
+### Phase 4: Migration Execution - COMPLETED
+**Timestamp**: Fri Oct 23 14:30:00 UTC 2026
+**Skill**: mig-execute (the mig-test-gen/mig-containerize/mig-deploy deliverables were produced inline)
+**Status**: ⚠️ Completed with minor issues
+**Build/Test**: `mvn -B -Dmaven.repo.local=/tmp/m2 package` on Temurin 21.0.13 + Maven 3.9.9: BUILD SUCCESS, 13/13 tests passed
+**Outputs**:
+- `mig-execute-workspace/EXECUTION_REPORT.md`, `mig-execute-workspace/execution-log.md`, `mig-execute-workspace/outputs/tests/`
+- `Containerfile`, `.containerignore`, `compose.yaml`
+- `deploy/openshift/{base,overlays/dev,overlays/prod}` (app + PostgreSQL 15), YAML validated statically (podman/oc unavailable)
+- `src/test/java/**`, `src/test/e2e/smoke.sh`, `.github/workflows/build.yml`, README.md
+
+**Progress**: User stories 5/5 completed; task groups 10/10; subtasks 81/83 completed
+**Failed tasks**: none. **Deferred**: 8.3 (JaCoCo coverage), 8.5 (performance baseline)
+
+---

@@ -1,0 +1,16 @@
+name: Build (Java 21 / Quarkus)
+on:
+  push: {branches: [main]}
+  pull_request:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21', cache: maven}
+      - name: Install audit lib and build with tests
+        run: mvn -B validate && mvn -B package
+      - uses: actions/upload-artifact@v4
+        with: {name: quarkus-app, path: target/quarkus-app/}

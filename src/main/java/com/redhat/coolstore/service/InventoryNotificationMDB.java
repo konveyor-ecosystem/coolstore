@@ -7,6 +7,9 @@ import jakarta.inject.Inject;
 
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
+import io.smallrye.common.annotation.Blocking;
+import jakarta.transaction.Transactional;
+
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 
@@ -21,6 +24,8 @@ public class InventoryNotificationMDB {
     CatalogService catalogService;
 
     @Incoming("inventory")
+    @Blocking
+    @Transactional
     public void onMessage(String orderStr) {
         Order order = Transformers.jsonToOrder(orderStr);
         order.getItemList().forEach(orderItem -> {

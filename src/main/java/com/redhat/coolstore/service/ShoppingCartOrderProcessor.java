@@ -20,8 +20,14 @@ public class ShoppingCartOrderProcessor {
     @Channel("orders")
     Emitter<String> ordersEmitter;
 
+    @Inject
+    @Channel("inventory")
+    Emitter<String> inventoryEmitter;
+
     public void process(ShoppingCart cart) {
         LOG.info("Sending order from processor: ");
-        ordersEmitter.send(Transformers.shoppingCartToJson(cart));
+        String json = Transformers.shoppingCartToJson(cart);
+        ordersEmitter.send(json);
+        inventoryEmitter.send(json);
     }
 }

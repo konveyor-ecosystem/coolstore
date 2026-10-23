@@ -5,6 +5,8 @@ import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -15,7 +17,9 @@ public class OrderItem implements Serializable {
 
 	@Id
 	@Column(name="ID")
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderItemSeq")
+	// Flyway V1_1 creates the legacy shared "hibernate_sequence" (increment 1); Hibernate 6 would default to <TABLE>_SEQ
+	@SequenceGenerator(name = "orderItemSeq", sequenceName = "hibernate_sequence", allocationSize = 1)
 	private long id;
 
 	private int quantity;

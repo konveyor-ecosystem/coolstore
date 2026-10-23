@@ -43,3 +43,41 @@
 - Frontend: AngularJS plus Keycloak JS (`keycloak.json`) and JSPs (`index.jsp`, `health.jsp`).
 
 ---
+### Phase 2: Requirements (mig-prompt-builder) - COMPLETED
+**Timestamp**: 2026-10-23 13:49 UTC
+**Mode**: Autonomous. The orchestrator brief supplied the requirements; nobody was asked questions. Assumptions are marked `[ASSUMPTION]` in the prompt.
+**Outputs**:
+- `mig-prompt-workspace/migration-prompt.md` (191 lines, standard mig-prompt-builder structure)
+
+**Statistics**:
+- Java scope: 30 files / ~1,785 LOC / 6 packages / 7 EJBs / 4 JPA entities / ~10 REST operations / 2 Flyway scripts
+- Design decisions: 13 (D1-D13). Risks: 9.
+
+**Key decisions**:
+- Big-bang single-module conversion to Quarkus 3.15 LTS on Java 21, using UBI9 openjdk-21 images on OpenShift
+- Messaging: SmallRye Reactive Messaging, in-memory `orders` channel by default; AMQP available as an optional profile
+- Shipping: the @Remote EJB becomes a local @ApplicationScoped bean, and the JNDI lookup is removed
+- Cart: carts are stored per cartId in a `CartStore` (in-memory) instead of @Stateful/@SessionScoped; `<distributable/>` is removed; the Route uses sticky sessions
+- Audit: audit-logging 2.0.0 with `StreamableAuditLogger` over TCP, `AuditEvent` records and `logEventAsync`, fail-open
+- Auth: browser-side Keycloak JS is kept and its config externalised; `quarkus-oidc` is added but disabled by default
+- DB: `quarkus-flyway` with the same SQL scripts (baseline-on-migrate) and the `hibernate_sequence` kept
+
+---
+
+### Phase 3: Migration Plan (mig-plan) - COMPLETED
+**Timestamp**: 2026-10-23 13:49 UTC
+**Outputs**:
+- `mig-plan-workspace/tasks.md`
+- `mig-plan-workspace/UserStory.md`
+
+**Statistics**:
+- User stories: 7
+- Task groups: 10
+- Subtasks: 87
+
+**Notes**:
+- Every task group includes mig-test-gen, mig-containerize, mig-deploy and documentation subtasks.
+- TG8 is dedicated containerization and TG9 holds the OpenShift manifests.
+- These skills were specified but not run during planning: this stage must not modify source, and nothing can be built in the sandbox. They are run in Phase 4.
+
+---

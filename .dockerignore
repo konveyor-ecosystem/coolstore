@@ -1,0 +1,7 @@
+target/
+.git/
+.rgctl/
+.konveyor/
+mig-*-workspace/
+migiq-workspace/
+**/node_modules/

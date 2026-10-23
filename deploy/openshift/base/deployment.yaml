@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coolstore
+  labels: {app: coolstore}
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"coolstore:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"coolstore\")].image"}]'
+spec:
+  replicas: 1   # in-memory cart store + in-process messaging: keep 1 until an external CartStore/broker exists
+  strategy: {type: RollingUpdate, rollingUpdate: {maxSurge: 1, maxUnavailable: 0}}
+  selector: {matchLabels: {app: coolstore}}
+  template:
+    metadata: {labels: {app: coolstore}}
+    spec:
+      containers:
+        - name: coolstore
+          image: coolstore:latest
+          imagePullPolicy: Always
+          ports: [{containerPort: 8080, name: http}]
+          envFrom: [{configMapRef: {name: coolstore-config}}]
+          env:
+            - {name: DB_USERNAME, valueFrom: {secretKeyRef: {name: coolstore-db, key: database-user}}}
+            - {name: DB_PASSWORD, valueFrom: {secretKeyRef: {name: coolstore-db, key: database-password}}}
+          startupProbe: {httpGet: {path: /q/health/started, port: 8080}, failureThreshold: 30, periodSeconds: 2}
+          livenessProbe: {httpGet: {path: /q/health/live, port: 8080}, periodSeconds: 10}
+          readinessProbe: {httpGet: {path: /q/health/ready, port: 8080}, periodSeconds: 5}
+          resources: {requests: {cpu: 250m, memory: 256Mi}, limits: {cpu: "1", memory: 512Mi}}
+          securityContext: {allowPrivilegeEscalation: false, runAsNonRoot: true, capabilities: {drop: [ALL]}}

@@ -1,0 +1,8 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata: {name: coolstore}
+spec:
+  source: {type: Git, git: {uri: "https://github.com/konveyor-ecosystem/coolstore.git", ref: main}}
+  strategy: {type: Docker, dockerStrategy: {dockerfilePath: Containerfile}}
+  output: {to: {kind: ImageStreamTag, name: "coolstore:latest"}}
+  triggers: [{type: ConfigChange}]

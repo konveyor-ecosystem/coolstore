@@ -37,3 +37,16 @@
 - 0002–0005 ✅ no AuditEvent.builder / FileSystemAuditLogger / logSuccess / logFailure / sync logEvent( in src/main/java
 - weblogic grep ✅ empty; javax grep ✅ empty (jakarta only)
 - tasks.md checkboxes updated for completed subtasks; UserStory.md ACs marked; on-cluster runtime tasks (7.2, 7.3, 9.5–9.8, 9.10) left unchecked — require live OpenShift/Keycloak (see report).
+
+### 05:25 — mig-test-gen execution (task 20261106_8) ✅
+- Suite: 8 test classes, 42 tests — **Tests run: 42, Failures: 0, Errors: 0, Skipped: 0** (`mvn -B -ntp test` BUILD SUCCESS on JDK 21).
+- Characterization (plain JUnit): PromoServiceTest (5), ShippingServiceTest (21 — all shipping tiers 2.99–10.99 + insurance 2%/1.5%/1% HALF_UP), TransformersTest (5 — JSON key order/contract, round-trip, toProduct incl. null-inventory), ShoppingCartServiceTest (3 — Mockito: cartId identity, promo pricing, checkout hand-off/reset).
+- @QuarkusTest (REST Assured, %test H2 + Flyway seed): HealthSmokeTest (2 — /q/health/live 200, / 200), ProductEndpointTest (2), CartEndpointTest (3 — add→total, checkout via @InjectMock processor), OrderEndpointTest (1). No @Disabled.
+- Main-code fixes by test agent: (1) **genuine bug** — io.quarkiverse.artemis:quarkus-artemis-jms 3.15.0 is built against Quarkus 3.40 (incompatible quarkus-devservices API; broke all @QuarkusTest boot and would break package/dev) → pinned **3.5.1** which targets platform 3.15.1; verified via Central parent poms. (2) test-scoped quarkus-junit5-mockito + mockito-junit-jupiter added (BOM-managed).
+- Executor note: Containerfile/CI use `dependency:go-offline`/`mvn verify` with the same pom — version pin propagates automatically.
+
+## Summary
+- User stories: 8 total — 7 completed (locally verified), 1 open (US8 production cutover — needs live OpenShift)
+- Task groups: 9/9 executed; subtasks: 75/81 complete (7.2, 7.3, 9.5–9.8, 9.10 require live cluster)
+- Build: compile + full test suite green on JDK 21 / Quarkus 3.15.1
+- Mandatory rules: 5/5 PASS; weblogic/javax greps clean

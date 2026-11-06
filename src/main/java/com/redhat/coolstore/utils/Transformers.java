@@ -1,23 +1,20 @@
 package com.redhat.coolstore.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redhat.coolstore.model.CatalogItemEntity;
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.model.OrderItem;
 import com.redhat.coolstore.model.Product;
 import com.redhat.coolstore.model.ShoppingCart;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonWriter;
-
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
+
+import org.jboss.logging.Logger;
 
 /**
  * Created by tqvarnst on 2017-03-30.
@@ -27,7 +24,9 @@ public class Transformers {
     private static final String[] RANDOM_NAMES = {"Sven Karlsson","Johan Andersson","Karl Svensson","Anders Johansson","Stefan Olson","Martin Ericsson"};
     private static final String[] RANDOM_EMAILS = {"sven@gmail.com","johan@gmail.com","karl@gmail.com","anders@gmail.com","stefan@gmail.com","martin@gmail.com"};
 
-    private static Logger log = Logger.getLogger(Transformers.class.getName());
+    private static final Logger log = Logger.getLogger(Transformers.class);
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     public static Product toProduct(CatalogItemEntity entity) {
         Product prod = new Product();
@@ -40,59 +39,65 @@ public class Transformers {
             prod.setLink(entity.getInventory().getLink());
             prod.setQuantity(entity.getInventory().getQuantity());
         } else {
-            log.warning("Inventory for " + entity.getName() + "[" + entity.getItemId()+ "] unknown and missing");
+            log.warn("Inventory for " + entity.getName() + "[" + entity.getItemId() + "] unknown and missing");
         }
         return prod;
     }
 
     public static String shoppingCartToJson(ShoppingCart cart) {
-        JsonArrayBuilder cartItems = Json.createArrayBuilder();
+        List<Map<String, Object>> items = new ArrayList<>();
         cart.getShoppingCartItemList().forEach(item -> {
-            cartItems.add(Json.createObjectBuilder()
-                .add("productSku",item.getProduct().getItemId())
-                .add("quantity",item.getQuantity())
-            );
+            Map<String, Object> itemMap = new LinkedHashMap<>();
+            itemMap.put("productSku", item.getProduct().getItemId());
+            itemMap.put("quantity", item.getQuantity());
+            items.add(itemMap);
         });
 
         int randomNameAndEmailIndex = ThreadLocalRandom.current().nextInt(RANDOM_NAMES.length);
 
-        JsonObject jsonObject = Json.createObjectBuilder()
-            .add("orderValue", Double.valueOf(cart.getCartTotal()))
-            .add("customerName",RANDOM_NAMES[randomNameAndEmailIndex])
-            .add("customerEmail",RANDOM_EMAILS[randomNameAndEmailIndex])
-            .add("retailPrice", cart.getShoppingCartItemList().stream().mapToDouble(i -> i.getQuantity()*i.getPrice()).sum())
-            .add("discount", Double.valueOf(cart.getCartItemPromoSavings()))
-            .add("shippingFee", Double.valueOf(cart.getShippingTotal()))
-            .add("shippingDiscount", Double.valueOf(cart.getShippingPromoSavings()))
-            .add("items",cartItems) 
-            .build();
-        StringWriter w = new StringWriter();
-        try (JsonWriter writer = Json.createWriter(w)) {
-            writer.write(jsonObject);
+        // LinkedHashMap keeps insertion order so the JSON key contract is preserved exactly:
+        // orderValue, customerName, customerEmail, retailPrice, discount, shippingFee, shippingDiscount, items
+        Map<String, Object> root = new LinkedHashMap<>();
+        root.put("orderValue", Double.valueOf(cart.getCartTotal()));
+        root.put("customerName", RANDOM_NAMES[randomNameAndEmailIndex]);
+        root.put("customerEmail", RANDOM_EMAILS[randomNameAndEmailIndex]);
+        root.put("retailPrice", Double.valueOf(cart.getShoppingCartItemList().stream().mapToDouble(i -> i.getQuantity() * i.getPrice()).sum()));
+        root.put("discount", Double.valueOf(cart.getCartItemPromoSavings()));
+        root.put("shippingFee", Double.valueOf(cart.getShippingTotal()));
+        root.put("shippingDiscount", Double.valueOf(cart.getShippingPromoSavings()));
+        root.put("items", items);
+
+        try {
+            return MAPPER.writeValueAsString(root);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize shopping cart to JSON", e);
         }
-        return w.toString();
     }
 
     public static Order jsonToOrder(String json) {
-        JsonReader jsonReader = Json.createReader(new StringReader(json));
-        JsonObject rootObject = jsonReader.readObject();
+        final JsonNode rootObject;
+        try {
+            rootObject = MAPPER.readTree(json);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to parse order JSON", e);
+        }
         Order order = new Order();
-        order.setCustomerName(rootObject.getString("customerName"));
-        order.setCustomerEmail(rootObject.getString("customerEmail"));
-        order.setOrderValue(rootObject.getJsonNumber("orderValue").doubleValue());
-        order.setRetailPrice(rootObject.getJsonNumber("retailPrice").doubleValue());
-        order.setDiscount(rootObject.getJsonNumber("discount").doubleValue());
-        order.setShippingFee(rootObject.getJsonNumber("shippingFee").doubleValue());
-        order.setShippingDiscount(rootObject.getJsonNumber("shippingDiscount").doubleValue());
-        JsonArray jsonItems = rootObject.getJsonArray("items");
+        order.setCustomerName(rootObject.get("customerName").asText());
+        order.setCustomerEmail(rootObject.get("customerEmail").asText());
+        order.setOrderValue(rootObject.get("orderValue").asDouble());
+        order.setRetailPrice(rootObject.get("retailPrice").asDouble());
+        order.setDiscount(rootObject.get("discount").asDouble());
+        order.setShippingFee(rootObject.get("shippingFee").asDouble());
+        order.setShippingDiscount(rootObject.get("shippingDiscount").asDouble());
+        JsonNode jsonItems = rootObject.get("items");
         List<OrderItem> items = new ArrayList<OrderItem>(jsonItems.size());
-        for (JsonObject jsonItem : jsonItems.getValuesAs(JsonObject.class)) {
+        for (JsonNode jsonItem : jsonItems) {
             OrderItem oi = new OrderItem();
-            oi.setProductId(jsonItem.getString("productSku"));
-            oi.setQuantity(jsonItem.getInt("quantity"));
+            oi.setProductId(jsonItem.get("productSku").asText());
+            oi.setQuantity(jsonItem.get("quantity").asInt());
             items.add(oi);
         }
-        order.setItemList(items); 
+        order.setItemList(items);
         return order;
     }
 

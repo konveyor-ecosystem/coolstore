@@ -1,0 +1,114 @@
+# CI/CD pipeline for the CoolStore monolith on Quarkus 3.
+#
+# Replaces the legacy Azure Web App pipeline (main_clustertesting(dev).yml).
+#
+#   build  : compile + run tests on every push / PR
+#   image  : build the container image with Jib and push it to Quay
+#            (only for pushes to main, only when Quay secrets are configured)
+#   deploy : apply openshift/ manifests and roll the new image tag out
+#            (only for pushes to main, only when OpenShift secrets are
+#            configured — the job is skipped gracefully otherwise)
+#
+# Required repository secrets:
+#   QUAY_USERNAME / QUAY_PASSWORD / QUAY_NAMESPACE   - Quay.io robot account
+#   OPENSHIFT_SERVER / OPENSHIFT_TOKEN               - OpenShift cluster + token
+---
+name: Build and Deploy to OpenShift
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Install internal audit-logging-library 2.0.0
+        # com.enterprise:audit-logging-library is not on Maven Central
+        run: mvn -B -ntp install:install-file -Dfile=lib/audit-logging-library-2.0.0.jar -DgroupId=com.enterprise -DartifactId=audit-logging-library -Dversion=2.0.0 -Dpackaging=jar
+
+      - name: Build and verify
+        run: mvn -B -ntp verify
+
+  image:
+    name: Build and push container image
+    needs: build
+    runs-on: ubuntu-latest
+    # Cut images only from main, and only when Quay credentials are configured
+    # (skips gracefully on forks / private runs without the secrets).
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      secrets.QUAY_NAMESPACE != '' &&
+      secrets.QUAY_USERNAME != '' &&
+      secrets.QUAY_PASSWORD != ''
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build container image (Jib)
+        run: >-
+          mvn -B -ntp package -DskipTests
+          -Dquarkus.container-image.build=true
+          -Dquarkus.container-image.name=coolstore-quarkus
+          -Dquarkus.container-image.jib-base-jvm-image=registry.access.redhat.com/ubi9/openjdk-21:latest
+          -Dquarkus.container-image.tag=${{ github.sha }}
+
+      - name: Push image to Quay
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: coolstore-quarkus
+          tags: ${{ github.sha }}
+          registry: quay.io/${{ secrets.QUAY_NAMESPACE }}
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }}
+
+  deploy:
+    name: Deploy to OpenShift
+    needs: image
+    runs-on: ubuntu-latest
+    # Deploy only from main, and only when OpenShift credentials are configured;
+    # the job is skipped gracefully when the secrets are absent.
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      secrets.OPENSHIFT_SERVER != '' &&
+      secrets.OPENSHIFT_TOKEN != ''
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          insecure_skip_tls_verify: true
+
+      - name: Apply OpenShift manifests
+        run: oc apply -f openshift/
+
+      - name: Roll out new image tag
+        run: >-
+          oc set image deployment/coolstore-quarkus
+          coolstore-quarkus=quay.io/coolstore/coolstore-quarkus:${{ github.sha }}

@@ -1,0 +1,193 @@
+# CoolStore on OpenShift — application manifests (Quarkus 3 monolith).
+#
+# Deployment order (this app depends on the backing services):
+#   1. openshift/postgresql.yaml   — PostgreSQL database
+#   2. openshift/amq-broker.yaml   — ActiveMQ Artemis broker (topic/orders)
+#   3. openshift/keycloak.yaml     — Keycloak OIDC identity provider
+#   4. openshift/coolstore-quarkus.yaml — the application (this file)
+#
+# One-shot (CI does the same):  oc apply -f openshift/
+# Prerequisite: the `keycloak-realm` ConfigMap — see openshift/keycloak.yaml.
+#
+# The Secrets below contain CHANGE_ME placeholders. Before real use, replace
+# them, e.g.:
+#   oc create secret generic coolstore-db \
+#     --from-literal=QUARKUS_DATASOURCE_USERNAME=... \
+#     --from-literal=QUARKUS_DATASOURCE_PASSWORD=...
+# (or `oc apply` this file and then `oc set data secret/coolstore-db ...`).
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: coolstore-db
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+type: Opaque
+stringData:
+  QUARKUS_DATASOURCE_USERNAME: CHANGE_ME
+  QUARKUS_DATASOURCE_PASSWORD: CHANGE_ME
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: coolstore-broker
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+type: Opaque
+stringData:
+  QUARKUS_ARTEMIS_USERNAME: CHANGE_ME
+  QUARKUS_ARTEMIS_PASSWORD: CHANGE_ME
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: coolstore-audit
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+type: Opaque
+stringData:
+  AUDIT_LOGGER_TCP_HOST: audit-collector
+  AUDIT_LOGGER_TCP_PORT: "1514"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coolstore-config
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+data:
+  QUARKUS_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/coolstore
+  QUARKUS_ARTEMIS_URL: tcp://amq-broker:61616
+  QUARKUS_OIDC_AUTH_SERVER_URL: http://keycloak:8080/realms/eap
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coolstore-quarkus
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+    app.kubernetes.io/name: coolstore-quarkus
+    app.kubernetes.io/part-of: coolstore
+    app.kubernetes.io/component: application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: coolstore-quarkus
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0   # never drop below desired capacity during rollouts
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: coolstore-quarkus
+        app.kubernetes.io/name: coolstore-quarkus
+        app.kubernetes.io/part-of: coolstore
+        app.kubernetes.io/component: application
+    spec:
+      containers:
+        - name: coolstore-quarkus
+          image: quay.io/coolstore/coolstore-quarkus:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: coolstore-config
+            - secretRef:
+                name: coolstore-db
+            - secretRef:
+                name: coolstore-broker
+            - secretRef:
+                name: coolstore-audit
+          # Slow start allowed (up to 150s) before liveness kicks in.
+          startupProbe:
+            httpGet:
+              path: /q/health/started
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /q/health/live
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coolstore-quarkus
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+spec:
+  selector:
+    app: coolstore-quarkus
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+# Edge-terminated TLS; OpenShift generates the public hostname automatically.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: coolstore
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+spec:
+  to:
+    kind: Service
+    name: coolstore-quarkus
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: coolstore-quarkus
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: coolstore-quarkus
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80

@@ -1,0 +1,132 @@
+# CoolStore on OpenShift — ActiveMQ Artemis broker.
+#
+# Deployment order (dependencies):
+#   1. openshift/postgresql.yaml   — PostgreSQL database
+#   2. openshift/amq-broker.yaml   — this file (apply second)
+#   3. openshift/keycloak.yaml     — OIDC identity provider
+#   4. openshift/coolstore-quarkus.yaml — the application
+#
+# One-shot:  oc apply -f openshift/
+#
+# The application connects to tcp://amq-broker:61616 with the credentials in
+# secret `coolstore-broker` (openshift/coolstore-quarkus.yaml) — keep them in
+# sync with this secret.
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: amq-creds
+  namespace: coolstore
+  labels:
+    app: amq-broker
+type: Opaque
+stringData:
+  AMQ_USER: coolstore
+  AMQ_PASSWORD: CHANGE_ME
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: amq-journal
+  namespace: coolstore
+  labels:
+    app: amq-broker
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amq-broker
+  namespace: coolstore
+  labels:
+    app: amq-broker
+    app.kubernetes.io/name: amq-broker
+    app.kubernetes.io/part-of: coolstore
+    app.kubernetes.io/component: messaging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: amq-broker
+  strategy:
+    type: Recreate # single broker instance bound to an RWO journal volume
+  template:
+    metadata:
+      labels:
+        app: amq-broker
+        app.kubernetes.io/name: amq-broker
+        app.kubernetes.io/part-of: coolstore
+        app.kubernetes.io/component: messaging
+    spec:
+      containers:
+        - name: amq-broker
+          image: quay.io/artemiscloud/activemq-artemis-broker:latest
+          env:
+            - name: AMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: amq-creds
+                  key: AMQ_USER
+            - name: AMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: amq-creds
+                  key: AMQ_PASSWORD
+            # core = the JMS client protocol used by quarkus-artemis-jms;
+            # openwire kept for compatibility with legacy consumers.
+            - name: AMQ_PROTOCOLS
+              value: "core,openwire"
+            # Address used for order shipping events (topic/orders).
+            - name: AMQ_ADDRESSES
+              value: "topic/orders"
+            - name: AMQ_ENABLE_ANALYTICS
+              value: "false"
+          ports:
+            - name: core
+              containerPort: 61616
+              protocol: TCP
+          volumeMounts:
+            - name: journal
+              mountPath: /opt/activemq-artemis-broker/data
+          readinessProbe:
+            tcpSocket:
+              port: 61616
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 61616
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+      volumes:
+        - name: journal
+          persistentVolumeClaim:
+            claimName: amq-journal
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: amq-broker
+  namespace: coolstore
+  labels:
+    app: amq-broker
+spec:
+  selector:
+    app: amq-broker
+  ports:
+    - name: core
+      port: 61616
+      targetPort: 61616
+      protocol: TCP

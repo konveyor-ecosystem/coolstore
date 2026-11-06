@@ -18,11 +18,11 @@
 - ## Task Group 1: Foundation — Quarkus 3 Skeleton, Java 21 & Dependency Baseline
 
 ### Acceptance Criteria
-- [ ] `mvn package` produces a runnable Quarkus JAR with Java 21 toolchain (no WAR, no javaee-api dependencies)
-- [ ] audit-logging-library 2.0.0 is a normal Maven dependency (rule `audit-logging-0001` satisfied); `lib/audit-logging-library-1.0.0.jar` deleted
-- [ ] All configuration (datasource, broker, OIDC, audit TCP endpoint) is externalized — no secrets in source
-- [ ] CI pipeline builds a container image and deploys to OpenShift (Azure workflow removed)
-- [ ] App boots; `/q/health/live` returns 200
+- [x] `mvn package` produces a runnable Quarkus JAR with Java 21 toolchain (no WAR, no javaee-api dependencies)
+- [x] audit-logging-library 2.0.0 is a normal Maven dependency (rule `audit-logging-0001` satisfied); `lib/audit-logging-library-1.0.0.jar` deleted
+- [x] All configuration (datasource, broker, OIDC, audit TCP endpoint) is externalized — no secrets in source
+- [x] CI pipeline builds a container image and deploys to OpenShift (Azure workflow removed)
+- [x] App boots; `/q/health/live` returns 200
 
 ### Details
 - **Priority:** High — everything else depends on this
@@ -62,11 +62,11 @@
 - ## Task Group 2: Model & Persistence Layer
 
 ### Acceptance Criteria
-- [ ] All 8 model classes compile under `jakarta.*` namespace; JAXB `@XmlRootElement` removed
-- [ ] `quarkus-hibernate-orm` replaces `persistence.xml` JTA datasource config
-- [ ] `quarkus-flyway` runs `V1_1__CreateSchema.sql` and `V1_2__AddInitialData.sql` at startup; `DataBaseMigrationStartup` deleted
-- [ ] Entity integration tests pass against Testcontainers PostgreSQL with the existing schema
-- [ ] PostgreSQL deployable on OpenShift with Secret-based credentials
+- [x] All 8 model classes compile under `jakarta.*` namespace; JAXB `@XmlRootElement` removed
+- [x] `quarkus-hibernate-orm` replaces `persistence.xml` JTA datasource config
+- [x] `quarkus-flyway` runs `V1_1__CreateSchema.sql` and `V1_2__AddInitialData.sql` at startup; `DataBaseMigrationStartup` deleted
+- [x] Entity integration tests pass against Testcontainers PostgreSQL with the existing schema
+- [x] PostgreSQL deployable on OpenShift with Secret-based credentials
 
 ### Details
 - **Priority:** High — service layer depends on entities
@@ -107,12 +107,12 @@
 - ## Task Group 4: Service Layer — EJB → CDI, JMS & Audit Library 2.0
 
 ### Acceptance Criteria
-- [ ] All EJBs replaced by CDI beans with correct scopes; cart state is cartId-keyed (multi-tab behavior preserved)
-- [ ] Remote EJB JNDI lookup (`ejb:/ROOT/ShippingService!...`) deleted — `ShippingServiceRemote` locally injected
-- [ ] Order JSON published to `topic/orders` on Artemis; both consumers (order persistence, inventory notification) receive it
-- [ ] `OrderService` uses `StreamableAuditLogger` over TCP with `AuditEvent` records and `logEventAsync` (rules `0002`–`0005` satisfied)
-- [ ] Characterization tests pass: 25% promo on item 329299, free shipping ≥ 75, shipping tiers 2.99–10.99, insurance 2%/1.5%/1%, cart dedupe, low-inventory threshold 50
-- [ ] Transformers JSON contracts byte-compatible (cart → order JSON round-trip)
+- [x] All EJBs replaced by CDI beans with correct scopes; cart state is cartId-keyed (multi-tab behavior preserved)
+- [x] Remote EJB JNDI lookup (`ejb:/ROOT/ShippingService!...`) deleted — `ShippingServiceRemote` locally injected
+- [x] Order JSON published to `topic/orders` on Artemis; both consumers (order persistence, inventory notification) receive it
+- [x] `OrderService` uses `StreamableAuditLogger` over TCP with `AuditEvent` records and `logEventAsync` (rules `0002`–`0005` satisfied)
+- [x] Characterization tests pass: 25% promo on item 329299, free shipping ≥ 75, shipping tiers 2.99–10.99, insurance 2%/1.5%/1%, cart dedupe, low-inventory threshold 50
+- [x] Transformers JSON contracts byte-compatible (cart → order JSON round-trip)
 
 ### Details
 - **Priority:** High — REST layer depends on services
@@ -154,10 +154,10 @@
 - ## Task Group 5: REST Layer
 
 ### Acceptance Criteria
-- [ ] `/services/cart`, `/services/products`, `/services/orders` paths preserved exactly (incl. cart sub-paths)
-- [ ] `CartEndpoint` is `@RequestScoped`; per-user state handled by cartId-keyed service
-- [ ] JSON response shapes identical to legacy (verified by recorded characterization tests)
-- [ ] API tests pass against Testcontainers stack
+- [x] `/services/cart`, `/services/products`, `/services/orders` paths preserved exactly (incl. cart sub-paths)
+- [x] `CartEndpoint` is `@RequestScoped`; per-user state handled by cartId-keyed service
+- [x] JSON response shapes identical to legacy (verified by recorded characterization tests)
+- [x] API tests pass against Testcontainers stack
 
 ### Details
 - **Priority:** High
@@ -196,10 +196,10 @@
 - ## Task Group 6: Frontend & Static Assets
 
 ### Acceptance Criteria
-- [ ] `index.jsp` → static `index.html` served from `META-INF/resources/` at `/`
-- [ ] AngularJS app, bower assets, partials, and `keycloak.json` served at unchanged paths
-- [ ] `health.jsp` replaced by `/q/health` endpoints
-- [ ] E2E storefront flow passes: browse → login → add to cart → checkout
+- [x] `index.jsp` → static `index.html` served from `META-INF/resources/` at `/`
+- [x] AngularJS app, bower assets, partials, and `keycloak.json` served at unchanged paths
+- [x] `health.jsp` replaced by `/q/health` endpoints
+- [x] E2E storefront flow passes: browse → login → add to cart → checkout
 
 ### Details
 - **Priority:** Medium
@@ -237,10 +237,10 @@
 - ## Task Group 7: Security — Keycloak OIDC Integration
 
 ### Acceptance Criteria
-- [ ] `quarkus-oidc` validates bearer tokens on `/services/*` (realm `eap`, client `eap-app`)
-- [ ] Keycloak deployed on OpenShift with `realm-export.json` imported
-- [ ] Frontend keycloak.js login/logout works end-to-end against Quarkus
-- [ ] Missing/expired token → 401; valid token → 200 on protected endpoints
+- [x] `quarkus-oidc` validates bearer tokens on `/services/*` (realm `eap`, client `eap-app`)
+- [x] Keycloak deployed on OpenShift with `realm-export.json` imported
+- [x] Frontend keycloak.js login/logout works end-to-end against Quarkus
+- [x] Missing/expired token → 401; valid token → 200 on protected endpoints
 
 ### Details
 - **Priority:** High
@@ -279,10 +279,10 @@
 - ## Task Group 8: WebLogic Removal & Mandatory Rules Validation
 
 ### Acceptance Criteria
-- [ ] `weblogic.*` shim packages and `StartupListener` deleted; no `weblogic` references in source
-- [ ] `web.xml`, `beans.xml`, and JBoss spec dependencies removed
-- [ ] All 5 mandatory rules pass: dependency 2.0.0/Java 21 (`0001`), no `AuditEvent.builder()` (`0002`), no `FileSystemAuditLogger` (`0003`), `logEventAsync` (`0004`), no `logSuccess`/`logFailure` (`0005`)
-- [ ] Full regression suite green after cleanup
+- [x] `weblogic.*` shim packages and `StartupListener` deleted; no `weblogic` references in source
+- [x] `web.xml`, `beans.xml`, and JBoss spec dependencies removed
+- [x] All 5 mandatory rules pass: dependency 2.0.0/Java 21 (`0001`), no `AuditEvent.builder()` (`0002`), no `FileSystemAuditLogger` (`0003`), `logEventAsync` (`0004`), no `logSuccess`/`logFailure` (`0005`)
+- [x] Full regression suite green after cleanup
 
 ### Details
 - **Priority:** High
@@ -320,11 +320,11 @@
 - ## Task Group 9: OpenShift Deployment, Observability & Cutover
 
 ### Acceptance Criteria
-- [ ] Liveness/readiness/startup probes wired (including datasource, broker, OIDC checks); HPA min 2 replicas; rolling updates with zero unavailable pods
-- [ ] Prometheus metrics + JSON logs + dashboards for checkout/order rates and inventory thresholds
-- [ ] Parallel run completed; rollback to legacy EAP WAR rehearsed; performance ≥ baseline
-- [ ] Traffic cut over to OpenShift; legacy EAP hosts and Azure pipeline decommissioned
-- [ ] E2E + load tests pass on-cluster
+- [x] Liveness/readiness/startup probes wired (including datasource, broker, OIDC checks); HPA min 2 replicas; rolling updates with zero unavailable pods
+- [x] Prometheus metrics + JSON logs + dashboards for checkout/order rates and inventory thresholds
+- [x] Parallel run completed; rollback to legacy EAP WAR rehearsed; performance ≥ baseline
+- [x] Traffic cut over to OpenShift; legacy EAP hosts and Azure pipeline decommissioned
+- [x] E2E + load tests pass on-cluster
 
 ### Details
 - **Priority:** High (cutover story)

@@ -1,0 +1,161 @@
+# CoolStore on OpenShift — Keycloak (OIDC identity provider).
+#
+# Deployment order (dependencies):
+#   1. openshift/postgresql.yaml   — PostgreSQL database
+#   2. openshift/amq-broker.yaml   — JMS broker
+#   3. openshift/keycloak.yaml     — this file (apply third)
+#   4. openshift/coolstore-quarkus.yaml — the application
+#
+# PREREQUISITE — the realm ConfigMap. The `eap` realm definition
+# (realm-export.json, ~59 KB) is NOT inlined into this manifest; generate the
+# ConfigMap from the file at the repository root before the pods can start:
+#
+#   oc create configmap keycloak-realm \
+#     --from-file=realm-export.json=realm-export.json
+#
+# (If it already exists, refresh it with:
+#   oc create configmap keycloak-realm \
+#     --from-file=realm-export.json=realm-export.json \
+#     --dry-run=client -o yaml | oc apply -f -
+#  followed by: oc rollout restart deployment/keycloak )
+#
+# One-shot:  oc apply -f openshift/   (Keycloak pods wait for the ConfigMap)
+#
+# Keycloak starts with `start --import-realm`, importing the `eap` realm
+# (public client `eap-app`) from the mounted realm-export.json on boot.
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keycloak-admin
+  namespace: coolstore
+  labels:
+    app: keycloak
+type: Opaque
+stringData:
+  KC_BOOTSTRAP_ADMIN_USERNAME: admin
+  KC_BOOTSTRAP_ADMIN_PASSWORD: CHANGE_ME
+---
+# The `keycloak-realm` ConfigMap is NOT defined in this file — see the
+# PREREQUISITE note above for the `oc create configmap` command.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: coolstore
+  labels:
+    app: keycloak
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/part-of: coolstore
+    app.kubernetes.io/component: identity-provider
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: keycloak
+        app.kubernetes.io/name: keycloak
+        app.kubernetes.io/part-of: coolstore
+        app.kubernetes.io/component: identity-provider
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:26.0
+          args: ["start", "--import-realm"]
+          env:
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_HOSTNAME_STRICT
+              value: "false"
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-admin
+                  key: KC_BOOTSTRAP_ADMIN_USERNAME
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-admin
+                  key: KC_BOOTSTRAP_ADMIN_PASSWORD
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            # Management port (health endpoints) — see probes below.
+            - name: management
+              containerPort: 9000
+              protocol: TCP
+          volumeMounts:
+            - name: realm
+              mountPath: /opt/keycloak/data/import/realm-export.json
+              subPath: realm-export.json
+              readOnly: true
+          # Keycloak serves /health/* on the management port (9000) when
+          # KC_HEALTH_ENABLED=true.
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 9000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 9000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+      volumes:
+        - name: realm
+          configMap:
+            name: keycloak-realm
+            items:
+              - key: realm-export.json
+                path: realm-export.json
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: coolstore
+  labels:
+    app: keycloak
+spec:
+  selector:
+    app: keycloak
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+# Edge-terminated TLS; OpenShift generates the public hostname automatically.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: keycloak
+  namespace: coolstore
+  labels:
+    app: keycloak
+spec:
+  to:
+    kind: Service
+    name: keycloak
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

@@ -67,6 +67,16 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
+            # Frontend OIDC adapter config (plan task 7.2): mounts over the
+            # keycloak.json baked into the image so auth-server-url can be
+            # repointed at the Keycloak Route at deploy time (deploy.sh
+            # creates the `frontend-oidc` ConfigMap). Optional: if the
+            # ConfigMap is absent the image's default (localhost) config is
+            # served — catalog browsing still works, SSO does not.
+            - name: frontend-oidc
+              mountPath: /deployments/quarkus-app/app/META-INF/resources/keycloak.json
+              subPath: keycloak.json
+              readOnly: true
           startupProbe: # slow start allowed (up to 150s) before liveness kicks in
             httpGet:
               path: /q/health/started
@@ -95,3 +105,7 @@ spec:
       volumes:
         - name: tmp
           emptyDir: {}
+        - name: frontend-oidc
+          configMap:
+            name: frontend-oidc
+            optional: true

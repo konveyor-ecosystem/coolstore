@@ -7,7 +7,7 @@ Quarkus column describes the modernized `coolstore-quarkus` application
 
 | Concern | Legacy (Java EE 7 / EAP 7.4) | Quarkus 3.15.1 |
 |---|---|---|
-| Packaging | `ROOT.war` deployed into EAP | Fast-jar `target/quarkus-app/quarkus-runner.jar`, `java -jar`; containerized via `Containerfile` (UBI 9 OpenJDK 21) |
+| Packaging | `ROOT.war` deployed into EAP | Fast-jar `target/quarkus-app/quarkus-runner.jar`, `java -jar`; containerized via `Dockerfile` (UBI 9 OpenJDK 21) |
 | Dependency management | `javaee-api` 7.0 (`provided`) | `io.quarkus.platform:quarkus-bom` 3.15.1 import |
 | Session beans | `@Stateful` / `@Stateless` / `@Singleton @Startup` EJBs | CDI beans with `@ApplicationScoped` / `@SessionScoped` / `@RequestScoped`; boot work in `StartupEvent` observers |
 | Order processing | `@MessageDriven` on `topic/orders` | `quarkus-artemis-jms` topic subscriber (`MessageListener`) on `topic/orders` |
@@ -61,4 +61,4 @@ oc -n coolstore logs deployment/coolstore-quarkus   # JSON structured logs
 
 CI (`.github/workflows/build-openshift.yml`) runs the same build on every push
 and pull request; on `main` it also builds and pushes the container image and
-applies `openshift/` to the cluster.
+applies the root manifests to the cluster.

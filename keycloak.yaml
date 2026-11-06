@@ -1,43 +1,15 @@
-# CoolStore on OpenShift — Keycloak (OIDC identity provider).
+# CoolStore on OpenShift — Keycloak (OIDC identity provider, realm "eap").
+# Apply after secret.yaml (uses keycloak-admin).
 #
-# Deployment order (dependencies):
-#   1. openshift/postgresql.yaml   — PostgreSQL database
-#   2. openshift/amq-broker.yaml   — JMS broker
-#   3. openshift/keycloak.yaml     — this file (apply third)
-#   4. openshift/coolstore-quarkus.yaml — the application
-#
-# PREREQUISITE — the realm ConfigMap. The `eap` realm definition
-# (realm-export.json, ~59 KB) is NOT inlined into this manifest; generate the
-# ConfigMap from the file at the repository root before the pods can start:
+# PREREQUISITE — the `keycloak-realm` ConfigMap. The realm definition
+# (realm-export.json, ~59 KB, repo root) is NOT inlined here; create it first:
 #
 #   oc create configmap keycloak-realm \
 #     --from-file=realm-export.json=realm-export.json
 #
-# (If it already exists, refresh it with:
-#   oc create configmap keycloak-realm \
-#     --from-file=realm-export.json=realm-export.json \
-#     --dry-run=client -o yaml | oc apply -f -
-#  followed by: oc rollout restart deployment/keycloak )
-#
-# One-shot:  oc apply -f openshift/   (Keycloak pods wait for the ConfigMap)
-#
 # Keycloak starts with `start --import-realm`, importing the `eap` realm
 # (public client `eap-app`) from the mounted realm-export.json on boot.
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: keycloak-admin
-  namespace: coolstore
-  labels:
-    app: keycloak
-type: Opaque
-stringData:
-  KC_BOOTSTRAP_ADMIN_USERNAME: admin
-  KC_BOOTSTRAP_ADMIN_PASSWORD: CHANGE_ME
----
-# The `keycloak-realm` ConfigMap is NOT defined in this file — see the
-# PREREQUISITE note above for the `oc create configmap` command.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -63,6 +35,10 @@ spec:
         app.kubernetes.io/part-of: coolstore
         app.kubernetes.io/component: identity-provider
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.0
@@ -74,6 +50,10 @@ spec:
               value: "false"
             - name: KC_HEALTH_ENABLED
               value: "true"
+            # Edge-terminated Route in front → trust router X-Forwarded-* so
+            # auth redirects use the public https:// route hostname.
+            - name: KC_PROXY_HEADERS
+              value: xforwarded
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -88,8 +68,7 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-            # Management port (health endpoints) — see probes below.
-            - name: management
+            - name: management # health endpoints (see probes)
               containerPort: 9000
               protocol: TCP
           volumeMounts:
@@ -97,8 +76,6 @@ spec:
               mountPath: /opt/keycloak/data/import/realm-export.json
               subPath: realm-export.json
               readOnly: true
-          # Keycloak serves /health/* on the management port (9000) when
-          # KC_HEALTH_ENABLED=true.
           readinessProbe:
             httpGet:
               path: /health/ready
@@ -118,6 +95,10 @@ spec:
             limits:
               cpu: "1"
               memory: 1Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
       volumes:
         - name: realm
           configMap:
@@ -133,6 +114,7 @@ metadata:
   namespace: coolstore
   labels:
     app: keycloak
+    app.kubernetes.io/part-of: coolstore
 spec:
   selector:
     app: keycloak
@@ -143,6 +125,8 @@ spec:
       protocol: TCP
 ---
 # Edge-terminated TLS; OpenShift generates the public hostname automatically.
+# The browser-facing SPA must point at THIS route (see CONTAINERIZATION_REPORT.md
+# — known issue: META-INF/resources/keycloak.json still defaults to localhost).
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
@@ -150,6 +134,7 @@ metadata:
   namespace: coolstore
   labels:
     app: keycloak
+    app.kubernetes.io/part-of: coolstore
 spec:
   to:
     kind: Service

@@ -1,0 +1,24 @@
+# CoolStore on OpenShift — non-sensitive application configuration.
+# Apply before the Deployment (full apply order in CONTAINERIZATION_REPORT.md).
+# Sensitive values (credentials) live in secret.yaml.
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coolstore-config
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+    app.kubernetes.io/part-of: coolstore
+    app.kubernetes.io/component: application
+data:
+  # PostgreSQL (database-statefulset.yaml, Service "postgresql")
+  QUARKUS_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/coolstore
+  # AMQ Broker (amq-broker.yaml, Service "amq-broker")
+  QUARKUS_ARTEMIS_URL: tcp://amq-broker:61616
+  # Keycloak (keycloak.yaml, Service "keycloak") — realm "eap"
+  QUARKUS_OIDC_AUTH_SERVER_URL: http://keycloak:8080/realms/eap
+  # Audit collector (StreamableAuditLogger TCP, audit-logging-library 2.0.0).
+  # No collector is deployed by default — see CONTAINERIZATION_REPORT.md.
+  AUDIT_LOGGER_TCP_HOST: audit-collector
+  AUDIT_LOGGER_TCP_PORT: "1514"

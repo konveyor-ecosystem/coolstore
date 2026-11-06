@@ -1,0 +1,97 @@
+# CoolStore on OpenShift — application workload (Quarkus 3 monolith).
+# Apply LAST, after configmap.yaml, secret.yaml and the backing services
+# (database-statefulset.yaml, amq-broker.yaml, keycloak.yaml) — the app
+# connects to all three at startup (Flyway, JMS subscriptions, OIDC discovery).
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coolstore-quarkus
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+    app.kubernetes.io/name: coolstore-quarkus
+    app.kubernetes.io/part-of: coolstore
+    app.kubernetes.io/component: application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: coolstore-quarkus
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0 # never drop below desired capacity during rollouts
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: coolstore-quarkus
+        app.kubernetes.io/name: coolstore-quarkus
+        app.kubernetes.io/part-of: coolstore
+        app.kubernetes.io/component: application
+      annotations:
+        prometheus.io/scrape: "true" # Quarkus Micrometer endpoint
+        prometheus.io/port: "8080"
+        prometheus.io/path: /q/metrics
+    spec:
+      # OpenShift restricted-v2 SCC assigns a random non-root uid/gid from the
+      # namespace range; the image's USER 185 satisfies runAsNonRoot on plain
+      # Kubernetes. No runAsUser is pinned here on purpose.
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: coolstore-quarkus
+          image: quay.io/coolstore/coolstore-quarkus:latest
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: coolstore-config
+            - secretRef:
+                name: coolstore-db
+            - secretRef:
+                name: coolstore-broker
+          # Quarkus writes only temp files; with a read-only root filesystem
+          # /tmp is an ephemeral volume (JVM hsperfdata, Vert.x uploads).
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          startupProbe: # slow start allowed (up to 150s) before liveness kicks in
+            httpGet:
+              path: /q/health/started
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /q/health/live
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+      volumes:
+        - name: tmp
+          emptyDir: {}

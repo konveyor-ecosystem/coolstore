@@ -1,0 +1,20 @@
+# CoolStore on OpenShift — application Service (internal networking).
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coolstore-quarkus
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+    app.kubernetes.io/part-of: coolstore
+    app.kubernetes.io/component: application
+spec:
+  selector:
+    app: coolstore-quarkus
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  type: ClusterIP

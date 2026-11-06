@@ -8,7 +8,7 @@ How authentication works in the CoolStore monolith, and how to operate it.
 browser (AngularJS UI + keycloak.js)
    │  1. login redirect (public client eap-app, realm eap)
    ▼
-Keycloak realm `eap` (openshift/keycloak.yaml)
+Keycloak realm `eap` (keycloak.yaml)
    │  2. OIDC authorization-code flow → access token (JWT)
    ▼
 browser ── Authorization: Bearer <JWT> ──▶ /services REST API (Quarkus)
@@ -32,7 +32,7 @@ browser ── Authorization: Bearer <JWT> ──▶ /services REST API (Quarkus
   client `eap-app`.
 - On OpenShift it is mounted into the Keycloak pod from the `keycloak-realm`
   ConfigMap at `/opt/keycloak/data/import/realm-export.json` and imported at
-  boot (`start --import-realm`) — see the header of `openshift/keycloak.yaml`
+  boot (`start --import-realm`) — see the header of `keycloak.yaml`
   for the `oc create configmap keycloak-realm …` prerequisite.
 - For local dev, import the realm manually via the Keycloak console (see
   README, "Local backing services").

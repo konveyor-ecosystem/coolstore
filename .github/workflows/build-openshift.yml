@@ -5,7 +5,7 @@
 #   build  : compile + run tests on every push / PR
 #   image  : build the container image with Jib and push it to Quay
 #            (only for pushes to main, only when Quay secrets are configured)
-#   deploy : apply openshift/ manifests and roll the new image tag out
+#   deploy : apply the root manifests and roll the new image tag out
 #            (only for pushes to main, only when OpenShift secrets are
 #            configured — the job is skipped gracefully otherwise)
 #
@@ -66,13 +66,8 @@ jobs:
           java-version: '21'
           cache: maven
 
-      - name: Build container image (Jib)
-        run: >-
-          mvn -B -ntp package -DskipTests
-          -Dquarkus.container-image.build=true
-          -Dquarkus.container-image.name=coolstore-quarkus
-          -Dquarkus.container-image.jib-base-jvm-image=registry.access.redhat.com/ubi9/openjdk-21:latest
-          -Dquarkus.container-image.tag=${{ github.sha }}
+      - name: Build container image (Dockerfile)
+        run: docker build -f Dockerfile -t coolstore-quarkus:${{ github.sha }} .
 
       - name: Push image to Quay
         uses: redhat-actions/push-to-registry@v2
@@ -106,7 +101,10 @@ jobs:
           insecure_skip_tls_verify: true
 
       - name: Apply OpenShift manifests
-        run: oc apply -f openshift/
+        run: >-
+          oc apply -f configmap.yaml -f secret.yaml
+          -f database-statefulset.yaml -f amq-broker.yaml -f keycloak.yaml
+          -f deployment.yaml -f service.yaml -f route.yaml -f hpa.yaml
 
       - name: Roll out new image tag
         run: >-

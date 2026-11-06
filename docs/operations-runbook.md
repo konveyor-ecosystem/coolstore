@@ -7,20 +7,20 @@ Day-2 procedures for the CoolStore Quarkus deployment (namespace `coolstore`).
 The application depends on its backing services; apply in this order:
 
 ```bash
-oc apply -f openshift/postgresql.yaml          # 1. database
-oc apply -f openshift/amq-broker.yaml          # 2. JMS broker (topic/orders)
+oc apply -f database-statefulset.yaml          # 1. database
+oc apply -f amq-broker.yaml          # 2. JMS broker (topic/orders)
 oc create configmap keycloak-realm \           # 3a. realm prerequisite
   --from-file=realm-export.json=realm-export.json
-oc apply -f openshift/keycloak.yaml            # 3b. identity provider
-oc apply -f openshift/coolstore-quarkus.yaml   # 4. the application
+oc apply -f keycloak.yaml            # 3b. identity provider
+oc apply -f deployment.yaml   # 4. the application
 ```
 
-`oc apply -f openshift/` also works — files are applied alphabetically, which
+`oc apply -f configmap.yaml -f secret.yaml -f database-statefulset.yaml -f amq-broker.yaml -f keycloak.yaml -f deployment.yaml -f service.yaml -f route.yaml -f hpa.yaml` also works — files are applied alphabetically, which
 matches the required order — but the `keycloak-realm` ConfigMap must still be
-created manually first (see the header of `openshift/keycloak.yaml`); Keycloak
+created manually first (see the header of `keycloak.yaml`); Keycloak
 pods wait for it, and the application waits for Keycloak via its readiness
 probe. Replace every `CHANGE_ME` in the Secrets before deploying to a shared
-cluster. CI (`build-openshift.yml`) runs `oc apply -f openshift/` on pushes to
+cluster. CI (`build-openshift.yml`) runs `oc apply -f configmap.yaml -f secret.yaml -f database-statefulset.yaml -f amq-broker.yaml -f keycloak.yaml -f deployment.yaml -f service.yaml -f route.yaml -f hpa.yaml` on pushes to
 `main`, then pins the deployment to `quay.io/coolstore/coolstore-quarkus:<sha>`.
 
 ## Scaling
@@ -30,7 +30,7 @@ cluster. CI (`build-openshift.yml`) runs `oc apply -f openshift/` on pushes to
 - Temporary manual scale (the HPA will take over again):
   `oc scale deployment/coolstore-quarkus --replicas=4`.
 - To pin capacity, change `minReplicas`/`maxReplicas` in
-  `openshift/coolstore-quarkus.yaml` rather than scaling manually.
+  `deployment.yaml` rather than scaling manually.
 - Replicas ≥ 2 plus the rolling-update strategy replace the legacy EAP
   full-HA cluster: carts persist in PostgreSQL and orders flow through the
   Artemis topic, so any replica can serve any request.
@@ -105,7 +105,7 @@ oc rollout history deployment/coolstore-quarkus
 | `CrashLoopBackOff` on coolstore-quarkus | wrong/missing DB or broker credentials (`CHANGE_ME` left in Secrets) | `oc logs`, fix Secret values, `oc rollout restart` |
 | Readiness never turns green | DB unreachable, Flyway failed, or Artemis down | check `postgresql`/`amq-broker` pods and app logs |
 | `ImagePullBackOff` | tag not pushed / Quay permissions | confirm the image exists in Quay; check pull secret |
-| Keycloak `CreateContainerConfigError` | `keycloak-realm` ConfigMap missing | run the `oc create configmap` prerequisite from `openshift/keycloak.yaml` |
+| Keycloak `CreateContainerConfigError` | `keycloak-realm` ConfigMap missing | run the `oc create configmap` prerequisite from `keycloak.yaml` |
 | 401 on `/services/cart` or `/services/orders` | OIDC misconfiguration | see [security-oidc.md](security-oidc.md) |
 | HPA stuck at `minReplicas` | metrics-server not scraping / no CPU requests | verify resource `requests` (set in the Deployment) and metrics-server |
-| PVC `Pending` | no default StorageClass or quota exceeded | ask the cluster admin, or adjust the PVCs in `openshift/*.yaml` |
+| PVC `Pending` | no default StorageClass or quota exceeded | ask the cluster admin, or adjust the PVCs in the root manifests |

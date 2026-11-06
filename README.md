@@ -3,8 +3,8 @@
 The CoolStore monolith — originally a Java EE 7 WAR deployed on JBoss EAP 7.4 —
 has been modernized to **Quarkus 3.15.1 / Java 21**. It is a standalone
 fast-jar (`target/quarkus-app/quarkus-runner.jar`), containerized with a
-Red Hat UBI 9 OpenJDK 21 base image (see [`Containerfile`](Containerfile)) and
-deployed to OpenShift with the manifests in [`openshift/`](openshift/).
+Red Hat UBI 9 OpenJDK 21 base image (see [`Dockerfile`](Dockerfile)) and
+deployed to OpenShift with the manifests at the repository root.
 CI/CD is a GitHub Actions pipeline (`.github/workflows/build-openshift.yml`)
 that builds, tests, pushes the image to Quay and rolls it out on OpenShift.
 
@@ -76,7 +76,7 @@ create a test user (also valid for the legacy deployment):
 
 All configuration is injected via environment variables (on OpenShift, from
 the ConfigMap and Secrets in
-[`openshift/coolstore-quarkus.yaml`](openshift/coolstore-quarkus.yaml)):
+[`deployment.yaml`](deployment.yaml)):
 
 | Environment variable | Purpose | Default (local dev) |
 |---|---|---|
@@ -110,22 +110,22 @@ PostgreSQL/Artemis/Keycloak instances are required to run the suite.
 Build the container image locally:
 
 ```bash
-podman build -f Containerfile -t quay.io/coolstore/coolstore-quarkus:latest .
+podman build -f Dockerfile -t quay.io/coolstore/coolstore-quarkus:latest .
 ```
 
 Deploy to OpenShift (in dependency order — or one-shot, `oc` applies the
 files in the listed order):
 
 ```bash
-oc apply -f openshift/postgresql.yaml        # 1. database
-oc apply -f openshift/amq-broker.yaml        # 2. JMS broker
+oc apply -f database-statefulset.yaml        # 1. database
+oc apply -f amq-broker.yaml        # 2. JMS broker
 oc create configmap keycloak-realm \         # 3a. realm prerequisite
   --from-file=realm-export.json=realm-export.json
-oc apply -f openshift/keycloak.yaml          # 3b. identity provider
-oc apply -f openshift/coolstore-quarkus.yaml # 4. the application
+oc apply -f keycloak.yaml          # 3b. identity provider
+oc apply -f deployment.yaml # 4. the application
 ```
 
-`oc apply -f openshift/` applies all files at once — Keycloak pods simply wait
+`oc apply -f configmap.yaml -f secret.yaml -f database-statefulset.yaml -f amq-broker.yaml -f keycloak.yaml -f deployment.yaml -f service.yaml -f route.yaml -f hpa.yaml` applies all files at once — Keycloak pods simply wait
 for the `keycloak-realm` ConfigMap to exist. Replace every `CHANGE_ME` value
 in the Secrets before deploying to a real cluster. The application is exposed
 through the edge-TLS `coolstore` Route; it runs 2 replicas and autoscales

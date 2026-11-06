@@ -1,0 +1,25 @@
+# CoolStore on OpenShift — autoscaling (2–5 pods at 80% CPU).
+# CPU requests are set in deployment.yaml (required for the utilization metric).
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: coolstore-quarkus
+  namespace: coolstore
+  labels:
+    app: coolstore-quarkus
+    app.kubernetes.io/part-of: coolstore
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: coolstore-quarkus
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80

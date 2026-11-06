@@ -1,28 +1,6 @@
-# CoolStore on OpenShift — ActiveMQ Artemis broker.
-#
-# Deployment order (dependencies):
-#   1. openshift/postgresql.yaml   — PostgreSQL database
-#   2. openshift/amq-broker.yaml   — this file (apply second)
-#   3. openshift/keycloak.yaml     — OIDC identity provider
-#   4. openshift/coolstore-quarkus.yaml — the application
-#
-# One-shot:  oc apply -f openshift/
-#
-# The application connects to tcp://amq-broker:61616 with the credentials in
-# secret `coolstore-broker` (openshift/coolstore-quarkus.yaml) — keep them in
-# sync with this secret.
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: amq-creds
-  namespace: coolstore
-  labels:
-    app: amq-broker
-type: Opaque
-stringData:
-  AMQ_USER: coolstore
-  AMQ_PASSWORD: CHANGE_ME
+# CoolStore on OpenShift — ActiveMQ Artemis broker (JMS topic/orders).
+# Apply after secret.yaml (uses amq-creds). The app connects via
+# tcp://amq-broker:61616 with the credentials in secret `coolstore-broker`.
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -31,6 +9,7 @@ metadata:
   namespace: coolstore
   labels:
     app: amq-broker
+    app.kubernetes.io/part-of: coolstore
 spec:
   accessModes:
     - ReadWriteOnce
@@ -63,6 +42,10 @@ spec:
         app.kubernetes.io/part-of: coolstore
         app.kubernetes.io/component: messaging
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: amq-broker
           image: quay.io/artemiscloud/activemq-artemis-broker:latest
@@ -81,7 +64,8 @@ spec:
             # openwire kept for compatibility with legacy consumers.
             - name: AMQ_PROTOCOLS
               value: "core,openwire"
-            # Address used for order shipping events (topic/orders).
+            # Address used for order events (topic/orders); Artemis also
+            # auto-creates addresses on demand.
             - name: AMQ_ADDRESSES
               value: "topic/orders"
             - name: AMQ_ENABLE_ANALYTICS
@@ -110,6 +94,10 @@ spec:
             limits:
               cpu: "1"
               memory: 1Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
       volumes:
         - name: journal
           persistentVolumeClaim:
@@ -122,6 +110,7 @@ metadata:
   namespace: coolstore
   labels:
     app: amq-broker
+    app.kubernetes.io/part-of: coolstore
 spec:
   selector:
     app: amq-broker

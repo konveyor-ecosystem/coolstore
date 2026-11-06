@@ -43,7 +43,7 @@ is first pointed at an **existing** legacy database:
   the pending migrations `V1_1` (1.1) and `V1_2` (1.2) on top.
 
 On **fresh/empty** databases — such as the PostgreSQL deployed from
-`openshift/postgresql.yaml` — the full schema and seed data are created by
+`database-statefulset.yaml` — the full schema and seed data are created by
 `V1_1`/`V1_2` on first boot; no manual step is required.
 
 > **Caution** — if a database contains the tables *and* a legacy

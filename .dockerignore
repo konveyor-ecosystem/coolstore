@@ -1,0 +1,24 @@
+# Keep the container build context minimal — only pom.xml, lib/ and src/main
+# are needed to build the image (see Dockerfile).
+.git
+.github
+.gitignore
+.rgctl
+.konveyor
+.vscode
+.project
+assets
+docs
+mig-prompt-workspace
+mig-plan-workspace
+mig-execute-workspace
+openshift
+rules
+src/test
+target
+*.md
+*.yaml
+*.yml
+realm-export.json
+Dockerfile
+.dockerignore

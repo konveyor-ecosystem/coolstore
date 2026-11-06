@@ -4,3 +4,7 @@ target
 .idea
 .settings
 .vscode
+
+# rgctl/konveyor analysis artifacts (large binaries; small planning JSONs are force-added)
+.rgctl/
+.konveyor/

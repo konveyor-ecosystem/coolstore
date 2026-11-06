@@ -1,0 +1,2128 @@
+[
+  {
+    "id": 1,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.499014451Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.499014451Z",
+    "analysis": 1,
+    "ruleset": "cloud-readiness",
+    "rule": "session-00000",
+    "name": "",
+    "description": "HTTP session replication (distributable web.xml)",
+    "category": "mandatory",
+    "effort": 3,
+    "incidents": [
+      {
+        "id": 1,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.49928368Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.49928368Z",
+        "insight": 1,
+        "file": "/shared/source/coolstore/src/main/webapp/WEB-INF/web.xml",
+        "line": 5,
+        "message": "Session replication ensures that client sessions are not disrupted by node failure. Each node in the cluster shares information about ongoing sessions and can take over sessions if another node disappears. In a cloud environment, however, data in the memory of a running container can be wiped out by a restart.\n\n Recommendations\n\n * Review the session replication usage and ensure that it is configured properly.\n * Disable HTTP session clustering and accept its implications.\n * Re-architect the application so that sessions are stored in a cache backing service or a remote data grid.\n\n A remote data grid has the following benefits:\n\n * The application is more scaleable and elastic.\n * The application can survive EAP node failures because a JVM failure does not cause session data loss.\n * Session data can be shared by multiple applications.",
+        "codeSnip": "6  \u003c/web-app\u003e",
+        "facts": {
+          "data": "distributable",
+          "innerText": "",
+          "matchingXML": ""
+        }
+      }
+    ],
+    "links": [
+      {
+        "url": "https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.3/html/development_guide/clustering_in_web_applications",
+        "title": "JBoss EAP: Clustering in Web Applications"
+      },
+      {
+        "url": "https://12factor.net/processes",
+        "title": "Twelve-Factor App: Processes"
+      },
+      {
+        "url": "https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.3/html-single/getting_started_with_jboss_eap_for_openshift_container_platform/index#reference_clustering",
+        "title": "Getting Started with JBoss EAP for OpenShift Container Platform: Clustering"
+      },
+      {
+        "url": "https://12factor.net/backing-services",
+        "title": "Twelve-Factor App: Backing services"
+      },
+      {
+        "url": "https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.0/html-single/running_data_grid_on_openshift/index",
+        "title": "Running Data Grid on OpenShift"
+      },
+      {
+        "url": "https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.3/html-single/configuration_guide/index#jdg_externalize_http_sessions",
+        "title": "JBoss EAP:  Externalize HTTP Sessions to Red Hat Data Grid"
+      }
+    ],
+    "labels": [
+      "konveyor.io/source=java",
+      "konveyor.io/source=java-ee",
+      "konveyor.io/target=cloud-readiness",
+      "clustering"
+    ]
+  },
+  {
+    "id": 2,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.500076623Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.500076623Z",
+    "analysis": 1,
+    "ruleset": "discovery-rules",
+    "rule": "discover-java-files",
+    "name": "",
+    "description": "Java source files",
+    "incidents": [
+      {
+        "id": 2,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/CatalogItemEntity.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 3,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/InventoryEntity.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 4,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/Order.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 5,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/OrderItem.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 6,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/Product.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 7,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/Promotion.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 8,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/ShoppingCart.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 9,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/ShoppingCartItem.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 10,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/persistence/Resources.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 11,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 12,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/OrderEndpoint.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 13,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/ProductEndpoint.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 14,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/RestApplication.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 15,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/CatalogService.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 16,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/InventoryNotificationMDB.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 17,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/OrderService.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 18,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/OrderServiceMDB.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 19,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ProductService.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 20,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/PromoService.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 21,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ShippingService.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 22,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ShippingServiceRemote.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 23,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ShoppingCartOrderProcessor.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 24,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ShoppingCartService.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 25,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/DataBaseMigrationStartup.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 26,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Producers.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 27,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/StartupListener.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 28,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 29,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/weblogic/application/ApplicationLifecycleEvent.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 30,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/weblogic/application/ApplicationLifecycleListener.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 31,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.502372828Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.502372828Z",
+        "insight": 2,
+        "file": "/shared/source/coolstore/src/main/java/weblogic/i18n/logging/NonCatalogLogger.java",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "konveyor.io/target=discovery",
+      "discovery",
+      "tag=Java Source"
+    ]
+  },
+  {
+    "id": 3,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.503653028Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.503653028Z",
+    "analysis": 1,
+    "ruleset": "discovery-rules",
+    "rule": "discover-license",
+    "name": "",
+    "description": "Discover project license",
+    "incidents": [
+      {
+        "id": 32,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.504287122Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.504287122Z",
+        "insight": 3,
+        "file": "/shared/source/coolstore/src/main/webapp/bower_components/angular-patternfly/LICENSE.txt",
+        "line": 2,
+        "message": "",
+        "codeSnip": "3  ",
+        "facts": {
+          "matchingText": "Apache License 2.0"
+        }
+      },
+      {
+        "id": 33,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.504287122Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.504287122Z",
+        "insight": 3,
+        "file": "/shared/source/coolstore/src/main/webapp/bower_components/patternfly/LICENSE.txt",
+        "line": 2,
+        "message": "",
+        "codeSnip": "3  ",
+        "facts": {
+          "matchingText": "Apache License 2.0"
+        }
+      },
+      {
+        "id": 34,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.504287122Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.504287122Z",
+        "insight": 3,
+        "file": "/shared/source/coolstore/src/main/webapp/bower_components/patternfly/README.md",
+        "line": 204,
+        "message": "",
+        "codeSnip": "",
+        "facts": {
+          "matchingText": "Apache License 2.0"
+        }
+      },
+      {
+        "id": 35,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.504287122Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.504287122Z",
+        "insight": 3,
+        "file": "/shared/source/coolstore/src/main/webapp/bower_components/isotope/README.mdown",
+        "line": 38,
+        "message": "",
+        "codeSnip": "39  ",
+        "facts": {
+          "matchingText": "GNU GPL"
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "konveyor.io/target=discovery",
+      "discovery",
+      "tag=License=Apache License 2.0",
+      "tag=License=GNU GPL"
+    ]
+  },
+  {
+    "id": 4,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.504798454Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.504798454Z",
+    "analysis": 1,
+    "ruleset": "discovery-rules",
+    "rule": "discover-maven-xml",
+    "name": "",
+    "description": "Maven XML file",
+    "incidents": [
+      {
+        "id": 36,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.505239576Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.505239576Z",
+        "insight": 4,
+        "file": "/shared/source/coolstore/pom.xml",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "konveyor.io/target=discovery",
+      "discovery",
+      "tag=Maven XML"
+    ]
+  },
+  {
+    "id": 5,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.505602794Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.505602794Z",
+    "analysis": 1,
+    "ruleset": "discovery-rules",
+    "rule": "windup-discover-jpa-configuration",
+    "name": "",
+    "description": "JPA XML Configuration",
+    "incidents": [
+      {
+        "id": 37,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.506308843Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.506308843Z",
+        "insight": 5,
+        "file": "/shared/source/coolstore/src/main/resources/META-INF/persistence.xml",
+        "line": 8,
+        "message": "",
+        "codeSnip": "9          \u003cproperties\u003e",
+        "facts": {
+          "data": "persistence",
+          "innerText": "\n    \n        java:jboss/datasources/CoolstoreDS\n        \n            \n            \n            \n            \n            \n        \n    \n",
+          "matchingXML": "\u003cpersistence-unit name=\"primary\"\u003e\u003cjta-data-source\u003ejava:jboss/datasources/CoolstoreDS\u003c/jta-data-source\u003e\u003cproperties\u003e\u003cproperty name=\"javax.persistence.schema-generation.database.action\" value=\"none\"\u003e\u003c/property\u003e\u003cproperty name=\"hibernate.show_sql\" value=\"false\"\u003e\u003c/property\u003e\u003cproperty name=\"hibernate.format_sql\" value=\"true\"\u003e\u003c/property\u003e\u003cproperty name=\"hibernate.use_sql_comments\" value=\"true\"\u003e\u003c/property\u003e\u003cproperty name=\"hibernate.jdbc.use_get_generated_keys\" value=\"false\"\u003e\u003c/property\u003e\u003c/properties\u003e\u003c/persistence-unit\u003e"
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "konveyor.io/target=discovery",
+      "discovery",
+      "tag=JPA XML"
+    ]
+  },
+  {
+    "id": 6,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.506650425Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.506650425Z",
+    "analysis": 1,
+    "ruleset": "discovery-rules",
+    "rule": "windup-discover-spring-configuration",
+    "name": "",
+    "description": "Spring XML Configuration",
+    "incidents": [
+      {
+        "id": 38,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.506837623Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.506837623Z",
+        "insight": 6,
+        "file": "/shared/source/coolstore/src/main/webapp/WEB-INF/beans.xml",
+        "line": 18,
+        "message": "",
+        "codeSnip": "19  \t   xsi:schemaLocation=\"",
+        "facts": {
+          "data": "beans",
+          "innerText": "\n",
+          "matchingXML": ""
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "konveyor.io/target=discovery",
+      "discovery",
+      "tag=Spring XML"
+    ]
+  },
+  {
+    "id": 7,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.507007218Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.507007218Z",
+    "analysis": 1,
+    "ruleset": "discovery-rules",
+    "rule": "windup-discover-web-configuration",
+    "name": "",
+    "description": "Web XML Configuration",
+    "incidents": [
+      {
+        "id": 39,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.507138763Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.507138763Z",
+        "insight": 7,
+        "file": "/shared/source/coolstore/src/main/webapp/WEB-INF/web.xml",
+        "line": 2,
+        "message": "",
+        "codeSnip": "3           xsi:schemaLocation=\"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd\"",
+        "facts": {
+          "data": "web-app",
+          "innerText": "\n    \n",
+          "matchingXML": "\u003cdistributable\u003e\u003c/distributable\u003e"
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "konveyor.io/target=discovery",
+      "discovery",
+      "tag=Web XML"
+    ]
+  },
+  {
+    "id": 8,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.507291032Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.507291032Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "clustering-00000",
+    "name": "",
+    "description": "Clustering Web Session",
+    "incidents": [
+      {
+        "id": 40,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.507406872Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.507406872Z",
+        "insight": 8,
+        "file": "/shared/source/coolstore/src/main/webapp/WEB-INF/web.xml",
+        "line": 5,
+        "message": "",
+        "codeSnip": "6  \u003c/web-app\u003e",
+        "facts": {
+          "data": "distributable",
+          "innerText": "",
+          "matchingXML": ""
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Clustering Web Session"
+    ]
+  },
+  {
+    "id": 9,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.507597632Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.507597632Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "embedded-framework-05900",
+    "name": "",
+    "description": "Embedded framework - GIN",
+    "incidents": [
+      {
+        "id": 41,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.507782697Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.507782697Z",
+        "insight": 9,
+        "file": "/shared/source/coolstore/lib/audit-logging-library-1.0.0.jar",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 42,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.507782697Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.507782697Z",
+        "insight": 9,
+        "file": "/shared/source/coolstore/lib/audit-logging-library-2.0.0.jar",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=GIN",
+      "tag=Embedded framework - GIN"
+    ]
+  },
+  {
+    "id": 10,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.508456465Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.508456465Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "javaee-technology-usage-00020-javax",
+    "name": "",
+    "description": "JavaEE javax",
+    "incidents": [
+      {
+        "id": 43,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/persistence/Resources.java",
+        "line": 4,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.persistence;\n 2  \n 3  import javax.enterprise.context.Dependent;\n 4  import javax.enterprise.inject.Produces;\n 5  import javax.persistence.EntityManager;\n 6  import javax.persistence.PersistenceContext;\n 7  \n 8  @Dependent\n 9  public class Resources {\n10  \n11  @PersistenceContext\n12  private EntityManager em;\n13  \n14  @Produces",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/persistence/Resources.java",
+          "kind": "Module",
+          "name": "javax.enterprise.inject",
+          "package": "com.redhat.coolstore.persistence"
+        }
+      },
+      {
+        "id": 44,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Producers.java",
+        "line": 4,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.utils;\n 2  \n 3  import javax.enterprise.inject.Produces;\n 4  import javax.enterprise.inject.spi.InjectionPoint;\n 5  import java.util.logging.Logger;\n 6  \n 7  \n 8  public class Producers {\n 9  \n10  Logger log = Logger.getLogger(Producers.class.getName());\n11  \n12  @Produces\n13  public Logger produceLog(InjectionPoint injectionPoint) {\n14  return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Producers.java",
+          "kind": "Module",
+          "name": "javax.enterprise.inject.spi",
+          "package": "com.redhat.coolstore.utils"
+        }
+      },
+      {
+        "id": 45,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Producers.java",
+        "line": 3,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.utils;\n 2  \n 3  import javax.enterprise.inject.Produces;\n 4  import javax.enterprise.inject.spi.InjectionPoint;\n 5  import java.util.logging.Logger;\n 6  \n 7  \n 8  public class Producers {\n 9  \n10  Logger log = Logger.getLogger(Producers.class.getName());\n11  \n12  @Produces\n13  public Logger produceLog(InjectionPoint injectionPoint) {",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Producers.java",
+          "kind": "Module",
+          "name": "javax.enterprise.inject",
+          "package": "com.redhat.coolstore.utils"
+        }
+      },
+      {
+        "id": 46,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+        "line": 10,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.rest;\n 2  \n 3  import java.io.Serializable;\n 4  import java.util.ArrayList;\n 5  import java.util.HashMap;\n 6  import java.util.List;\n 7  import java.util.Map;\n 8  \n 9  import javax.enterprise.context.SessionScoped;\n10  import javax.inject.Inject;\n11  import javax.ws.rs.DELETE;\n12  import javax.ws.rs.GET;\n13  import javax.ws.rs.POST;\n14  import javax.ws.rs.Path;\n15  import javax.ws.rs.PathParam;\n16  import javax.ws.rs.Produces;\n17  import javax.ws.rs.core.MediaType;\n18  \n19  import com.redhat.coolstore.model.Product;\n20  import com.redhat.coolstore.model.ShoppingCart;",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 47,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/OrderEndpoint.java",
+        "line": 7,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.rest;\n 2  \n 3  import java.io.Serializable;\n 4  import java.util.List;\n 5  \n 6  import javax.enterprise.context.RequestScoped;\n 7  import javax.inject.Inject;\n 8  import javax.ws.rs.Consumes;\n 9  import javax.ws.rs.GET;\n10  import javax.ws.rs.Path;\n11  import javax.ws.rs.PathParam;\n12  import javax.ws.rs.Produces;\n13  import javax.ws.rs.core.MediaType;\n14  \n15  import com.redhat.coolstore.model.Order;\n16  import com.redhat.coolstore.service.OrderService;\n17  ",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/OrderEndpoint.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 48,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/ProductEndpoint.java",
+        "line": 7,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.rest;\n 2  \n 3  import java.io.Serializable;\n 4  import java.util.List;\n 5  \n 6  import javax.enterprise.context.RequestScoped;\n 7  import javax.inject.Inject;\n 8  import javax.ws.rs.*;\n 9  import javax.ws.rs.core.MediaType;\n10  \n11  import com.redhat.coolstore.model.Product;\n12  import com.redhat.coolstore.service.ProductService;\n13  \n14  @RequestScoped\n15  @Path(\"/products\")\n16  @Consumes(MediaType.APPLICATION_JSON)\n17  @Produces(MediaType.APPLICATION_JSON)",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/ProductEndpoint.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 49,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/CatalogService.java",
+        "line": 6,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.service;\n 2  \n 3  import java.util.List;\n 4  import java.util.logging.Logger;\n 5  \n 6  import javax.inject.Inject;\n 7  \n 8  import javax.persistence.criteria.CriteriaBuilder;\n 9  import javax.persistence.criteria.CriteriaQuery;\n10  import javax.persistence.criteria.Root;\n11  \n12  import javax.ejb.Stateless;\n13  import javax.persistence.EntityManager;\n14  \n15  import com.redhat.coolstore.model.*;\n16  ",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/service/CatalogService.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.service"
+        }
+      },
+      {
+        "id": 50,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/InventoryNotificationMDB.java",
+        "line": 6,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.service;\n 2  \n 3  import com.redhat.coolstore.model.Order;\n 4  import com.redhat.coolstore.utils.Transformers;\n 5  \n 6  import javax.inject.Inject;\n 7  import javax.jms.*;\n 8  import javax.naming.Context;\n 9  import javax.naming.InitialContext;\n10  import javax.naming.NamingException;\n11  import javax.rmi.PortableRemoteObject;\n12  import java.util.Hashtable;\n13  \n14  public class InventoryNotificationMDB implements MessageListener {\n15  \n16  private static final int LOW_THRESHOLD = 50;",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/service/InventoryNotificationMDB.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.service"
+        }
+      },
+      {
+        "id": 51,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/OrderService.java",
+        "line": 14,
+        "message": "",
+        "codeSnip": "\n 4  import com.enterprise.audit.logging.exception.AuditLoggingException;\n 5  import com.enterprise.audit.logging.service.FileSystemAuditLogger;\n 6  import com.redhat.coolstore.model.Order;\n 7  import java.util.List;\n 8  import java.util.Map;\n 9  import java.util.concurrent.ConcurrentHashMap;\n10  \n11  import javax.annotation.PostConstruct;\n12  import javax.annotation.PreDestroy;\n13  import javax.ejb.Stateless;\n14  import javax.inject.Inject;\n15  import javax.persistence.EntityManager;\n16  import javax.persistence.criteria.CriteriaBuilder;\n17  import javax.persistence.criteria.CriteriaQuery;\n18  import javax.persistence.criteria.Root;\n19  \n20  @Stateless\n21  public class OrderService {\n22  \n23  @Inject\n24  private EntityManager em;",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/service/OrderService.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.service"
+        }
+      },
+      {
+        "id": 52,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/OrderServiceMDB.java",
+        "line": 5,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.service;\n 2  \n 3  import javax.ejb.ActivationConfigProperty;\n 4  import javax.ejb.MessageDriven;\n 5  import javax.inject.Inject;\n 6  import javax.jms.JMSException;\n 7  import javax.jms.Message;\n 8  import javax.jms.MessageListener;\n 9  import javax.jms.TextMessage;\n10  \n11  import com.redhat.coolstore.model.Order;\n12  import com.redhat.coolstore.utils.Transformers;\n13  \n14  @MessageDriven(name = \"OrderServiceMDB\", activationConfig = {\n15  @ActivationConfigProperty(propertyName = \"destinationLookup\", propertyValue = \"topic/orders\"),",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/service/OrderServiceMDB.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.service"
+        }
+      },
+      {
+        "id": 53,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ProductService.java",
+        "line": 8,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.service;\n 2  \n 3  import com.redhat.coolstore.model.CatalogItemEntity;\n 4  import com.redhat.coolstore.model.Product;\n 5  import com.redhat.coolstore.utils.Transformers;\n 6  \n 7  import javax.ejb.Stateless;\n 8  import javax.inject.Inject;\n 9  import java.util.List;\n10  import java.util.stream.Collectors;\n11  \n12  import static com.redhat.coolstore.utils.Transformers.toProduct;\n13  \n14  @Stateless\n15  public class ProductService {\n16  \n17  @Inject\n18  CatalogService cm;",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ProductService.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.service"
+        }
+      },
+      {
+        "id": 54,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ShoppingCartOrderProcessor.java",
+        "line": 6,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.service;\n 2  \n 3  import java.util.logging.Logger;\n 4  import javax.ejb.Stateless;\n 5  import javax.annotation.Resource;\n 6  import javax.inject.Inject;\n 7  import javax.jms.JMSContext;\n 8  import javax.jms.Topic;\n 9  \n10  import com.redhat.coolstore.model.ShoppingCart;\n11  import com.redhat.coolstore.utils.Transformers;\n12  \n13  @Stateless\n14  public class ShoppingCartOrderProcessor  {\n15  \n16  @Inject",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ShoppingCartOrderProcessor.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.service"
+        }
+      },
+      {
+        "id": 55,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ShoppingCartService.java",
+        "line": 7,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.service;\n 2  \n 3  import java.util.Hashtable;\n 4  import java.util.logging.Logger;\n 5  \n 6  import javax.ejb.Stateful;\n 7  import javax.inject.Inject;\n 8  import javax.naming.Context;\n 9  import javax.naming.InitialContext;\n10  import javax.naming.NamingException;\n11  \n12  import com.redhat.coolstore.model.Product;\n13  import com.redhat.coolstore.model.ShoppingCart;\n14  import com.redhat.coolstore.model.ShoppingCartItem;\n15  \n16  @Stateful\n17  public class ShoppingCartService  {",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ShoppingCartService.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.service"
+        }
+      },
+      {
+        "id": 56,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/DataBaseMigrationStartup.java",
+        "line": 12,
+        "message": "",
+        "codeSnip": "\n 2  \n 3  import org.flywaydb.core.Flyway;\n 4  import org.flywaydb.core.api.FlywayException;\n 5  \n 6  import javax.annotation.PostConstruct;\n 7  import javax.annotation.Resource;\n 8  import javax.ejb.Singleton;\n 9  import javax.ejb.Startup;\n10  import javax.ejb.TransactionManagement;\n11  import javax.ejb.TransactionManagementType;\n12  import javax.inject.Inject;\n13  import javax.sql.DataSource;\n14  import java.util.logging.Level;\n15  import java.util.logging.Logger;\n16  \n17  /**\n18  * Created by tqvarnst on 2017-04-04.\n19  */\n20  @Singleton\n21  @Startup\n22  @TransactionManagement(TransactionManagementType.BEAN)",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/DataBaseMigrationStartup.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.utils"
+        }
+      },
+      {
+        "id": 57,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509028395Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509028395Z",
+        "insight": 10,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/StartupListener.java",
+        "line": 6,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.utils;\n 2  \n 3  import weblogic.application.ApplicationLifecycleEvent;\n 4  import weblogic.application.ApplicationLifecycleListener;\n 5  \n 6  import javax.inject.Inject;\n 7  import java.util.logging.Logger;\n 8  \n 9  public class StartupListener extends ApplicationLifecycleListener {\n10  \n11  @Inject\n12  Logger log;\n13  \n14  @Override\n15  public void postStart(ApplicationLifecycleEvent evt) {\n16  log.info(\"AppListener(postStart)\");",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/StartupListener.java",
+          "kind": "Module",
+          "name": "javax.inject",
+          "package": "com.redhat.coolstore.utils"
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=CDI"
+    ]
+  },
+  {
+    "id": 11,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.50951898Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.50951898Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "javaee-technology-usage-00021",
+    "name": "",
+    "description": "JavaEE",
+    "incidents": [
+      {
+        "id": 58,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.509686465Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.509686465Z",
+        "insight": 11,
+        "file": "",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {
+          "tags": [
+            "CDI"
+          ]
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Execute=CDI",
+      "tag=Inversion of Control=CDI",
+      "tag=Java EE=CDI"
+    ]
+  },
+  {
+    "id": 12,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.510042866Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.510042866Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "javaee-technology-usage-00030",
+    "name": "",
+    "description": "Java EE JSON-P",
+    "incidents": [
+      {
+        "id": 59,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.510348915Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.510348915Z",
+        "insight": 12,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+        "line": 15,
+        "message": "",
+        "codeSnip": "\n 5  import com.redhat.coolstore.model.OrderItem;\n 6  import com.redhat.coolstore.model.Product;\n 7  import com.redhat.coolstore.model.ShoppingCart;\n 8  import java.io.StringReader;\n 9  import java.io.StringWriter;\n10  import java.util.ArrayList;\n11  import java.util.List;\n12  import javax.json.Json;\n13  import javax.json.JsonArray;\n14  import javax.json.JsonArrayBuilder;\n15  import javax.json.JsonObject;\n16  import javax.json.JsonReader;\n17  import javax.json.JsonWriter;\n18  \n19  import java.util.concurrent.ThreadLocalRandom;\n20  import java.util.logging.Logger;\n21  \n22  /**\n23  * Created by tqvarnst on 2017-03-30.\n24  */\n25  public class Transformers {",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+          "kind": "Module",
+          "name": "javax.json",
+          "package": "com.redhat.coolstore.utils"
+        }
+      },
+      {
+        "id": 60,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.510348915Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.510348915Z",
+        "insight": 12,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+        "line": 12,
+        "message": "",
+        "codeSnip": "\n 2  \n 3  import com.redhat.coolstore.model.CatalogItemEntity;\n 4  import com.redhat.coolstore.model.Order;\n 5  import com.redhat.coolstore.model.OrderItem;\n 6  import com.redhat.coolstore.model.Product;\n 7  import com.redhat.coolstore.model.ShoppingCart;\n 8  import java.io.StringReader;\n 9  import java.io.StringWriter;\n10  import java.util.ArrayList;\n11  import java.util.List;\n12  import javax.json.Json;\n13  import javax.json.JsonArray;\n14  import javax.json.JsonArrayBuilder;\n15  import javax.json.JsonObject;\n16  import javax.json.JsonReader;\n17  import javax.json.JsonWriter;\n18  \n19  import java.util.concurrent.ThreadLocalRandom;\n20  import java.util.logging.Logger;\n21  \n22  /**",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+          "kind": "Module",
+          "name": "javax.json",
+          "package": "com.redhat.coolstore.utils"
+        }
+      },
+      {
+        "id": 61,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.510348915Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.510348915Z",
+        "insight": 12,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+        "line": 14,
+        "message": "",
+        "codeSnip": "\n 4  import com.redhat.coolstore.model.Order;\n 5  import com.redhat.coolstore.model.OrderItem;\n 6  import com.redhat.coolstore.model.Product;\n 7  import com.redhat.coolstore.model.ShoppingCart;\n 8  import java.io.StringReader;\n 9  import java.io.StringWriter;\n10  import java.util.ArrayList;\n11  import java.util.List;\n12  import javax.json.Json;\n13  import javax.json.JsonArray;\n14  import javax.json.JsonArrayBuilder;\n15  import javax.json.JsonObject;\n16  import javax.json.JsonReader;\n17  import javax.json.JsonWriter;\n18  \n19  import java.util.concurrent.ThreadLocalRandom;\n20  import java.util.logging.Logger;\n21  \n22  /**\n23  * Created by tqvarnst on 2017-03-30.\n24  */",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+          "kind": "Module",
+          "name": "javax.json",
+          "package": "com.redhat.coolstore.utils"
+        }
+      },
+      {
+        "id": 62,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.510348915Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.510348915Z",
+        "insight": 12,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+        "line": 16,
+        "message": "",
+        "codeSnip": "\n 6  import com.redhat.coolstore.model.Product;\n 7  import com.redhat.coolstore.model.ShoppingCart;\n 8  import java.io.StringReader;\n 9  import java.io.StringWriter;\n10  import java.util.ArrayList;\n11  import java.util.List;\n12  import javax.json.Json;\n13  import javax.json.JsonArray;\n14  import javax.json.JsonArrayBuilder;\n15  import javax.json.JsonObject;\n16  import javax.json.JsonReader;\n17  import javax.json.JsonWriter;\n18  \n19  import java.util.concurrent.ThreadLocalRandom;\n20  import java.util.logging.Logger;\n21  \n22  /**\n23  * Created by tqvarnst on 2017-03-30.\n24  */\n25  public class Transformers {\n26  ",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+          "kind": "Module",
+          "name": "javax.json",
+          "package": "com.redhat.coolstore.utils"
+        }
+      },
+      {
+        "id": 63,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.510348915Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.510348915Z",
+        "insight": 12,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+        "line": 13,
+        "message": "",
+        "codeSnip": "\n 3  import com.redhat.coolstore.model.CatalogItemEntity;\n 4  import com.redhat.coolstore.model.Order;\n 5  import com.redhat.coolstore.model.OrderItem;\n 6  import com.redhat.coolstore.model.Product;\n 7  import com.redhat.coolstore.model.ShoppingCart;\n 8  import java.io.StringReader;\n 9  import java.io.StringWriter;\n10  import java.util.ArrayList;\n11  import java.util.List;\n12  import javax.json.Json;\n13  import javax.json.JsonArray;\n14  import javax.json.JsonArrayBuilder;\n15  import javax.json.JsonObject;\n16  import javax.json.JsonReader;\n17  import javax.json.JsonWriter;\n18  \n19  import java.util.concurrent.ThreadLocalRandom;\n20  import java.util.logging.Logger;\n21  \n22  /**\n23  * Created by tqvarnst on 2017-03-30.",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+          "kind": "Module",
+          "name": "javax.json",
+          "package": "com.redhat.coolstore.utils"
+        }
+      },
+      {
+        "id": 64,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.510348915Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.510348915Z",
+        "insight": 12,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+        "line": 17,
+        "message": "",
+        "codeSnip": "\n 7  import com.redhat.coolstore.model.ShoppingCart;\n 8  import java.io.StringReader;\n 9  import java.io.StringWriter;\n10  import java.util.ArrayList;\n11  import java.util.List;\n12  import javax.json.Json;\n13  import javax.json.JsonArray;\n14  import javax.json.JsonArrayBuilder;\n15  import javax.json.JsonObject;\n16  import javax.json.JsonReader;\n17  import javax.json.JsonWriter;\n18  \n19  import java.util.concurrent.ThreadLocalRandom;\n20  import java.util.logging.Logger;\n21  \n22  /**\n23  * Created by tqvarnst on 2017-03-30.\n24  */\n25  public class Transformers {\n26  \n27  private static final String[] RANDOM_NAMES = {\"Sven Karlsson\",\"Johan Andersson\",\"Karl Svensson\",\"Anders Johansson\",\"Stefan Olson\",\"Martin Ericsson\"};",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/Transformers.java",
+          "kind": "Module",
+          "name": "javax.json",
+          "package": "com.redhat.coolstore.utils"
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Java EE JSON-P"
+    ]
+  },
+  {
+    "id": 13,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.510688184Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.510688184Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "javaee-technology-usage-00031",
+    "name": "",
+    "description": "Java EE JSON-P",
+    "incidents": [
+      {
+        "id": 65,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.51081277Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.51081277Z",
+        "insight": 13,
+        "file": "",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {
+          "tags": [
+            "Java EE JSON-P"
+          ]
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Execute=Java EE JSON-P",
+      "tag=Processing=Java EE JSON-P",
+      "tag=Java EE=Java EE JSON-P"
+    ]
+  },
+  {
+    "id": 14,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.51111088Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.51111088Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "javaee-technology-usage-00080",
+    "name": "",
+    "description": "Common Annotations",
+    "incidents": [
+      {
+        "id": 66,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.511407748Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.511407748Z",
+        "insight": 14,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/OrderService.java",
+        "line": 11,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.service;\n 2  \n 3  import com.enterprise.audit.logging.config.AuditConfiguration;\n 4  import com.enterprise.audit.logging.exception.AuditLoggingException;\n 5  import com.enterprise.audit.logging.service.FileSystemAuditLogger;\n 6  import com.redhat.coolstore.model.Order;\n 7  import java.util.List;\n 8  import java.util.Map;\n 9  import java.util.concurrent.ConcurrentHashMap;\n10  \n11  import javax.annotation.PostConstruct;\n12  import javax.annotation.PreDestroy;\n13  import javax.ejb.Stateless;\n14  import javax.inject.Inject;\n15  import javax.persistence.EntityManager;\n16  import javax.persistence.criteria.CriteriaBuilder;\n17  import javax.persistence.criteria.CriteriaQuery;\n18  import javax.persistence.criteria.Root;\n19  \n20  @Stateless\n21  public class OrderService {",
+        "facts": {
+          "annotation": "PostConstruct",
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/service/OrderService.java",
+          "kind": "Module",
+          "name": "javax.annotation.PostConstruct",
+          "package": "com.redhat.coolstore.service"
+        }
+      },
+      {
+        "id": 67,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.511407748Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.511407748Z",
+        "insight": 14,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/OrderService.java",
+        "line": 12,
+        "message": "",
+        "codeSnip": "\n 2  \n 3  import com.enterprise.audit.logging.config.AuditConfiguration;\n 4  import com.enterprise.audit.logging.exception.AuditLoggingException;\n 5  import com.enterprise.audit.logging.service.FileSystemAuditLogger;\n 6  import com.redhat.coolstore.model.Order;\n 7  import java.util.List;\n 8  import java.util.Map;\n 9  import java.util.concurrent.ConcurrentHashMap;\n10  \n11  import javax.annotation.PostConstruct;\n12  import javax.annotation.PreDestroy;\n13  import javax.ejb.Stateless;\n14  import javax.inject.Inject;\n15  import javax.persistence.EntityManager;\n16  import javax.persistence.criteria.CriteriaBuilder;\n17  import javax.persistence.criteria.CriteriaQuery;\n18  import javax.persistence.criteria.Root;\n19  \n20  @Stateless\n21  public class OrderService {\n22  ",
+        "facts": {
+          "annotation": "PreDestroy",
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/service/OrderService.java",
+          "kind": "Module",
+          "name": "javax.annotation.PreDestroy",
+          "package": "com.redhat.coolstore.service"
+        }
+      },
+      {
+        "id": 68,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.511407748Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.511407748Z",
+        "insight": 14,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ShoppingCartOrderProcessor.java",
+        "line": 5,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.service;\n 2  \n 3  import java.util.logging.Logger;\n 4  import javax.ejb.Stateless;\n 5  import javax.annotation.Resource;\n 6  import javax.inject.Inject;\n 7  import javax.jms.JMSContext;\n 8  import javax.jms.Topic;\n 9  \n10  import com.redhat.coolstore.model.ShoppingCart;\n11  import com.redhat.coolstore.utils.Transformers;\n12  \n13  @Stateless\n14  public class ShoppingCartOrderProcessor  {\n15  ",
+        "facts": {
+          "annotation": "Resource",
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/service/ShoppingCartOrderProcessor.java",
+          "kind": "Module",
+          "name": "javax.annotation.Resource",
+          "package": "com.redhat.coolstore.service"
+        }
+      },
+      {
+        "id": 69,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.511407748Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.511407748Z",
+        "insight": 14,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/DataBaseMigrationStartup.java",
+        "line": 6,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.utils;\n 2  \n 3  import org.flywaydb.core.Flyway;\n 4  import org.flywaydb.core.api.FlywayException;\n 5  \n 6  import javax.annotation.PostConstruct;\n 7  import javax.annotation.Resource;\n 8  import javax.ejb.Singleton;\n 9  import javax.ejb.Startup;\n10  import javax.ejb.TransactionManagement;\n11  import javax.ejb.TransactionManagementType;\n12  import javax.inject.Inject;\n13  import javax.sql.DataSource;\n14  import java.util.logging.Level;\n15  import java.util.logging.Logger;\n16  ",
+        "facts": {
+          "annotation": "PostConstruct",
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/DataBaseMigrationStartup.java",
+          "kind": "Module",
+          "name": "javax.annotation.PostConstruct",
+          "package": "com.redhat.coolstore.utils"
+        }
+      },
+      {
+        "id": 70,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.511407748Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.511407748Z",
+        "insight": 14,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/DataBaseMigrationStartup.java",
+        "line": 7,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.utils;\n 2  \n 3  import org.flywaydb.core.Flyway;\n 4  import org.flywaydb.core.api.FlywayException;\n 5  \n 6  import javax.annotation.PostConstruct;\n 7  import javax.annotation.Resource;\n 8  import javax.ejb.Singleton;\n 9  import javax.ejb.Startup;\n10  import javax.ejb.TransactionManagement;\n11  import javax.ejb.TransactionManagementType;\n12  import javax.inject.Inject;\n13  import javax.sql.DataSource;\n14  import java.util.logging.Level;\n15  import java.util.logging.Logger;\n16  \n17  /**",
+        "facts": {
+          "annotation": "Resource",
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/utils/DataBaseMigrationStartup.java",
+          "kind": "Module",
+          "name": "javax.annotation.Resource",
+          "package": "com.redhat.coolstore.utils"
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Common Annotations"
+    ]
+  },
+  {
+    "id": 15,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.511748696Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.511748696Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "javaee-technology-usage-00180",
+    "name": "",
+    "description": "Common Annotations",
+    "incidents": [
+      {
+        "id": 71,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.511878572Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.511878572Z",
+        "insight": 15,
+        "file": "",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {
+          "tags": [
+            "Common Annotations"
+          ]
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Connect=Common Annotations",
+      "tag=Other=Common Annotations",
+      "tag=Java EE=Common Annotations"
+    ]
+  },
+  {
+    "id": 16,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.512048377Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.512048377Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "logging-usage-00160",
+    "name": "",
+    "description": "Embedded library - Logging Utils",
+    "incidents": [
+      {
+        "id": 72,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.512217372Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.512217372Z",
+        "insight": 16,
+        "file": "/shared/source/coolstore/lib/audit-logging-library-1.0.0.jar",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      },
+      {
+        "id": 73,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.512217372Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.512217372Z",
+        "insight": 16,
+        "file": "/shared/source/coolstore/lib/audit-logging-library-2.0.0.jar",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Logging Utils",
+      "tag=Embedded library - Logging Utils"
+    ]
+  },
+  {
+    "id": 17,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.512438986Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.512438986Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "non-xml-technology-usage-17000",
+    "name": "",
+    "description": "Non-XML JPA",
+    "incidents": [
+      {
+        "id": 74,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.512564145Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.512564145Z",
+        "insight": 17,
+        "file": "",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {
+          "tags": [
+            "JPA XML"
+          ]
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Store=JPA XML",
+      "tag=Persistence=JPA XML",
+      "tag=Java EE=JPA XML"
+    ]
+  },
+  {
+    "id": 18,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.512726316Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.512726316Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "technology-usage-clustering-01000",
+    "name": "",
+    "description": "Clustering Web Session",
+    "incidents": [
+      {
+        "id": 75,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.51285116Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.51285116Z",
+        "insight": 18,
+        "file": "",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {
+          "tags": [
+            "Clustering Web Session"
+          ]
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Sustain=Web Session",
+      "tag=Java EE=Web Session",
+      "tag=Clustering=Web Session"
+    ]
+  },
+  {
+    "id": 19,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.513343945Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.513343945Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "technology-usage-connect-01000",
+    "name": "",
+    "description": "Java Connect",
+    "incidents": [
+      {
+        "id": 76,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+        "line": 25,
+        "message": "",
+        "codeSnip": "\n15  import javax.ws.rs.PathParam;\n16  import javax.ws.rs.Produces;\n17  import javax.ws.rs.core.MediaType;\n18  \n19  import com.redhat.coolstore.model.Product;\n20  import com.redhat.coolstore.model.ShoppingCart;\n21  import com.redhat.coolstore.model.ShoppingCartItem;\n22  import com.redhat.coolstore.service.ShoppingCartService;\n23  \n24  @SessionScoped\n25  @Path(\"/cart\")\n26  public class CartEndpoint implements Serializable {\n27  \n28  private static final long serialVersionUID = -7227732980791688773L;\n29  \n30  @Inject\n31  private ShoppingCartService shoppingCartService;\n32  \n33  @GET\n34  @Path(\"/{cartId}\")\n35  @Produces(MediaType.APPLICATION_JSON)",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+          "kind": "Property",
+          "name": "SessionScoped",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 77,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+        "line": 34,
+        "message": "",
+        "codeSnip": "\n24  @SessionScoped\n25  @Path(\"/cart\")\n26  public class CartEndpoint implements Serializable {\n27  \n28  private static final long serialVersionUID = -7227732980791688773L;\n29  \n30  @Inject\n31  private ShoppingCartService shoppingCartService;\n32  \n33  @GET\n34  @Path(\"/{cartId}\")\n35  @Produces(MediaType.APPLICATION_JSON)\n36  public ShoppingCart getCart(@PathParam(\"cartId\") String cartId) {\n37  return shoppingCartService.getShoppingCart(cartId);\n38  }\n39  \n40  @POST\n41  @Path(\"/checkout/{cartId}\")\n42  @Produces(MediaType.APPLICATION_JSON)\n43  public ShoppingCart checkout(@PathParam(\"cartId\") String cartId) {\n44  return shoppingCartService.checkOutShoppingCart(cartId);",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+          "kind": "Property",
+          "name": "GET",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 78,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+        "line": 41,
+        "message": "",
+        "codeSnip": "\n31  private ShoppingCartService shoppingCartService;\n32  \n33  @GET\n34  @Path(\"/{cartId}\")\n35  @Produces(MediaType.APPLICATION_JSON)\n36  public ShoppingCart getCart(@PathParam(\"cartId\") String cartId) {\n37  return shoppingCartService.getShoppingCart(cartId);\n38  }\n39  \n40  @POST\n41  @Path(\"/checkout/{cartId}\")\n42  @Produces(MediaType.APPLICATION_JSON)\n43  public ShoppingCart checkout(@PathParam(\"cartId\") String cartId) {\n44  return shoppingCartService.checkOutShoppingCart(cartId);\n45  }\n46  \n47  @POST\n48  @Path(\"/{cartId}/{itemId}/{quantity}\")\n49  @Produces(MediaType.APPLICATION_JSON)\n50  public ShoppingCart add(@PathParam(\"cartId\") String cartId,\n51  @PathParam(\"itemId\") String itemId,",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+          "kind": "Property",
+          "name": "POST",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 79,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+        "line": 48,
+        "message": "",
+        "codeSnip": "\n38  }\n39  \n40  @POST\n41  @Path(\"/checkout/{cartId}\")\n42  @Produces(MediaType.APPLICATION_JSON)\n43  public ShoppingCart checkout(@PathParam(\"cartId\") String cartId) {\n44  return shoppingCartService.checkOutShoppingCart(cartId);\n45  }\n46  \n47  @POST\n48  @Path(\"/{cartId}/{itemId}/{quantity}\")\n49  @Produces(MediaType.APPLICATION_JSON)\n50  public ShoppingCart add(@PathParam(\"cartId\") String cartId,\n51  @PathParam(\"itemId\") String itemId,\n52  @PathParam(\"quantity\") int quantity) throws Exception {\n53  ShoppingCart cart = shoppingCartService.getShoppingCart(cartId);\n54  \n55  Product product = shoppingCartService.getProduct(itemId);\n56  \n57  ShoppingCartItem sci = new ShoppingCartItem();\n58  sci.setProduct(product);",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+          "kind": "Property",
+          "name": "POST",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 80,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+        "line": 75,
+        "message": "",
+        "codeSnip": "\n65  cart.setShoppingCartItemList(dedupeCartItems(cart.getShoppingCartItemList()));\n66  } catch (Exception ex) {\n67  cart.removeShoppingCartItem(sci);\n68  throw ex;\n69  }\n70  \n71  return cart;\n72  }\n73  \n74  @POST\n75  @Path(\"/{cartId}/{tmpId}\")\n76  @Produces(MediaType.APPLICATION_JSON)\n77  public ShoppingCart set(@PathParam(\"cartId\") String cartId,\n78  @PathParam(\"tmpId\") String tmpId) throws Exception {\n79  \n80  ShoppingCart cart = shoppingCartService.getShoppingCart(cartId);\n81  ShoppingCart tmpCart = shoppingCartService.getShoppingCart(tmpId);\n82  \n83  if (tmpCart != null) {\n84  cart.resetShoppingCartItemList();\n85  cart.setShoppingCartItemList(tmpCart.getShoppingCartItemList());",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+          "kind": "Property",
+          "name": "POST",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 81,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+        "line": 99,
+        "message": "",
+        "codeSnip": "\n 89  shoppingCartService.priceShoppingCart(cart);\n 90  cart.setShoppingCartItemList(dedupeCartItems(cart.getShoppingCartItemList()));\n 91  } catch (Exception ex) {\n 92  throw ex;\n 93  }\n 94  \n 95  return cart;\n 96  }\n 97  \n 98  @DELETE\n 99  @Path(\"/{cartId}/{itemId}/{quantity}\")\n100  @Produces(MediaType.APPLICATION_JSON)\n101  public ShoppingCart delete(@PathParam(\"cartId\") String cartId,\n102  @PathParam(\"itemId\") String itemId,\n103  @PathParam(\"quantity\") int quantity) throws Exception {\n104  \n105  List\u003cShoppingCartItem\u003e toRemoveList = new ArrayList\u003c\u003e();\n106  \n107  ShoppingCart cart = shoppingCartService.getShoppingCart(cartId);\n108  \n109  cart.getShoppingCartItemList().stream()",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/CartEndpoint.java",
+          "kind": "Property",
+          "name": "DELETE",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 82,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/OrderEndpoint.java",
+        "line": 19,
+        "message": "",
+        "codeSnip": "\n 9  import javax.ws.rs.GET;\n10  import javax.ws.rs.Path;\n11  import javax.ws.rs.PathParam;\n12  import javax.ws.rs.Produces;\n13  import javax.ws.rs.core.MediaType;\n14  \n15  import com.redhat.coolstore.model.Order;\n16  import com.redhat.coolstore.service.OrderService;\n17  \n18  @RequestScoped\n19  @Path(\"/orders\")\n20  @Consumes(MediaType.APPLICATION_JSON)\n21  @Produces(MediaType.APPLICATION_JSON)\n22  public class OrderEndpoint implements Serializable {\n23  \n24  private static final long serialVersionUID = -7227732980791688774L;\n25  \n26  @Inject\n27  private OrderService os;\n28  \n29  ",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/OrderEndpoint.java",
+          "kind": "Property",
+          "name": "RequestScoped",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 83,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/OrderEndpoint.java",
+        "line": 31,
+        "message": "",
+        "codeSnip": "\n21  @Produces(MediaType.APPLICATION_JSON)\n22  public class OrderEndpoint implements Serializable {\n23  \n24  private static final long serialVersionUID = -7227732980791688774L;\n25  \n26  @Inject\n27  private OrderService os;\n28  \n29  \n30  @GET\n31  @Path(\"/\")\n32  public List\u003cOrder\u003e listAll() {\n33  return os.getOrders();\n34  }\n35  \n36  @GET\n37  @Path(\"/{orderId}\")\n38  public Order getOrder(@PathParam(\"orderId\") long orderId) {\n39  return os.getOrderById(orderId);\n40  }\n41  ",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/OrderEndpoint.java",
+          "kind": "Property",
+          "name": "GET",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 84,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/OrderEndpoint.java",
+        "line": 37,
+        "message": "",
+        "codeSnip": "\n27  private OrderService os;\n28  \n29  \n30  @GET\n31  @Path(\"/\")\n32  public List\u003cOrder\u003e listAll() {\n33  return os.getOrders();\n34  }\n35  \n36  @GET\n37  @Path(\"/{orderId}\")\n38  public Order getOrder(@PathParam(\"orderId\") long orderId) {\n39  return os.getOrderById(orderId);\n40  }\n41  \n42  }",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/OrderEndpoint.java",
+          "kind": "Property",
+          "name": "GET",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 85,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/ProductEndpoint.java",
+        "line": 15,
+        "message": "",
+        "codeSnip": "\n 5  \n 6  import javax.enterprise.context.RequestScoped;\n 7  import javax.inject.Inject;\n 8  import javax.ws.rs.*;\n 9  import javax.ws.rs.core.MediaType;\n10  \n11  import com.redhat.coolstore.model.Product;\n12  import com.redhat.coolstore.service.ProductService;\n13  \n14  @RequestScoped\n15  @Path(\"/products\")\n16  @Consumes(MediaType.APPLICATION_JSON)\n17  @Produces(MediaType.APPLICATION_JSON)\n18  public class ProductEndpoint implements Serializable {\n19  \n20  /**\n21  *\n22  */\n23  private static final long serialVersionUID = -7227732980791688773L;\n24  \n25  @Inject",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/ProductEndpoint.java",
+          "kind": "Property",
+          "name": "RequestScoped",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 86,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/ProductEndpoint.java",
+        "line": 30,
+        "message": "",
+        "codeSnip": "\n20  /**\n21  *\n22  */\n23  private static final long serialVersionUID = -7227732980791688773L;\n24  \n25  @Inject\n26  private ProductService pm;\n27  \n28  \n29  @GET\n30  @Path(\"/\")\n31  public List\u003cProduct\u003e listAll() {\n32  return pm.getProducts();\n33  }\n34  \n35  @GET\n36  @Path(\"/{itemId}\")\n37  public Product getProduct(@PathParam(\"itemId\") String itemId) {\n38  return pm.getProductByItemId(itemId);\n39  }\n40  ",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/ProductEndpoint.java",
+          "kind": "Property",
+          "name": "GET",
+          "package": "com.redhat.coolstore.rest"
+        }
+      },
+      {
+        "id": 87,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.513828931Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.513828931Z",
+        "insight": 19,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/ProductEndpoint.java",
+        "line": 36,
+        "message": "",
+        "codeSnip": "\n26  private ProductService pm;\n27  \n28  \n29  @GET\n30  @Path(\"/\")\n31  public List\u003cProduct\u003e listAll() {\n32  return pm.getProducts();\n33  }\n34  \n35  @GET\n36  @Path(\"/{itemId}\")\n37  public Product getProduct(@PathParam(\"itemId\") String itemId) {\n38  return pm.getProductByItemId(itemId);\n39  }\n40  \n41  }",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/rest/ProductEndpoint.java",
+          "kind": "Property",
+          "name": "GET",
+          "package": "com.redhat.coolstore.rest"
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Connect=RMI",
+      "tag=Other=RMI",
+      "tag=Java EE=RMI"
+    ]
+  },
+  {
+    "id": 20,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.514323925Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.514323925Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "technology-usage-database-01100",
+    "name": "",
+    "description": "JPA Entities",
+    "incidents": [
+      {
+        "id": 88,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.514541589Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.514541589Z",
+        "insight": 20,
+        "file": "/shared/source/coolstore/src/main/resources/META-INF/persistence.xml",
+        "line": 3,
+        "message": "",
+        "codeSnip": "4               xsi:schemaLocation=\"",
+        "facts": {
+          "matchingText": "http://xmlns.jcp.org/xml/ns/persistence"
+        }
+      },
+      {
+        "id": 89,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.514541589Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.514541589Z",
+        "insight": 20,
+        "file": "/shared/source/coolstore/src/main/resources/META-INF/persistence.xml",
+        "line": 5,
+        "message": "",
+        "codeSnip": "6          http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd\"\u003e",
+        "facts": {
+          "matchingText": "http://xmlns.jcp.org/xml/ns/persistence"
+        }
+      },
+      {
+        "id": 90,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.514541589Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.514541589Z",
+        "insight": 20,
+        "file": "/shared/source/coolstore/src/main/resources/META-INF/persistence.xml",
+        "line": 6,
+        "message": "",
+        "codeSnip": "7      \u003cpersistence-unit name=\"primary\"\u003e",
+        "facts": {
+          "matchingText": "http://xmlns.jcp.org/xml/ns/persistence"
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Persistence=JPA entities",
+      "tag=Java EE=JPA entities",
+      "tag=Store=JPA entities"
+    ]
+  },
+  {
+    "id": 21,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.515013706Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.515013706Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "technology-usage-database-01200",
+    "name": "",
+    "description": "JPA Queries",
+    "incidents": [
+      {
+        "id": 91,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.515330078Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.515330078Z",
+        "insight": 21,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/CatalogItemEntity.java",
+        "line": 6,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.model;\n 2  \n 3  import javax.persistence.*;\n 4  import java.io.Serializable;\n 5  \n 6  @Entity\n 7  @Table(name = \"PRODUCT_CATALOG\", uniqueConstraints = @UniqueConstraint(columnNames = \"itemId\"))\n 8  public class CatalogItemEntity implements Serializable {\n 9  \n10  private static final long serialVersionUID = -7304814269819778382L;\n11  \n12  @Id\n13  private String itemId;\n14  \n15  @Column(length = 80)\n16  private String name;",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/model/CatalogItemEntity.java",
+          "kind": "Property",
+          "name": "Entity",
+          "package": "com.redhat.coolstore.model"
+        }
+      },
+      {
+        "id": 92,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.515330078Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.515330078Z",
+        "insight": 21,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/InventoryEntity.java",
+        "line": 12,
+        "message": "",
+        "codeSnip": "\n 2  \n 3  import java.io.Serializable;\n 4  \n 5  import javax.persistence.Column;\n 6  import javax.persistence.Entity;\n 7  import javax.persistence.Id;\n 8  import javax.persistence.Table;\n 9  import javax.persistence.UniqueConstraint;\n10  import javax.xml.bind.annotation.XmlRootElement;\n11  \n12  @Entity\n13  @XmlRootElement\n14  @Table(name = \"INVENTORY\", uniqueConstraints = @UniqueConstraint(columnNames = \"itemId\"))\n15  public class InventoryEntity implements Serializable {\n16  \n17  private static final long serialVersionUID = 7526472295622776147L;\n18  \n19  @Id\n20  private String itemId;\n21  \n22  ",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/model/InventoryEntity.java",
+          "kind": "Property",
+          "name": "Entity",
+          "package": "com.redhat.coolstore.model"
+        }
+      },
+      {
+        "id": 93,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.515330078Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.515330078Z",
+        "insight": 21,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/Order.java",
+        "line": 17,
+        "message": "",
+        "codeSnip": "\n 7  import javax.persistence.CascadeType;\n 8  import javax.persistence.Column;\n 9  import javax.persistence.Entity;\n10  import javax.persistence.FetchType;\n11  import javax.persistence.GeneratedValue;\n12  import javax.persistence.Id;\n13  import javax.persistence.JoinColumn;\n14  import javax.persistence.OneToMany;\n15  import javax.persistence.Table;\n16  \n17  @Entity\n18  @Table(name = \"ORDERS\")\n19  public class Order implements Serializable {\n20  \n21  private static final long serialVersionUID = -1L;\n22  \n23  @Id\n24  @GeneratedValue\n25  private long orderId;\n26  \n27  private String customerName;",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/model/Order.java",
+          "kind": "Property",
+          "name": "Entity",
+          "package": "com.redhat.coolstore.model"
+        }
+      },
+      {
+        "id": 94,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.515330078Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.515330078Z",
+        "insight": 21,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/OrderItem.java",
+        "line": 11,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.model;\n 2  \n 3  import java.io.Serializable;\n 4  \n 5  import javax.persistence.Column;\n 6  import javax.persistence.Entity;\n 7  import javax.persistence.GeneratedValue;\n 8  import javax.persistence.Id;\n 9  import javax.persistence.Table;\n10  \n11  @Entity\n12  @Table(name = \"ORDER_ITEMS\")\n13  public class OrderItem implements Serializable {\n14  private static final long serialVersionUID = 64565445665456666L;\n15  \n16  @Id\n17  @Column(name=\"ID\")\n18  @GeneratedValue\n19  private long id;\n20  \n21  private int quantity;",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/model/OrderItem.java",
+          "kind": "Property",
+          "name": "Entity",
+          "package": "com.redhat.coolstore.model"
+        }
+      },
+      {
+        "id": 95,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.515330078Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.515330078Z",
+        "insight": 21,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/CatalogItemEntity.java",
+        "line": 7,
+        "message": "",
+        "codeSnip": "\n 1  package com.redhat.coolstore.model;\n 2  \n 3  import javax.persistence.*;\n 4  import java.io.Serializable;\n 5  \n 6  @Entity\n 7  @Table(name = \"PRODUCT_CATALOG\", uniqueConstraints = @UniqueConstraint(columnNames = \"itemId\"))\n 8  public class CatalogItemEntity implements Serializable {\n 9  \n10  private static final long serialVersionUID = -7304814269819778382L;\n11  \n12  @Id\n13  private String itemId;\n14  \n15  @Column(length = 80)\n16  private String name;\n17  ",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/model/CatalogItemEntity.java",
+          "kind": "Property",
+          "name": "Entity",
+          "package": "com.redhat.coolstore.model"
+        }
+      },
+      {
+        "id": 96,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.515330078Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.515330078Z",
+        "insight": 21,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/InventoryEntity.java",
+        "line": 14,
+        "message": "",
+        "codeSnip": "\n 4  \n 5  import javax.persistence.Column;\n 6  import javax.persistence.Entity;\n 7  import javax.persistence.Id;\n 8  import javax.persistence.Table;\n 9  import javax.persistence.UniqueConstraint;\n10  import javax.xml.bind.annotation.XmlRootElement;\n11  \n12  @Entity\n13  @XmlRootElement\n14  @Table(name = \"INVENTORY\", uniqueConstraints = @UniqueConstraint(columnNames = \"itemId\"))\n15  public class InventoryEntity implements Serializable {\n16  \n17  private static final long serialVersionUID = 7526472295622776147L;\n18  \n19  @Id\n20  private String itemId;\n21  \n22  \n23  @Column\n24  private String location;",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/model/InventoryEntity.java",
+          "kind": "Property",
+          "name": "Entity",
+          "package": "com.redhat.coolstore.model"
+        }
+      },
+      {
+        "id": 97,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.515330078Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.515330078Z",
+        "insight": 21,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/Order.java",
+        "line": 18,
+        "message": "",
+        "codeSnip": "\n 8  import javax.persistence.Column;\n 9  import javax.persistence.Entity;\n10  import javax.persistence.FetchType;\n11  import javax.persistence.GeneratedValue;\n12  import javax.persistence.Id;\n13  import javax.persistence.JoinColumn;\n14  import javax.persistence.OneToMany;\n15  import javax.persistence.Table;\n16  \n17  @Entity\n18  @Table(name = \"ORDERS\")\n19  public class Order implements Serializable {\n20  \n21  private static final long serialVersionUID = -1L;\n22  \n23  @Id\n24  @GeneratedValue\n25  private long orderId;\n26  \n27  private String customerName;\n28  ",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/model/Order.java",
+          "kind": "Property",
+          "name": "Entity",
+          "package": "com.redhat.coolstore.model"
+        }
+      },
+      {
+        "id": 98,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.515330078Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.515330078Z",
+        "insight": 21,
+        "file": "/shared/source/coolstore/src/main/java/com/redhat/coolstore/model/OrderItem.java",
+        "line": 12,
+        "message": "",
+        "codeSnip": "\n 2  \n 3  import java.io.Serializable;\n 4  \n 5  import javax.persistence.Column;\n 6  import javax.persistence.Entity;\n 7  import javax.persistence.GeneratedValue;\n 8  import javax.persistence.Id;\n 9  import javax.persistence.Table;\n10  \n11  @Entity\n12  @Table(name = \"ORDER_ITEMS\")\n13  public class OrderItem implements Serializable {\n14  private static final long serialVersionUID = 64565445665456666L;\n15  \n16  @Id\n17  @Column(name=\"ID\")\n18  @GeneratedValue\n19  private long id;\n20  \n21  private int quantity;\n22  ",
+        "facts": {
+          "file": "file:///shared/source/coolstore/src/main/java/com/redhat/coolstore/model/OrderItem.java",
+          "kind": "Property",
+          "name": "Entity",
+          "package": "com.redhat.coolstore.model"
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Persistence=JPA named queries",
+      "tag=Java EE=JPA named queries",
+      "tag=Store=JPA named queries"
+    ]
+  },
+  {
+    "id": 22,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.515728431Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.515728431Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "technology-usage-database-01300",
+    "name": "",
+    "description": "Persistence Units",
+    "incidents": [
+      {
+        "id": 99,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.515874482Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.515874482Z",
+        "insight": 22,
+        "file": "/shared/source/coolstore/src/main/resources/META-INF/persistence.xml",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {}
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Store=Persistence units",
+      "tag=Persistence=Persistence units",
+      "tag=Java EE=Persistence units"
+    ]
+  },
+  {
+    "id": 23,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.516016538Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.516016538Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "technology-usage-embedded-framework-05900",
+    "name": "",
+    "description": "GIN",
+    "incidents": [
+      {
+        "id": 100,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.516159072Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.516159072Z",
+        "insight": 23,
+        "file": "",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {
+          "tags": [
+            "GIN"
+          ]
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Execute=GIN",
+      "tag=Embedded=GIN",
+      "tag=Inversion of Control=GIN"
+    ]
+  },
+  {
+    "id": 24,
+    "createUser": "",
+    "createTime": "2026-10-20T15:48:40.516577065Z",
+    "updateUser": "",
+    "updateTime": "2026-10-20T15:48:40.516577065Z",
+    "analysis": 1,
+    "ruleset": "technology-usage",
+    "rule": "technology-usage-logging-000160",
+    "name": "",
+    "description": "Logging Utils",
+    "incidents": [
+      {
+        "id": 101,
+        "createUser": "",
+        "createTime": "2026-10-20T15:48:40.516804677Z",
+        "updateUser": "",
+        "updateTime": "2026-10-20T15:48:40.516804677Z",
+        "insight": 24,
+        "file": "",
+        "line": 0,
+        "message": "",
+        "codeSnip": "",
+        "facts": {
+          "tags": [
+            "Logging Utils"
+          ]
+        }
+      }
+    ],
+    "labels": [
+      "konveyor.io/include=always",
+      "discovery",
+      "tag=Sustain=Logging Utils",
+      "tag=Embedded=Logging Utils",
+      "tag=Logging=Logging Utils"
+    ]
+  }
+]

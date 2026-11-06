@@ -1,0 +1,1 @@
+{"schema_version":1,"available":true,"detail_dir":"taint","function_count":1,"total_flows":1,"vulnerable_flows":1,"functions":[{"function_id":"2d44ff31-cf81-55a7-ad5c-6ab2747ec708","name":"shell","file_path":"/workspace/repo/src/main/webapp/bower_components/matchHeight/gulpfile.js","flow_count":1,"vulnerable_count":1}]}

@@ -1,0 +1,3503 @@
+{
+  "schema_version": 2,
+  "mode": "package_macro",
+  "modularity": 0.4543329006050878,
+  "communities": [
+    {
+      "id": 0,
+      "label": "main.webapp.bower_components.angular-patternfly.dist.docs.grunt-scripts",
+      "member_count": 5657,
+      "avg_pagerank": 0.00003520861801179441,
+      "avg_harmonic": 0.00016277675581439404,
+      "avg_betweenness": 9.090072560008511e-8,
+      "max_blast": 0.0,
+      "louvain_community_id": 35856
+    },
+    {
+      "id": 1,
+      "label": "main.webapp.bower_components.d3",
+      "member_count": 1856,
+      "avg_pagerank": 0.00003089873430306805,
+      "avg_harmonic": 0.00013171411794172077,
+      "avg_betweenness": 3.7716353177592437e-8,
+      "max_blast": 0.0,
+      "louvain_community_id": 32851
+    },
+    {
+      "id": 2,
+      "label": "main.webapp.bower_components.c3",
+      "member_count": 1552,
+      "avg_pagerank": 0.00002970918085831033,
+      "avg_harmonic": 0.00019519594791907508,
+      "avg_betweenness": 1.0024691519048439e-7,
+      "max_blast": 0.0,
+      "louvain_community_id": 35702
+    },
+    {
+      "id": 3,
+      "label": "main.webapp.bower_components.angular-bootstrap",
+      "member_count": 1528,
+      "avg_pagerank": 0.000026958325649516798,
+      "avg_harmonic": 0.000054305114072744546,
+      "avg_betweenness": 1.319115764612763e-8,
+      "max_blast": 0.0,
+      "louvain_community_id": 29264
+    },
+    {
+      "id": 4,
+      "label": "main.webapp.bower_components.jquery.dist",
+      "member_count": 1523,
+      "avg_pagerank": 0.00003571904420577522,
+      "avg_harmonic": 0.0002034678347852539,
+      "avg_betweenness": 7.903121134220907e-8,
+      "max_blast": 0.0,
+      "louvain_community_id": 11898
+    },
+    {
+      "id": 5,
+      "label": "main.webapp.bower_components.moment.min",
+      "member_count": 1233,
+      "avg_pagerank": 0.00002705406914705183,
+      "avg_harmonic": 0.00007755474824372457,
+      "avg_betweenness": 2.209080102767685e-10,
+      "max_blast": 0.0,
+      "louvain_community_id": 13435
+    },
+    {
+      "id": 6,
+      "label": "main.webapp.bower_components.datatables.media.js",
+      "member_count": 1139,
+      "avg_pagerank": 0.000031393089966873126,
+      "avg_harmonic": 0.00009145052964750149,
+      "avg_betweenness": 9.756880280394543e-9,
+      "max_blast": 0.0,
+      "louvain_community_id": 34602
+    },
+    {
+      "id": 7,
+      "label": "main.webapp.bower_components.angular",
+      "member_count": 811,
+      "avg_pagerank": 0.00002587639191040784,
+      "avg_harmonic": 0.0005177118887135622,
+      "avg_betweenness": 1.3709659939480635e-7,
+      "max_blast": 0.0,
+      "louvain_community_id": 35856
+    },
+    {
+      "id": 8,
+      "label": "main.webapp.bower_components.lodash",
+      "member_count": 769,
+      "avg_pagerank": 0.00002909505060409627,
+      "avg_harmonic": 0.00010297249235535506,
+      "avg_betweenness": 9.209192453843118e-9,
+      "max_blast": 0.0,
+      "louvain_community_id": 2471
+    },
+    {
+      "id": 9,
+      "label": "main.webapp.bower_components.angular-patternfly.dist.docs.js",
+      "member_count": 745,
+      "avg_pagerank": 0.000027058118043683044,
+      "avg_harmonic": 0.00034386888152401914,
+      "avg_betweenness": 1.1165734728938172e-7,
+      "max_blast": 0.0,
+      "louvain_community_id": 20170
+    },
+    {
+      "id": 10,
+      "label": "main.webapp.bower_components.patternfly.dist.js",
+      "member_count": 605,
+      "avg_pagerank": 0.00002179819587108194,
+      "avg_harmonic": 0.00003101558640598124,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 25379
+    },
+    {
+      "id": 11,
+      "label": "main.webapp.bower_components.angular-patternfly.dist",
+      "member_count": 579,
+      "avg_pagerank": 0.000030447743845103665,
+      "avg_harmonic": 0.0000263536884261655,
+      "avg_betweenness": 7.71506918377995e-9,
+      "max_blast": 0.0,
+      "louvain_community_id": 20761
+    },
+    {
+      "id": 12,
+      "label": "main.webapp.bower_components.moment.locale",
+      "member_count": 500,
+      "avg_pagerank": 0.000019439125637290998,
+      "avg_harmonic": 0.000012978469378325031,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 24923
+    },
+    {
+      "id": 13,
+      "label": "main.webapp.bower_components.moment",
+      "member_count": 403,
+      "avg_pagerank": 0.00003415684715075425,
+      "avg_harmonic": 0.00012200725856022114,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 17463
+    },
+    {
+      "id": 14,
+      "label": "main.webapp.bower_components.bootstrap-datepicker.tests.assets",
+      "member_count": 402,
+      "avg_pagerank": 0.00005703852387237541,
+      "avg_harmonic": 0.00007544506926938803,
+      "avg_betweenness": 1.6125954647901692e-8,
+      "max_blast": 0.0,
+      "louvain_community_id": 10975
+    },
+    {
+      "id": 15,
+      "label": "main.webapp.bower_components.isotope.dist",
+      "member_count": 386,
+      "avg_pagerank": 0.00003191924907964983,
+      "avg_harmonic": 0.00006873689693331965,
+      "avg_betweenness": 7.056465716871905e-10,
+      "max_blast": 0.0,
+      "louvain_community_id": 1354
+    },
+    {
+      "id": 16,
+      "label": "main.webapp.bower_components.angular-animate",
+      "member_count": 322,
+      "avg_pagerank": 0.000032007833380127034,
+      "avg_harmonic": 0.00017187654712787104,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 3702
+    },
+    {
+      "id": 17,
+      "label": "main.webapp.bower_components.jquery.src",
+      "member_count": 319,
+      "avg_pagerank": 0.00003384220581438771,
+      "avg_harmonic": 0.00003364566116385593,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 14973
+    },
+    {
+      "id": 18,
+      "label": "main.webapp.bower_components.masonry.dist",
+      "member_count": 301,
+      "avg_pagerank": 0.000029859411412427678,
+      "avg_harmonic": 0.000051849479080267974,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 6912
+    },
+    {
+      "id": 19,
+      "label": "main.webapp.bower_components.moment.src.locale",
+      "member_count": 297,
+      "avg_pagerank": 0.000020451569218145015,
+      "avg_harmonic": 2.680789885770095e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 11242
+    },
+    {
+      "id": 20,
+      "label": "main.webapp.bower_components.keycloak.dist",
+      "member_count": 235,
+      "avg_pagerank": 0.00003450813500750612,
+      "avg_harmonic": 0.00005040763273823516,
+      "avg_betweenness": 2.3181240567766432e-10,
+      "max_blast": 0.0,
+      "louvain_community_id": 33557
+    },
+    {
+      "id": 21,
+      "label": "main.webapp.bower_components.patternfly.src.js",
+      "member_count": 230,
+      "avg_pagerank": 0.000023723466533145096,
+      "avg_harmonic": 0.00003407210129621342,
+      "avg_betweenness": 1.894814415515572e-9,
+      "max_blast": 0.0,
+      "louvain_community_id": 17449
+    },
+    {
+      "id": 22,
+      "label": "main.webapp.bower_components.bootstrap.dist.js",
+      "member_count": 226,
+      "avg_pagerank": 0.000023551863455999153,
+      "avg_harmonic": 0.000056418649490908024,
+      "avg_betweenness": 6.990272321651692e-9,
+      "max_blast": 0.0,
+      "louvain_community_id": 18558
+    },
+    {
+      "id": 23,
+      "label": "main.webapp.bower_components.bootstrap-datepicker.dist.js",
+      "member_count": 220,
+      "avg_pagerank": 0.000025075181102610342,
+      "avg_harmonic": 0.00008471445474921391,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 30341
+    },
+    {
+      "id": 24,
+      "label": "main.webapp.bower_components.bootstrap-select.dist.js.i18n",
+      "member_count": 216,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 0.00001653794388926881,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 14091
+    },
+    {
+      "id": 25,
+      "label": "main.webapp.bower_components.bootstrap-select.docs.docs.dist.js.i18n",
+      "member_count": 216,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 0.00001653794388926881,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 27736
+    },
+    {
+      "id": 26,
+      "label": "main.webapp.bower_components.bootstrap-datepicker.tests.suites",
+      "member_count": 207,
+      "avg_pagerank": 0.000018104483686786276,
+      "avg_harmonic": 0.0001378594901481287,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 34669
+    },
+    {
+      "id": 27,
+      "label": "main.webapp.bower_components.bootstrap.js",
+      "member_count": 187,
+      "avg_pagerank": 0.000026112637415815913,
+      "avg_harmonic": 0.000034448156101750415,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 33177
+    },
+    {
+      "id": 28,
+      "label": "main.webapp.bower_components.jquery.external.sizzle.dist",
+      "member_count": 180,
+      "avg_pagerank": 0.000025473224943400256,
+      "avg_harmonic": 0.00003962210078195404,
+      "avg_betweenness": 3.0264397407917285e-10,
+      "max_blast": 0.0,
+      "louvain_community_id": 28280
+    },
+    {
+      "id": 29,
+      "label": "main.webapp.bower_components.bootstrap-select.docs.docs.dist.js",
+      "member_count": 165,
+      "avg_pagerank": 0.000028011537285761512,
+      "avg_harmonic": 0.000039430897282674994,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 20707
+    },
+    {
+      "id": 30,
+      "label": "main.webapp.bower_components.bootstrap-select.dist.js",
+      "member_count": 165,
+      "avg_pagerank": 0.000028011537285761512,
+      "avg_harmonic": 0.00003960188387408996,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 8853
+    },
+    {
+      "id": 31,
+      "label": "main.webapp.bower_components.eonasdan-bootstrap-datetimepicker.src.js",
+      "member_count": 148,
+      "avg_pagerank": 0.00004155130733812945,
+      "avg_harmonic": 0.0002790880232616548,
+      "avg_betweenness": 7.067145722681909e-8,
+      "max_blast": 0.0,
+      "louvain_community_id": 26917
+    },
+    {
+      "id": 32,
+      "label": "main.webapp.bower_components.patternfly-bootstrap-treeview.public.js",
+      "member_count": 141,
+      "avg_pagerank": 0.00003108516254884204,
+      "avg_harmonic": 0.000035768007553771485,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 12350
+    },
+    {
+      "id": 33,
+      "label": "main.webapp.bower_components.patternfly-bootstrap-treeview.src.js",
+      "member_count": 141,
+      "avg_pagerank": 0.00003108516254884204,
+      "avg_harmonic": 0.000035768007553771485,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 33931
+    },
+    {
+      "id": 34,
+      "label": "main.webapp.bower_components.bootstrap-datepicker.js",
+      "member_count": 132,
+      "avg_pagerank": 0.00002984153468677312,
+      "avg_harmonic": 0.00012252894077459007,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 24424
+    },
+    {
+      "id": 35,
+      "label": "main.webapp.bower_components.moment.src.lib.units",
+      "member_count": 132,
+      "avg_pagerank": 0.000020280693771576008,
+      "avg_harmonic": 0.000016352067181229216,
+      "avg_betweenness": 4.1269632828978115e-10,
+      "max_blast": 0.0,
+      "louvain_community_id": 23316
+    },
+    {
+      "id": 36,
+      "label": "main.webapp.bower_components.imagesloaded",
+      "member_count": 105,
+      "avg_pagerank": 0.000024772046665367228,
+      "avg_harmonic": 0.00003559371442911524,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 1356
+    },
+    {
+      "id": 37,
+      "label": "main.webapp.bower_components.bootstrap-select.js",
+      "member_count": 104,
+      "avg_pagerank": 0.00003390987745450939,
+      "avg_harmonic": 0.000048976151829638326,
+      "avg_betweenness": 5.23806878213953e-10,
+      "max_blast": 0.0,
+      "louvain_community_id": 16357
+    },
+    {
+      "id": 38,
+      "label": "com.redhat.coolstore.model",
+      "member_count": 97,
+      "avg_pagerank": 0.000020043787332827743,
+      "avg_harmonic": 2.161209513115857e-6,
+      "avg_betweenness": 5.616073745799083e-10,
+      "max_blast": 0.0,
+      "louvain_community_id": 24936
+    },
+    {
+      "id": 39,
+      "label": "main.webapp.bower_components.outlayer",
+      "member_count": 97,
+      "avg_pagerank": 0.00003918430957128294,
+      "avg_harmonic": 0.00004733122037636303,
+      "avg_betweenness": 5.616073745799083e-10,
+      "max_blast": 0.0,
+      "louvain_community_id": 19225
+    },
+    {
+      "id": 40,
+      "label": "main.webapp.bower_components.bootstrap-switch.src.js",
+      "member_count": 85,
+      "avg_pagerank": 0.00003281627066505333,
+      "avg_harmonic": 0.000029690029819980336,
+      "avg_betweenness": 1.9226793647382745e-9,
+      "max_blast": 0.0,
+      "louvain_community_id": 14056
+    },
+    {
+      "id": 41,
+      "label": "main.webapp.bower_components.patternfly-bootstrap-treeview.dist",
+      "member_count": 82,
+      "avg_pagerank": 0.000017910916384851854,
+      "avg_harmonic": 0.000015741460080407386,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 1762
+    },
+    {
+      "id": 42,
+      "label": "main.webapp.bower_components.bootstrap-touchspin.dist",
+      "member_count": 82,
+      "avg_pagerank": 0.000027508896026829903,
+      "avg_harmonic": 0.000043597616640758335,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 21986
+    },
+    {
+      "id": 43,
+      "label": "main.webapp.bower_components.google-code-prettify.src",
+      "member_count": 80,
+      "avg_pagerank": 0.000036161451021143876,
+      "avg_harmonic": 0.00005395023645742292,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 15119
+    },
+    {
+      "id": 44,
+      "label": "main.webapp.bower_components.isotope.js",
+      "member_count": 73,
+      "avg_pagerank": 0.000041205077500868756,
+      "avg_harmonic": 0.00003601789704654289,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 9730
+    },
+    {
+      "id": 45,
+      "label": "main.webapp.bower_components.bootstrap-datepicker.js.locales",
+      "member_count": 66,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 17771
+    },
+    {
+      "id": 46,
+      "label": "main.webapp.bower_components.bootstrap-datepicker.dist.locales",
+      "member_count": 66,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 23163
+    },
+    {
+      "id": 47,
+      "label": "main.webapp.bower_components.angular-patternfly.test.notification",
+      "member_count": 66,
+      "avg_pagerank": 0.000022794878036207095,
+      "avg_harmonic": 0.000024032786347122528,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 34298
+    },
+    {
+      "id": 48,
+      "label": "main.webapp.bower_components.matchHeight",
+      "member_count": 64,
+      "avg_pagerank": 0.000027256240969109058,
+      "avg_harmonic": 0.000017007281547409825,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 17558
+    },
+    {
+      "id": 49,
+      "label": "main.webapp.bower_components.bootstrap-select.js.i18n",
+      "member_count": 62,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 1.3535310130915575e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 33940
+    },
+    {
+      "id": 50,
+      "label": "main.webapp.bower_components.angular-route",
+      "member_count": 59,
+      "avg_pagerank": 0.00002446498315987548,
+      "avg_harmonic": 0.000028841239365263745,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 15190
+    },
+    {
+      "id": 51,
+      "label": "main.webapp.bower_components.bootstrap-switch.dist.js",
+      "member_count": 58,
+      "avg_pagerank": 0.000019637208267873764,
+      "avg_harmonic": 0.00003935186148936999,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 14056
+    },
+    {
+      "id": 52,
+      "label": "main.webapp.bower_components.bootstrap-touchspin.src",
+      "member_count": 57,
+      "avg_pagerank": 0.000031542154223037265,
+      "avg_harmonic": 0.00005028062790806961,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 5884
+    },
+    {
+      "id": 53,
+      "label": "main.webapp.bower_components.google-code-prettify.bin",
+      "member_count": 56,
+      "avg_pagerank": 0.000029851175375889788,
+      "avg_harmonic": 0.00007700160022272584,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 32637
+    },
+    {
+      "id": 54,
+      "label": "main.webapp.bower_components.moment.src.lib.moment",
+      "member_count": 53,
+      "avg_pagerank": 0.000027948960365083964,
+      "avg_harmonic": 0.00003848858451585505,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 17545
+    },
+    {
+      "id": 55,
+      "label": "main.webapp.bower_components.bootstrap-datepicker.docs._screenshots.script",
+      "member_count": 50,
+      "avg_pagerank": 0.00008013067155843601,
+      "avg_harmonic": 0.00002352551615217635,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 31639
+    },
+    {
+      "id": 56,
+      "label": "main.webapp.bower_components.eventEmitter",
+      "member_count": 46,
+      "avg_pagerank": 0.00002531579135076912,
+      "avg_harmonic": 0.000022356100259912637,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 10378
+    },
+    {
+      "id": 57,
+      "label": "main.webapp.bower_components.patternfly-bootstrap-combobox.js",
+      "member_count": 45,
+      "avg_pagerank": 0.000045113802641733656,
+      "avg_harmonic": 0.00004254559088457831,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 23954
+    },
+    {
+      "id": 58,
+      "label": "main.webapp.bower_components.angular-sanitize",
+      "member_count": 44,
+      "avg_pagerank": 0.00002678049912157638,
+      "avg_harmonic": 0.00003936216305522322,
+      "avg_betweenness": 7.4285336669855824e-9,
+      "max_blast": 0.0,
+      "louvain_community_id": 11251
+    },
+    {
+      "id": 59,
+      "label": "main.webapp.bower_components.datatables-colreorder.js",
+      "member_count": 42,
+      "avg_pagerank": 0.00002808676171774832,
+      "avg_harmonic": 0.00011932020219543713,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 33027
+    },
+    {
+      "id": 60,
+      "label": "main.webapp.bower_components.datatables-colvis.js",
+      "member_count": 40,
+      "avg_pagerank": 0.00011659767351375194,
+      "avg_harmonic": 0.0000488349292247392,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 16763
+    },
+    {
+      "id": 61,
+      "label": "main.webapp.bower_components.matchHeight.dist",
+      "member_count": 39,
+      "avg_pagerank": 0.00003081738111340644,
+      "avg_harmonic": 0.000023137943549737625,
+      "avg_betweenness": 1.3968183419038747e-9,
+      "max_blast": 0.0,
+      "louvain_community_id": 31778
+    },
+    {
+      "id": 62,
+      "label": "com.redhat.coolstore.service",
+      "member_count": 39,
+      "avg_pagerank": 0.00002376373072948832,
+      "avg_harmonic": 0.0001178674050579823,
+      "avg_betweenness": 8.520591972154097e-8,
+      "max_blast": 0.0,
+      "louvain_community_id": 32985
+    },
+    {
+      "id": 63,
+      "label": "main.webapp.bower_components.c3.extensions.js",
+      "member_count": 38,
+      "avg_pagerank": 0.00004933854746157426,
+      "avg_harmonic": 0.00006196977908133836,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 10924
+    },
+    {
+      "id": 64,
+      "label": "main.webapp.bower_components.angular-patternfly.test.toolbars",
+      "member_count": 38,
+      "avg_pagerank": 0.000020124637701787595,
+      "avg_harmonic": 0.000025336209817121352,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 15210
+    },
+    {
+      "id": 65,
+      "label": "main.webapp.bower_components.angular-patternfly.test.views.listview",
+      "member_count": 37,
+      "avg_pagerank": 0.000021563535335951963,
+      "avg_harmonic": 0.000022627136375217714,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 19900
+    },
+    {
+      "id": 66,
+      "label": "main.webapp.bower_components.bootstrap.grunt",
+      "member_count": 37,
+      "avg_pagerank": 0.00010897183140489663,
+      "avg_harmonic": 0.00005562518254672307,
+      "avg_betweenness": 4.726153698307777e-7,
+      "max_blast": 0.0,
+      "louvain_community_id": 18310
+    },
+    {
+      "id": 67,
+      "label": "main.webapp.bower_components.angular-patternfly.test.navigation",
+      "member_count": 36,
+      "avg_pagerank": 0.00001996903569710816,
+      "avg_harmonic": 0.00002131852370289443,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 13966
+    },
+    {
+      "id": 68,
+      "label": "main.webapp.app.controllers",
+      "member_count": 34,
+      "avg_pagerank": 0.000025917040575757926,
+      "avg_harmonic": 5.74779125377531e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 18165
+    },
+    {
+      "id": 69,
+      "label": "main.webapp.bower_components.jquery.src.attributes",
+      "member_count": 33,
+      "avg_pagerank": 0.00003642929886788779,
+      "avg_harmonic": 0.00002621745402723005,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 16770
+    },
+    {
+      "id": 70,
+      "label": "main.webapp.bower_components.angular-patternfly.test.wizard",
+      "member_count": 32,
+      "avg_pagerank": 0.000018889600937654905,
+      "avg_harmonic": 0.000014391323505114073,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 17755
+    },
+    {
+      "id": 71,
+      "label": "main.webapp.bower_components.angular-patternfly.test.utils",
+      "member_count": 30,
+      "avg_pagerank": 0.000044808773297215035,
+      "avg_harmonic": 0.000017320410468120902,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 33595
+    },
+    {
+      "id": 72,
+      "label": "main.webapp.bower_components.jquery.src.ajax",
+      "member_count": 30,
+      "avg_pagerank": 0.000021377204999832124,
+      "avg_harmonic": 9.769202280788629e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 30119
+    },
+    {
+      "id": 73,
+      "label": "main.webapp.bower_components.bootstrap-datepicker.tests.suites.keyboard_navigation",
+      "member_count": 28,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 0.0001953102509917315,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 35294
+    },
+    {
+      "id": 74,
+      "label": "main.webapp.bower_components.jquery.src.core",
+      "member_count": 28,
+      "avg_pagerank": 0.0000231683422628391,
+      "avg_harmonic": 0.000022290090496543007,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 22217
+    },
+    {
+      "id": 75,
+      "label": "main.webapp.bower_components.moment.src.lib.locale",
+      "member_count": 28,
+      "avg_pagerank": 0.00003815216814473388,
+      "avg_harmonic": 0.00007948940198484625,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 22747
+    },
+    {
+      "id": 76,
+      "label": "main.webapp.bower_components.moment.src.lib.duration",
+      "member_count": 27,
+      "avg_pagerank": 0.00006031078717367361,
+      "avg_harmonic": 0.000040822711845315234,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 22553
+    },
+    {
+      "id": 77,
+      "label": "main.webapp.bower_components.moment.src.lib.create",
+      "member_count": 27,
+      "avg_pagerank": 0.00003599012018606084,
+      "avg_harmonic": 0.00003706529522970767,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 22747
+    },
+    {
+      "id": 78,
+      "label": "main.webapp.bower_components.moment.src.lib.utils",
+      "member_count": 25,
+      "avg_pagerank": 0.000026846720720641316,
+      "avg_harmonic": 8.18972960033193e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 28172
+    },
+    {
+      "id": 79,
+      "label": "main.webapp.bower_components.jquery.src.css",
+      "member_count": 25,
+      "avg_pagerank": 0.000027294025203445925,
+      "avg_harmonic": 0.000017489521029290243,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 21929
+    },
+    {
+      "id": 80,
+      "label": "main.webapp.bower_components.eonasdan-bootstrap-datetimepicker.docs.theme.js",
+      "member_count": 25,
+      "avg_pagerank": 0.000031111381758819334,
+      "avg_harmonic": 0.0000758659322865185,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 19353
+    },
+    {
+      "id": 81,
+      "label": "main.webapp.bower_components.angular-patternfly.test.modals",
+      "member_count": 24,
+      "avg_pagerank": 0.000027741091495651442,
+      "avg_harmonic": 0.00005523502188623889,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 20539
+    },
+    {
+      "id": 82,
+      "label": "main.webapp.bower_components.fizzy-ui-utils",
+      "member_count": 23,
+      "avg_pagerank": 0.000028142026602164034,
+      "avg_harmonic": 0.000012741697755403868,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 19286
+    },
+    {
+      "id": 83,
+      "label": "main.webapp.app.services",
+      "member_count": 23,
+      "avg_pagerank": 0.00001937410588257278,
+      "avg_harmonic": 2.429520823671075e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 21461
+    },
+    {
+      "id": 84,
+      "label": "main.webapp.bower_components.angular-patternfly.test.validation",
+      "member_count": 20,
+      "avg_pagerank": 0.00002376687307332759,
+      "avg_harmonic": 0.00001813998249087234,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 30524
+    },
+    {
+      "id": 85,
+      "label": "main.webapp.bower_components.bootstrap-datepicker.tests.suites.mouse_navigation",
+      "member_count": 19,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 0.00016608652289487748,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 11452
+    },
+    {
+      "id": 86,
+      "label": "main.webapp.bower_components.angular-patternfly.test.charts.heatmap",
+      "member_count": 18,
+      "avg_pagerank": 0.000025693716654334115,
+      "avg_harmonic": 0.000027130808209029232,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 24072
+    },
+    {
+      "id": 87,
+      "label": "main.webapp.bower_components.jquery.src.event",
+      "member_count": 18,
+      "avg_pagerank": 0.00001982940931257973,
+      "avg_harmonic": 0.00004431685371544505,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 7383
+    },
+    {
+      "id": 88,
+      "label": "main.webapp.bower_components.c3.extensions.chart-bubble",
+      "member_count": 17,
+      "avg_pagerank": 0.000023418700734242413,
+      "avg_harmonic": 4.926992882805253e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 24871
+    },
+    {
+      "id": 89,
+      "label": "main.webapp.bower_components.angular-patternfly.test.views.cardview",
+      "member_count": 17,
+      "avg_pagerank": 0.00001906557094223578,
+      "avg_harmonic": 0.000022160552080746958,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 35123
+    },
+    {
+      "id": 90,
+      "label": "main.webapp.bower_components.jquery.src.var",
+      "member_count": 17,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 1.644601033657476e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 13593
+    },
+    {
+      "id": 91,
+      "label": "main.webapp.bower_components.angular-patternfly.test.charts.sparkline",
+      "member_count": 16,
+      "avg_pagerank": 0.000026060235654767894,
+      "avg_harmonic": 0.00002965006205091214,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 7430
+    },
+    {
+      "id": 92,
+      "label": "main.webapp.bower_components.angular-patternfly.test.charts.donut",
+      "member_count": 16,
+      "avg_pagerank": 0.000027046839704780723,
+      "avg_harmonic": 0.00003313845478403188,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 22143
+    },
+    {
+      "id": 93,
+      "label": "main.webapp.app",
+      "member_count": 15,
+      "avg_pagerank": 0.00003726009878543361,
+      "avg_harmonic": 5.583471252634808e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 33087
+    },
+    {
+      "id": 94,
+      "label": "main.webapp.bower_components.angular-patternfly.test.sort",
+      "member_count": 15,
+      "avg_pagerank": 0.00001874032362441843,
+      "avg_harmonic": 0.000025116201122680574,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 24819
+    },
+    {
+      "id": 95,
+      "label": "main.webapp.bower_components.angular-patternfly.test.card.basic",
+      "member_count": 15,
+      "avg_pagerank": 0.0000299962663120823,
+      "avg_harmonic": 0.00003627860507720016,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 2266
+    },
+    {
+      "id": 96,
+      "label": "main.webapp.bower_components.isotope.js.layout-modes",
+      "member_count": 15,
+      "avg_pagerank": 0.00001874032362441843,
+      "avg_harmonic": 0.000013024922223081603,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 31596
+    },
+    {
+      "id": 97,
+      "label": "main.webapp.bower_components.c3.extensions.exporter",
+      "member_count": 13,
+      "avg_pagerank": 0.000018894986659198857,
+      "avg_harmonic": 7.158646896735595e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 16561
+    },
+    {
+      "id": 98,
+      "label": "com.redhat.coolstore.rest",
+      "member_count": 12,
+      "avg_pagerank": 0.000018608612663228996,
+      "avg_harmonic": 0.0003148555056148676,
+      "avg_betweenness": 9.079319222375185e-9,
+      "max_blast": 0.0,
+      "louvain_community_id": 30520
+    },
+    {
+      "id": 99,
+      "label": "main.webapp.bower_components.get-size",
+      "member_count": 12,
+      "avg_pagerank": 0.000022400383083246805,
+      "avg_harmonic": 0.000020933197572977253,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 26443
+    },
+    {
+      "id": 100,
+      "label": "main.webapp.bower_components.jquery.src.effects",
+      "member_count": 12,
+      "avg_pagerank": 0.00002517904295018525,
+      "avg_harmonic": 0.00001705512171756851,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 27603
+    },
+    {
+      "id": 101,
+      "label": "main.webapp.bower_components.angular-patternfly.test.filters",
+      "member_count": 12,
+      "avg_pagerank": 0.000018991651055936625,
+      "avg_harmonic": 0.00002441818179743649,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 19479
+    },
+    {
+      "id": 102,
+      "label": "main.webapp.bower_components.angular-patternfly.test.card.aggregate-status",
+      "member_count": 12,
+      "avg_pagerank": 0.00002778811252331555,
+      "avg_harmonic": 0.00003023103407873151,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 13861
+    },
+    {
+      "id": 103,
+      "label": "main.webapp.bower_components.jquery.src.traversing",
+      "member_count": 12,
+      "avg_pagerank": 0.0000665477259644831,
+      "avg_harmonic": 0.000015116935757397698,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 26211
+    },
+    {
+      "id": 104,
+      "label": "main.webapp.bower_components.masonry",
+      "member_count": 11,
+      "avg_pagerank": 0.000023801369521110743,
+      "avg_harmonic": 0.000025370130125682262,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 3700
+    },
+    {
+      "id": 105,
+      "label": "main.webapp.bower_components.jquery.src.manipulation",
+      "member_count": 11,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 13109
+    },
+    {
+      "id": 106,
+      "label": "main.webapp.bower_components.angular-patternfly.test.autofocus",
+      "member_count": 11,
+      "avg_pagerank": 0.00002184764525736682,
+      "avg_harmonic": 0.000013954499387448426,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 15925
+    },
+    {
+      "id": 107,
+      "label": "main.webapp.bower_components.angular-patternfly.test.charts.utilization-bar",
+      "member_count": 11,
+      "avg_pagerank": 0.000024589399386472493,
+      "avg_harmonic": 0.000024100693473563048,
+      "avg_betweenness": 4.952355939477374e-9,
+      "max_blast": 0.0,
+      "louvain_community_id": 18308
+    },
+    {
+      "id": 108,
+      "label": "main.webapp.bower_components.bootstrap",
+      "member_count": 11,
+      "avg_pagerank": 0.00001842045243062206,
+      "avg_harmonic": 0.00004385475764934199,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 21449
+    },
+    {
+      "id": 109,
+      "label": "main.webapp.bower_components.angular-patternfly.test.charts.trends",
+      "member_count": 11,
+      "avg_pagerank": 0.00001842045243062206,
+      "avg_harmonic": 0.000021563990712665642,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 30915
+    },
+    {
+      "id": 110,
+      "label": "main.webapp.bower_components.moment.src.lib.parse",
+      "member_count": 11,
+      "avg_pagerank": 0.00002093372677336447,
+      "avg_harmonic": 0.00001522362615347106,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 8968
+    },
+    {
+      "id": 111,
+      "label": "main.webapp.bower_components.moment.src.lib.format",
+      "member_count": 10,
+      "avg_pagerank": 0.000020675710220530164,
+      "avg_harmonic": 0.000015351654628759094,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 29176
+    },
+    {
+      "id": 112,
+      "label": "main.webapp.bower_components.angular-patternfly.test.charts.utilization-trend",
+      "member_count": 10,
+      "avg_pagerank": 0.000025274837935285176,
+      "avg_harmonic": 0.00002511506553410925,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 27331
+    },
+    {
+      "id": 113,
+      "label": "main.webapp.bower_components.angular-patternfly.test.select",
+      "member_count": 10,
+      "avg_pagerank": 0.00002225890839326894,
+      "avg_harmonic": 0.00001534960881528491,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 13931
+    },
+    {
+      "id": 114,
+      "label": "main.webapp.bower_components.patternfly.tests.pages",
+      "member_count": 9,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 5151
+    },
+    {
+      "id": 115,
+      "label": "com.redhat.coolstore.utils",
+      "member_count": 9,
+      "avg_pagerank": 0.000025138874965098996,
+      "avg_harmonic": 0.00010709578396372876,
+      "avg_betweenness": 6.052879244735878e-8,
+      "max_blast": 0.0,
+      "louvain_community_id": 22069
+    },
+    {
+      "id": 116,
+      "label": "main.webapp.bower_components.jquery.src.css.var",
+      "member_count": 9,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.1034418555009324e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 11333
+    },
+    {
+      "id": 117,
+      "label": "main.webapp.bower_components.patternfly.dist.tests",
+      "member_count": 9,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 35347
+    },
+    {
+      "id": 118,
+      "label": "main.webapp.bower_components.angular-patternfly.test.form.form-group",
+      "member_count": 8,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 0.00001395357046796164,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 7703
+    },
+    {
+      "id": 119,
+      "label": "main.webapp.bower_components.jquery.src.data",
+      "member_count": 8,
+      "avg_pagerank": 0.0000249927131790173,
+      "avg_harmonic": 0.00001569904495513086,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 10353
+    },
+    {
+      "id": 120,
+      "label": "main.webapp.bower_components.ev-emitter",
+      "member_count": 7,
+      "avg_pagerank": 0.000022043484152943294,
+      "avg_harmonic": 0.000011960689702407632,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 23836
+    },
+    {
+      "id": 121,
+      "label": "main.webapp.bower_components.patternfly.tests.pages._includes.widgets.table-view.js",
+      "member_count": 7,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 10348
+    },
+    {
+      "id": 122,
+      "label": "main.webapp.bower_components.angular-patternfly.test.form.remaining-chars-count",
+      "member_count": 7,
+      "avg_pagerank": 0.000026351955706819092,
+      "avg_harmonic": 0.000015946451233515647,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 28837
+    },
+    {
+      "id": 123,
+      "label": "main.webapp.bower_components.matches-selector",
+      "member_count": 7,
+      "avg_pagerank": 0.00002419771954009775,
+      "avg_harmonic": 0.00002392040809238795,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 23631
+    },
+    {
+      "id": 124,
+      "label": "main.webapp.bower_components.bootstrap-datepicker",
+      "member_count": 6,
+      "avg_pagerank": 0.00002171436517528491,
+      "avg_harmonic": 0.000048069127223252885,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 17495
+    },
+    {
+      "id": 125,
+      "label": "main.webapp.bower_components.eventie",
+      "member_count": 6,
+      "avg_pagerank": 0.00002276156283187447,
+      "avg_harmonic": 9.303515348335623e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 24882
+    },
+    {
+      "id": 126,
+      "label": "main.webapp.bower_components.angular-patternfly.test.form.datepicker",
+      "member_count": 5,
+      "avg_pagerank": 0.000019745633471757175,
+      "avg_harmonic": 0.000033491980843081134,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 26836
+    },
+    {
+      "id": 127,
+      "label": "main.webapp.bower_components.jquery.src.traversing.var",
+      "member_count": 5,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 18823
+    },
+    {
+      "id": 128,
+      "label": "main.webapp.bower_components.angular-patternfly.test.form.form-buttons",
+      "member_count": 5,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 0.00001116353739618603,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 8527
+    },
+    {
+      "id": 129,
+      "label": "main.webapp.bower_components.angular-patternfly.test.form.datetimepicker",
+      "member_count": 5,
+      "avg_pagerank": 0.000023766872618580238,
+      "avg_harmonic": 0.00001116353739618603,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 34004
+    },
+    {
+      "id": 130,
+      "label": "main.webapp.bower_components.doc-ready",
+      "member_count": 5,
+      "avg_pagerank": 0.000026557102683000266,
+      "avg_harmonic": 0.00002511642886275922,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 24693
+    },
+    {
+      "id": 131,
+      "label": "main.webapp.bower_components.moment.templates",
+      "member_count": 5,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 0.000027906461384930024,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 14390
+    },
+    {
+      "id": 132,
+      "label": "main.webapp.bower_components.jquery.src.exports",
+      "member_count": 4,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 23987
+    },
+    {
+      "id": 133,
+      "label": "main.webapp.bower_components.angular-patternfly.test.charts.c3",
+      "member_count": 4,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 6.978487788522614e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 8544
+    },
+    {
+      "id": 134,
+      "label": "weblogic.application",
+      "member_count": 4,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 26509
+    },
+    {
+      "id": 135,
+      "label": "main.webapp.bower_components.jquery.src.data.var",
+      "member_count": 4,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 0.00001395357046796164,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 3934
+    },
+    {
+      "id": 136,
+      "label": "main.webapp.bower_components.jquery.src.queue",
+      "member_count": 4,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 15121
+    },
+    {
+      "id": 137,
+      "label": "main.webapp.bower_components.patternfly",
+      "member_count": 4,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 6.978487788522614e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 23384
+    },
+    {
+      "id": 138,
+      "label": "main.webapp.bower_components.eonasdan-bootstrap-datetimepicker",
+      "member_count": 3,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 9.303515348335623e-6,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 32956
+    },
+    {
+      "id": 139,
+      "label": "main.webapp.bower_components.get-style-property",
+      "member_count": 3,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 15978
+    },
+    {
+      "id": 140,
+      "label": "main.webapp.bower_components.jquery.src.ajax.var",
+      "member_count": 3,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 18620
+    },
+    {
+      "id": 141,
+      "label": "main.webapp.bower_components.jquery.src.manipulation.var",
+      "member_count": 3,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 28225
+    },
+    {
+      "id": 142,
+      "label": "weblogic.i18n.logging",
+      "member_count": 2,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 15979
+    },
+    {
+      "id": 143,
+      "label": "main.webapp.bower_components.bootstrap-select.docs.custom_theme.js",
+      "member_count": 2,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 23390
+    },
+    {
+      "id": 144,
+      "label": "main.webapp.bower_components.jquery.src.deferred",
+      "member_count": 2,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 28674
+    },
+    {
+      "id": 145,
+      "label": "main.webapp.bower_components.masonry.sandbox.require-js",
+      "member_count": 2,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 0.00001395357046796164,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 34981
+    },
+    {
+      "id": 146,
+      "label": "main.webapp.bower_components.patternfly-bootstrap-treeview",
+      "member_count": 2,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 21070
+    },
+    {
+      "id": 147,
+      "label": "main.webapp.bower_components.eonasdan-bootstrap-datetimepicker.tasks",
+      "member_count": 2,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 5643
+    },
+    {
+      "id": 148,
+      "label": "main.webapp.bower_components.patternfly.tests.pages._plugins",
+      "member_count": 2,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 22332
+    },
+    {
+      "id": 149,
+      "label": "com.redhat.coolstore.persistence",
+      "member_count": 1,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 28213
+    },
+    {
+      "id": 150,
+      "label": "main.webapp.bower_components.bootstrap-touchspin",
+      "member_count": 1,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 16919
+    },
+    {
+      "id": 151,
+      "label": "main.webapp.bower_components.bootstrap-switch",
+      "member_count": 1,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 22482
+    },
+    {
+      "id": 152,
+      "label": "main.webapp.bower_components.jquery.src.core.var",
+      "member_count": 1,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 22186
+    },
+    {
+      "id": 153,
+      "label": "main.webapp.app.directives",
+      "member_count": 1,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 5217
+    },
+    {
+      "id": 154,
+      "label": "main.webapp.app.routes",
+      "member_count": 1,
+      "avg_pagerank": 0.000017735013898345642,
+      "avg_harmonic": 3.4051090835873765e-9,
+      "avg_betweenness": 0.0,
+      "max_blast": 0.0,
+      "louvain_community_id": 12727
+    }
+  ],
+  "edges": [
+    {
+      "source": 96,
+      "target": 55,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 7,
+      "target": 60,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 15,
+      "target": 66,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 22,
+      "target": 0,
+      "weight": 18,
+      "kind": "calls"
+    },
+    {
+      "source": 137,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 81,
+      "target": 71,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 2,
+      "target": 88,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 100,
+      "target": 0,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 73,
+      "target": 14,
+      "weight": 40,
+      "kind": "calls"
+    },
+    {
+      "source": 11,
+      "target": 95,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 28,
+      "target": 0,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 49,
+      "target": 60,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 59,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 17,
+      "target": 14,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 23,
+      "target": 0,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 5,
+      "target": 55,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 31,
+      "target": 13,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 111,
+      "target": 0,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 85,
+      "target": 14,
+      "weight": 23,
+      "kind": "calls"
+    },
+    {
+      "source": 24,
+      "target": 60,
+      "weight": 64,
+      "kind": "calls"
+    },
+    {
+      "source": 31,
+      "target": 0,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 76,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 48,
+      "target": 0,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 58,
+      "target": 14,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 98,
+      "target": 62,
+      "weight": 14,
+      "kind": "calls"
+    },
+    {
+      "source": 28,
+      "target": 66,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 67,
+      "target": 20,
+      "weight": 9,
+      "kind": "calls"
+    },
+    {
+      "source": 16,
+      "target": 7,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 14,
+      "target": 66,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 96,
+      "target": 60,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 9,
+      "target": 76,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 101,
+      "target": 71,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 84,
+      "target": 20,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 23,
+      "target": 76,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 36,
+      "target": 60,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 36,
+      "target": 55,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 92,
+      "target": 20,
+      "weight": 8,
+      "kind": "calls"
+    },
+    {
+      "source": 130,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 20,
+      "target": 14,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 70,
+      "target": 71,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 5,
+      "target": 60,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 13,
+      "target": 76,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 118,
+      "target": 20,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 113,
+      "target": 20,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 65,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 12,
+      "target": 60,
+      "weight": 101,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "weight": 12,
+      "kind": "calls"
+    },
+    {
+      "source": 21,
+      "target": 6,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 25,
+      "target": 55,
+      "weight": 64,
+      "kind": "calls"
+    },
+    {
+      "source": 2,
+      "target": 76,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 91,
+      "target": 20,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 68,
+      "target": 83,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 44,
+      "target": 66,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 51,
+      "target": 60,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 115,
+      "target": 38,
+      "weight": 23,
+      "kind": "calls"
+    },
+    {
+      "source": 145,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 75,
+      "target": 14,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 71,
+      "target": 20,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 3,
+      "target": 60,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 98,
+      "target": 38,
+      "weight": 17,
+      "kind": "calls"
+    },
+    {
+      "source": 62,
+      "target": 115,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 108,
+      "target": 66,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 94,
+      "target": 71,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 81,
+      "target": 20,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 17,
+      "target": 7,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 15,
+      "target": 60,
+      "weight": 14,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 26,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 120,
+      "target": 60,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 35,
+      "target": 14,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 52,
+      "target": 14,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 80,
+      "target": 14,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 30,
+      "target": 60,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 64,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 15,
+      "target": 55,
+      "weight": 15,
+      "kind": "calls"
+    },
+    {
+      "source": 87,
+      "target": 66,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 23,
+      "target": 66,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 75,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "weight": 33,
+      "kind": "calls"
+    },
+    {
+      "source": 94,
+      "target": 20,
+      "weight": 7,
+      "kind": "calls"
+    },
+    {
+      "source": 8,
+      "target": 1,
+      "weight": 79,
+      "kind": "calls"
+    },
+    {
+      "source": 89,
+      "target": 71,
+      "weight": 7,
+      "kind": "calls"
+    },
+    {
+      "source": 110,
+      "target": 0,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 107,
+      "target": 20,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 59,
+      "target": 6,
+      "weight": 9,
+      "kind": "calls"
+    },
+    {
+      "source": 7,
+      "target": 14,
+      "weight": 18,
+      "kind": "calls"
+    },
+    {
+      "source": 15,
+      "target": 0,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 1,
+      "target": 40,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 37,
+      "target": 14,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 133,
+      "target": 20,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 61,
+      "target": 60,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 23,
+      "target": 55,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 77,
+      "target": 75,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 76,
+      "target": 75,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 64,
+      "target": 71,
+      "weight": 12,
+      "kind": "calls"
+    },
+    {
+      "source": 11,
+      "target": 92,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 48,
+      "target": 124,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 48,
+      "target": 76,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 39,
+      "target": 55,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 76,
+      "weight": 37,
+      "kind": "calls"
+    },
+    {
+      "source": 10,
+      "target": 55,
+      "weight": 8,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 40,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 59,
+      "target": 14,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 29,
+      "target": 60,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 9,
+      "target": 20,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 18,
+      "target": 55,
+      "weight": 8,
+      "kind": "calls"
+    },
+    {
+      "source": 66,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 21,
+      "target": 9,
+      "weight": 13,
+      "kind": "calls"
+    },
+    {
+      "source": 34,
+      "target": 14,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 11,
+      "target": 71,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 104,
+      "target": 0,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 34,
+      "target": 60,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 20,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 5,
+      "target": 0,
+      "weight": 30,
+      "kind": "calls"
+    },
+    {
+      "source": 35,
+      "target": 13,
+      "weight": 21,
+      "kind": "calls"
+    },
+    {
+      "source": 48,
+      "target": 14,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 95,
+      "target": 20,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 87,
+      "target": 14,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 9,
+      "target": 0,
+      "weight": 16,
+      "kind": "calls"
+    },
+    {
+      "source": 95,
+      "target": 71,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 14,
+      "target": 17,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 54,
+      "target": 75,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 62,
+      "target": 38,
+      "weight": 37,
+      "kind": "calls"
+    },
+    {
+      "source": 6,
+      "target": 9,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 13,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 4,
+      "target": 60,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 61,
+      "target": 76,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 4,
+      "target": 0,
+      "weight": 27,
+      "kind": "calls"
+    },
+    {
+      "source": 14,
+      "target": 0,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 59,
+      "target": 66,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 71,
+      "target": 66,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 101,
+      "target": 20,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 49,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 82,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 76,
+      "target": 77,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 10,
+      "target": 6,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 10,
+      "target": 9,
+      "weight": 16,
+      "kind": "calls"
+    },
+    {
+      "source": 7,
+      "target": 76,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 23,
+      "target": 14,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 138,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 13,
+      "target": 9,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 82,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 6,
+      "target": 17,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 60,
+      "target": 9,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 6,
+      "target": 60,
+      "weight": 24,
+      "kind": "calls"
+    },
+    {
+      "source": 8,
+      "target": 7,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 34,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 6,
+      "target": 0,
+      "weight": 19,
+      "kind": "calls"
+    },
+    {
+      "source": 43,
+      "target": 0,
+      "weight": 9,
+      "kind": "calls"
+    },
+    {
+      "source": 112,
+      "target": 20,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 74,
+      "target": 66,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 50,
+      "target": 14,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 26,
+      "target": 14,
+      "weight": 170,
+      "kind": "calls"
+    },
+    {
+      "source": 6,
+      "target": 55,
+      "weight": 16,
+      "kind": "calls"
+    },
+    {
+      "source": 36,
+      "target": 124,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 4,
+      "target": 14,
+      "weight": 22,
+      "kind": "calls"
+    },
+    {
+      "source": 35,
+      "target": 76,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 13,
+      "target": 0,
+      "weight": 12,
+      "kind": "calls"
+    },
+    {
+      "source": 78,
+      "target": 76,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 48,
+      "target": 60,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 1,
+      "target": 76,
+      "weight": 31,
+      "kind": "calls"
+    },
+    {
+      "source": 18,
+      "target": 60,
+      "weight": 7,
+      "kind": "calls"
+    },
+    {
+      "source": 102,
+      "target": 20,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 34,
+      "target": 66,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 44,
+      "target": 60,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 9,
+      "target": 60,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 22,
+      "target": 14,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 3,
+      "target": 0,
+      "weight": 10,
+      "kind": "calls"
+    },
+    {
+      "source": 11,
+      "target": 64,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 69,
+      "target": 17,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 54,
+      "target": 76,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 17,
+      "target": 66,
+      "weight": 11,
+      "kind": "calls"
+    },
+    {
+      "source": 60,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 29,
+      "target": 14,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 43,
+      "target": 14,
+      "weight": 9,
+      "kind": "calls"
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 51,
+      "target": 14,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 39,
+      "target": 0,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 5,
+      "target": 14,
+      "weight": 12,
+      "kind": "calls"
+    },
+    {
+      "source": 1,
+      "target": 0,
+      "weight": 12,
+      "kind": "calls"
+    },
+    {
+      "source": 70,
+      "target": 20,
+      "weight": 7,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 66,
+      "weight": 39,
+      "kind": "calls"
+    },
+    {
+      "source": 6,
+      "target": 76,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 54,
+      "target": 0,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 87,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 106,
+      "target": 20,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 16,
+      "target": 66,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 20,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 47,
+      "target": 71,
+      "weight": 12,
+      "kind": "calls"
+    },
+    {
+      "source": 20,
+      "target": 7,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 74,
+      "target": 14,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 17,
+      "target": 0,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 4,
+      "target": 17,
+      "weight": 9,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 55,
+      "weight": 8,
+      "kind": "calls"
+    },
+    {
+      "source": 60,
+      "target": 6,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 124,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 104,
+      "target": 60,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 1,
+      "target": 66,
+      "weight": 10,
+      "kind": "calls"
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "weight": 32,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "weight": 72,
+      "kind": "calls"
+    },
+    {
+      "source": 6,
+      "target": 66,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 95,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 51,
+      "target": 55,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 29,
+      "target": 55,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 40,
+      "target": 14,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 89,
+      "target": 20,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 47,
+      "target": 20,
+      "weight": 18,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 60,
+      "weight": 8,
+      "kind": "calls"
+    },
+    {
+      "source": 2,
+      "target": 0,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 126,
+      "target": 20,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 54,
+      "target": 77,
+      "weight": 12,
+      "kind": "calls"
+    },
+    {
+      "source": 53,
+      "target": 0,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 13,
+      "target": 14,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 55,
+      "target": 14,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 51,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 74,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 75,
+      "target": 9,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 9,
+      "target": 7,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 3,
+      "target": 20,
+      "weight": 10,
+      "kind": "calls"
+    },
+    {
+      "source": 50,
+      "target": 7,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 27,
+      "target": 76,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 16,
+      "target": 60,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 31,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 16,
+      "target": 0,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 3,
+      "target": 14,
+      "weight": 10,
+      "kind": "calls"
+    },
+    {
+      "source": 124,
+      "target": 14,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 34,
+      "target": 76,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 34,
+      "target": 0,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 36,
+      "target": 0,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 27,
+      "target": 0,
+      "weight": 17,
+      "kind": "calls"
+    },
+    {
+      "source": 61,
+      "target": 0,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 30,
+      "target": 55,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 9,
+      "target": 66,
+      "weight": 22,
+      "kind": "calls"
+    },
+    {
+      "source": 104,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 11,
+      "target": 65,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 39,
+      "target": 60,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 8,
+      "target": 0,
+      "weight": 13,
+      "kind": "calls"
+    },
+    {
+      "source": 2,
+      "target": 66,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 25,
+      "target": 60,
+      "weight": 64,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 71,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 21,
+      "target": 8,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 23,
+      "target": 60,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 7,
+      "target": 66,
+      "weight": 18,
+      "kind": "calls"
+    },
+    {
+      "source": 61,
+      "target": 55,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 21,
+      "target": 60,
+      "weight": 12,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 92,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 11,
+      "target": 47,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 2,
+      "target": 55,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 7,
+      "target": 20,
+      "weight": 8,
+      "kind": "calls"
+    },
+    {
+      "source": 21,
+      "target": 55,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 42,
+      "target": 14,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 10,
+      "target": 60,
+      "weight": 16,
+      "kind": "calls"
+    },
+    {
+      "source": 11,
+      "target": 0,
+      "weight": 8,
+      "kind": "calls"
+    },
+    {
+      "source": 108,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 99,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 55,
+      "target": 66,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 93,
+      "target": 60,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 47,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 24,
+      "target": 55,
+      "weight": 64,
+      "kind": "calls"
+    },
+    {
+      "source": 5,
+      "target": 76,
+      "weight": 12,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 75,
+      "target": 77,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 44,
+      "target": 55,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 20,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 13,
+      "target": 60,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 28,
+      "target": 14,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 35,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 6,
+      "target": 14,
+      "weight": 22,
+      "kind": "calls"
+    },
+    {
+      "source": 97,
+      "target": 14,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "weight": 81,
+      "kind": "calls"
+    },
+    {
+      "source": 31,
+      "target": 60,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 27,
+      "target": 14,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 65,
+      "target": 71,
+      "weight": 13,
+      "kind": "calls"
+    },
+    {
+      "source": 7,
+      "target": 0,
+      "weight": 19,
+      "kind": "calls"
+    },
+    {
+      "source": 86,
+      "target": 20,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 55,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 65,
+      "target": 20,
+      "weight": 10,
+      "kind": "calls"
+    },
+    {
+      "source": 22,
+      "target": 76,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 109,
+      "target": 20,
+      "weight": 6,
+      "kind": "calls"
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "weight": 60,
+      "kind": "calls"
+    },
+    {
+      "source": 57,
+      "target": 66,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 75,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 35,
+      "target": 77,
+      "weight": 10,
+      "kind": "calls"
+    },
+    {
+      "source": 51,
+      "target": 40,
+      "weight": 48,
+      "kind": "calls"
+    },
+    {
+      "source": 14,
+      "target": 7,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 4,
+      "target": 66,
+      "weight": 34,
+      "kind": "calls"
+    },
+    {
+      "source": 57,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 59,
+      "target": 60,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 124,
+      "target": 7,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 131,
+      "target": 55,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 31,
+      "target": 14,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 124,
+      "target": 55,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 16,
+      "target": 14,
+      "weight": 14,
+      "kind": "calls"
+    },
+    {
+      "source": 23,
+      "target": 26,
+      "weight": 8,
+      "kind": "calls"
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "weight": 10,
+      "kind": "calls"
+    },
+    {
+      "source": 9,
+      "target": 14,
+      "weight": 19,
+      "kind": "calls"
+    },
+    {
+      "source": 18,
+      "target": 0,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 76,
+      "target": 13,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 64,
+      "target": 20,
+      "weight": 15,
+      "kind": "calls"
+    },
+    {
+      "source": 82,
+      "target": 60,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 66,
+      "target": 14,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 53,
+      "target": 14,
+      "weight": 8,
+      "kind": "calls"
+    },
+    {
+      "source": 123,
+      "target": 0,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 3,
+      "target": 66,
+      "weight": 16,
+      "kind": "calls"
+    },
+    {
+      "source": 34,
+      "target": 26,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 128,
+      "target": 20,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 30,
+      "target": 14,
+      "weight": 4,
+      "kind": "calls"
+    },
+    {
+      "source": 78,
+      "target": 14,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 108,
+      "target": 14,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 12,
+      "target": 55,
+      "weight": 101,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 8,
+      "weight": 7,
+      "kind": "calls"
+    },
+    {
+      "source": 48,
+      "target": 55,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 131,
+      "target": 60,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 10,
+      "target": 8,
+      "weight": 2,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "weight": 3,
+      "kind": "calls"
+    },
+    {
+      "source": 0,
+      "target": 88,
+      "weight": 1,
+      "kind": "calls"
+    },
+    {
+      "source": 54,
+      "target": 13,
+      "weight": 5,
+      "kind": "calls"
+    },
+    {
+      "source": 67,
+      "target": 71,
+      "weight": 8,
+      "kind": "calls"
+    }
+  ]
+}

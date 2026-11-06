@@ -1,0 +1,1273 @@
+{
+  "schema_version": 1,
+  "modularity": 0.4543329006050878,
+  "communities": [
+    {
+      "id": 35856,
+      "label": "Infrastructure / Common Library",
+      "color": "#a13ecc",
+      "member_count": 5729,
+      "package_count": 2
+    },
+    {
+      "id": 32851,
+      "label": "bower_components.d3::node",
+      "color": "#3eccad",
+      "member_count": 1863,
+      "package_count": 1
+    },
+    {
+      "id": 35702,
+      "label": "bower_components.c3::mapToIds",
+      "color": "#473ecc",
+      "member_count": 1575,
+      "package_count": 1
+    },
+    {
+      "id": 29264,
+      "label": "bower_components.angular-bootstrap::render (4)",
+      "color": "#ccc73e",
+      "member_count": 1559,
+      "package_count": 1
+    },
+    {
+      "id": 11898,
+      "label": "jquery.dist::merge (4)",
+      "color": "#cc3e76",
+      "member_count": 1528,
+      "package_count": 1
+    },
+    {
+      "id": 13435,
+      "label": "moment.min::local__createLocal",
+      "color": "#3e79cc",
+      "member_count": 1238,
+      "package_count": 1
+    },
+    {
+      "id": 34602,
+      "label": "media.js::_fnCallbackFire",
+      "color": "#cc763e",
+      "member_count": 1156,
+      "package_count": 1
+    },
+    {
+      "id": 16965,
+      "label": "bower_components.angular::peek",
+      "color": "#3ecca8",
+      "member_count": 828,
+      "package_count": 1
+    },
+    {
+      "id": 2471,
+      "label": "bower_components.lodash (2)",
+      "color": "#bbcc3e",
+      "member_count": 773,
+      "package_count": 1
+    },
+    {
+      "id": 20170,
+      "label": "docs.js::get",
+      "color": "#cc3e9c",
+      "member_count": 752,
+      "package_count": 1
+    },
+    {
+      "id": 25379,
+      "label": "dist.js::getDefaultColors (4)",
+      "color": "#cc3e66",
+      "member_count": 619,
+      "package_count": 1
+    },
+    {
+      "id": 24923,
+      "label": "moment.locale::forms",
+      "color": "#3ecc87",
+      "member_count": 601,
+      "package_count": 1
+    },
+    {
+      "id": 20761,
+      "label": "angular-patternfly.dist::merge (2)",
+      "color": "#cc663e",
+      "member_count": 581,
+      "package_count": 1
+    },
+    {
+      "id": 17463,
+      "label": "bower_components.moment::local__createLocal",
+      "color": "#3eccb6",
+      "member_count": 480,
+      "package_count": 1
+    },
+    {
+      "id": 10975,
+      "label": "tests.assets::escapeInnerText",
+      "color": "#3ecc90",
+      "member_count": 408,
+      "package_count": 1
+    },
+    {
+      "id": 11242,
+      "label": "src.locale::forms",
+      "color": "#63cc3e",
+      "member_count": 398,
+      "package_count": 1
+    },
+    {
+      "id": 1354,
+      "label": "isotope.dist::css",
+      "color": "#3ecc51",
+      "member_count": 388,
+      "package_count": 1
+    },
+    {
+      "id": 3702,
+      "label": "bower_components.angular-animate",
+      "color": "#cc3e93",
+      "member_count": 341,
+      "package_count": 1
+    },
+    {
+      "id": 14973,
+      "label": "jquery.src::promise",
+      "color": "#3ecc6f",
+      "member_count": 340,
+      "package_count": 1
+    },
+    {
+      "id": 12402,
+      "label": "eonasdan-bootstrap-datetimepicker.docs (4)",
+      "color": "#763ecc",
+      "member_count": 311,
+      "package_count": 1
+    },
+    {
+      "id": 6912,
+      "label": "masonry.dist::css",
+      "color": "#cc3e4c",
+      "member_count": 303,
+      "package_count": 1
+    },
+    {
+      "id": 13014,
+      "label": "js.i18n::anonymous@L11 (31)",
+      "color": "#3e5acc",
+      "member_count": 278,
+      "package_count": 1
+    },
+    {
+      "id": 15172,
+      "label": "js.i18n::maxOptionsText (32)",
+      "color": "#3ecc5f",
+      "member_count": 278,
+      "package_count": 1
+    },
+    {
+      "id": 33557,
+      "label": "keycloak.dist::setSuccess (3)",
+      "color": "#3e58cc",
+      "member_count": 238,
+      "package_count": 1
+    },
+    {
+      "id": 17449,
+      "label": "src.js::getDefaultColors",
+      "color": "#3e4ecc",
+      "member_count": 236,
+      "package_count": 1
+    },
+    {
+      "id": 18558,
+      "label": "dist.js::hide (4)",
+      "color": "#3ecc93",
+      "member_count": 229,
+      "package_count": 1
+    },
+    {
+      "id": 30341,
+      "label": "dist.js::getUTCDate",
+      "color": "#953ecc",
+      "member_count": 222,
+      "package_count": 1
+    },
+    {
+      "id": 34669,
+      "label": "tests.suites::strictEqual",
+      "color": "#bb3ecc",
+      "member_count": 218,
+      "package_count": 1
+    },
+    {
+      "id": 19780,
+      "label": "bootstrap.js::tip",
+      "color": "#cc3e55",
+      "member_count": 199,
+      "package_count": 1
+    },
+    {
+      "id": 8194,
+      "label": "ShoppingCart",
+      "color": "#3ecc51",
+      "member_count": 196,
+      "package_count": 1
+    },
+    {
+      "id": 6720,
+      "label": "bower_components.patternfly-bootstrap-treeview::Bootstrap Tree View",
+      "color": "#cc3e85",
+      "member_count": 190,
+      "package_count": 1
+    },
+    {
+      "id": 28280,
+      "label": "sizzle.dist::Sizzle",
+      "color": "#553ecc",
+      "member_count": 182,
+      "package_count": 1
+    },
+    {
+      "id": 20707,
+      "label": "dist.js::hasClass (2)",
+      "color": "#cc3e40",
+      "member_count": 167,
+      "package_count": 1
+    },
+    {
+      "id": 8853,
+      "label": "dist.js::hasClass",
+      "color": "#3ecc6f",
+      "member_count": 167,
+      "package_count": 1
+    },
+    {
+      "id": 1356,
+      "label": "bower_components.imagesloaded::confirm",
+      "color": "#3e68cc",
+      "member_count": 157,
+      "package_count": 1
+    },
+    {
+      "id": 23316,
+      "label": "lib.units::createUTC (4)",
+      "color": "#3e68cc",
+      "member_count": 152,
+      "package_count": 1
+    },
+    {
+      "id": 26917,
+      "label": "src.js::getMoment",
+      "color": "#823ecc",
+      "member_count": 149,
+      "package_count": 1
+    },
+    {
+      "id": 14056,
+      "label": "src.js::_containerPosition",
+      "color": "#423ecc",
+      "member_count": 148,
+      "package_count": 2
+    },
+    {
+      "id": 12350,
+      "label": "public.js::_triggerEvent",
+      "color": "#cc3e6d",
+      "member_count": 142,
+      "package_count": 1
+    },
+    {
+      "id": 33931,
+      "label": "src.js::_triggerEvent",
+      "color": "#3eccad",
+      "member_count": 142,
+      "package_count": 1
+    },
+    {
+      "id": 24424,
+      "label": "bootstrap-datepicker.js::getUTCDate",
+      "color": "#72cc3e",
+      "member_count": 133,
+      "package_count": 1
+    },
+    {
+      "id": 25429,
+      "label": "bower_components.matchHeight::Advanced Usage (2)",
+      "color": "#3eccbb",
+      "member_count": 132,
+      "package_count": 1
+    },
+    {
+      "id": 20380,
+      "label": "js.locales (42)",
+      "color": "#55cc3e",
+      "member_count": 132,
+      "package_count": 1
+    },
+    {
+      "id": 9342,
+      "label": "dist.locales (12)",
+      "color": "#93cc3e",
+      "member_count": 132,
+      "package_count": 1
+    },
+    {
+      "id": 24936,
+      "label": "coolstore.model::setProductId",
+      "color": "#cca13e",
+      "member_count": 121,
+      "package_count": 1
+    },
+    {
+      "id": 19225,
+      "label": "bower_components.outlayer::css",
+      "color": "#3ec0cc",
+      "member_count": 119,
+      "package_count": 1
+    },
+    {
+      "id": 15119,
+      "label": "google-code-prettify.src::langHandlerForExtension",
+      "color": "#3ecca3",
+      "member_count": 110,
+      "package_count": 1
+    },
+    {
+      "id": 7308,
+      "label": "docs.docs::selectpicker('deselectAll')`",
+      "color": "#4c3ecc",
+      "member_count": 109,
+      "package_count": 1
+    },
+    {
+      "id": 16357,
+      "label": "bootstrap-select.js::hasClass",
+      "color": "#cc823e",
+      "member_count": 105,
+      "package_count": 1
+    },
+    {
+      "id": 12881,
+      "label": "js.i18n::anonymous@L6 (9)",
+      "color": "#74cc3e",
+      "member_count": 93,
+      "package_count": 1
+    },
+    {
+      "id": 21986,
+      "label": "bootstrap-touchspin.dist::stopSpin",
+      "color": "#cc3e51",
+      "member_count": 84,
+      "package_count": 1
+    },
+    {
+      "id": 11502,
+      "label": "patternfly-bootstrap-treeview.dist::getUnselected",
+      "color": "#93cc3e",
+      "member_count": 83,
+      "package_count": 1
+    },
+    {
+      "id": 22747,
+      "label": "lib.locale::getLocale",
+      "color": "#40cc3e",
+      "member_count": 81,
+      "package_count": 2
+    },
+    {
+      "id": 15190,
+      "label": "bower_components.angular-route (4)",
+      "color": "#6d3ecc",
+      "member_count": 78,
+      "package_count": 1
+    },
+    {
+      "id": 9730,
+      "label": "isotope.js::_mode",
+      "color": "#cc3e9c",
+      "member_count": 76,
+      "package_count": 1
+    },
+    {
+      "id": 17545,
+      "label": "lib.moment::createLocal (3)",
+      "color": "#c0cc3e",
+      "member_count": 72,
+      "package_count": 1
+    },
+    {
+      "id": 34298,
+      "label": "test.notification::compileHTML (3)",
+      "color": "#3ecc63",
+      "member_count": 70,
+      "package_count": 1
+    },
+    {
+      "id": 32985,
+      "label": "coolstore.model::getCartItemTotal",
+      "color": "#cc3e61",
+      "member_count": 68,
+      "package_count": 1
+    },
+    {
+      "id": 25129,
+      "label": "bower_components.patternfly (14)",
+      "color": "#4ecc3e",
+      "member_count": 67,
+      "package_count": 1
+    },
+    {
+      "id": 10378,
+      "label": "bower_components.eventEmitter (3)",
+      "color": "#3eccc2",
+      "member_count": 65,
+      "package_count": 1
+    },
+    {
+      "id": 11251,
+      "label": "bower_components.angular-sanitize (2)",
+      "color": "#3eccad",
+      "member_count": 63,
+      "package_count": 1
+    },
+    {
+      "id": 32637,
+      "label": "google-code-prettify.bin (8)",
+      "color": "#3eb6cc",
+      "member_count": 58,
+      "package_count": 1
+    },
+    {
+      "id": 5884,
+      "label": "bootstrap-touchspin.src::stopSpin",
+      "color": "#983ecc",
+      "member_count": 58,
+      "package_count": 1
+    },
+    {
+      "id": 23954,
+      "label": "patternfly-bootstrap-combobox.js::hide",
+      "color": "#cc3e89",
+      "member_count": 46,
+      "package_count": 1
+    },
+    {
+      "id": 28172,
+      "label": "lib.utils::warn",
+      "color": "#3e7bcc",
+      "member_count": 46,
+      "package_count": 1
+    },
+    {
+      "id": 18310,
+      "label": "bootstrap.grunt::addVar",
+      "color": "#cc6d3e",
+      "member_count": 44,
+      "package_count": 1
+    },
+    {
+      "id": 33027,
+      "label": "datatables-colreorder.js::fnOrder",
+      "color": "#3ecc9a",
+      "member_count": 43,
+      "package_count": 1
+    },
+    {
+      "id": 16763,
+      "label": "datatables-colvis.js::_fnConstruct",
+      "color": "#cc873e",
+      "member_count": 41,
+      "package_count": 1
+    },
+    {
+      "id": 31778,
+      "label": "matchHeight.dist::_parseOptions",
+      "color": "#3ecc63",
+      "member_count": 41,
+      "package_count": 1
+    },
+    {
+      "id": 10924,
+      "label": "extensions.js::copy",
+      "color": "#983ecc",
+      "member_count": 39,
+      "package_count": 1
+    },
+    {
+      "id": 15210,
+      "label": "test.toolbars::compileHTML",
+      "color": "#3ecc3e",
+      "member_count": 39,
+      "package_count": 1
+    },
+    {
+      "id": 19900,
+      "label": "views.listview::compileHTML",
+      "color": "#3e55cc",
+      "member_count": 38,
+      "package_count": 1
+    },
+    {
+      "id": 14117,
+      "label": "bower_components.bootstrap-datepicker (4)",
+      "color": "#3e58cc",
+      "member_count": 38,
+      "package_count": 1
+    },
+    {
+      "id": 22553,
+      "label": "lib.duration::createDuration (2)",
+      "color": "#cc403e",
+      "member_count": 38,
+      "package_count": 1
+    },
+    {
+      "id": 16770,
+      "label": "src.attributes::getClass",
+      "color": "#cc3e3e",
+      "member_count": 38,
+      "package_count": 1
+    },
+    {
+      "id": 22217,
+      "label": "src.core::whenReady",
+      "color": "#ccb23e",
+      "member_count": 37,
+      "package_count": 1
+    },
+    {
+      "id": 13966,
+      "label": "test.navigation::compileHTML",
+      "color": "#cc3e80",
+      "member_count": 37,
+      "package_count": 1
+    },
+    {
+      "id": 30119,
+      "label": "src.ajax::callback (2)",
+      "color": "#a33ecc",
+      "member_count": 35,
+      "package_count": 1
+    },
+    {
+      "id": 18165,
+      "label": "app.controllers::reset",
+      "color": "#cca83e",
+      "member_count": 35,
+      "package_count": 1
+    },
+    {
+      "id": 34871,
+      "label": "src.var::anonymous@L3 (10)",
+      "color": "#bbcc3e",
+      "member_count": 34,
+      "package_count": 1
+    },
+    {
+      "id": 33595,
+      "label": "test.utils::tooltipFn",
+      "color": "#3e79cc",
+      "member_count": 34,
+      "package_count": 1
+    },
+    {
+      "id": 17755,
+      "label": "test.wizard::compileHtml",
+      "color": "#3e79cc",
+      "member_count": 34,
+      "package_count": 1
+    },
+    {
+      "id": 23386,
+      "label": "bower_components.bootstrap::Copyright and license (2)",
+      "color": "#893ecc",
+      "member_count": 33,
+      "package_count": 1
+    },
+    {
+      "id": 18210,
+      "label": "bower_components.masonry (3)",
+      "color": "#cc3e3e",
+      "member_count": 32,
+      "package_count": 1
+    },
+    {
+      "id": 20563,
+      "label": "suites.keyboard_navigation (3)",
+      "color": "#b2cc3e",
+      "member_count": 31,
+      "package_count": 1
+    },
+    {
+      "id": 19286,
+      "label": "bower_components.fizzy-ui-utils::isArray",
+      "color": "#3eccb9",
+      "member_count": 31,
+      "package_count": 1
+    },
+    {
+      "id": 21929,
+      "label": "src.css::getDefaultDisplay",
+      "color": "#3eadcc",
+      "member_count": 31,
+      "package_count": 1
+    },
+    {
+      "id": 14685,
+      "label": "bower_components.bootstrap-switch (2)",
+      "color": "#a83ecc",
+      "member_count": 30,
+      "package_count": 1
+    },
+    {
+      "id": 19353,
+      "label": "theme.js (5)",
+      "color": "#9acc3e",
+      "member_count": 27,
+      "package_count": 1
+    },
+    {
+      "id": 19633,
+      "label": "bower_components.ev-emitter::off (2)",
+      "color": "#9f3ecc",
+      "member_count": 26,
+      "package_count": 1
+    },
+    {
+      "id": 20539,
+      "label": "test.modals::getModal",
+      "color": "#cc743e",
+      "member_count": 25,
+      "package_count": 1
+    },
+    {
+      "id": 21461,
+      "label": "app.services::reset",
+      "color": "#3ecc95",
+      "member_count": 25,
+      "package_count": 1
+    },
+    {
+      "id": 30520,
+      "label": "coolstore.model::setQuantity",
+      "color": "#ccb43e",
+      "member_count": 24,
+      "package_count": 1
+    },
+    {
+      "id": 7383,
+      "label": "src.event::trigger",
+      "color": "#3eccb6",
+      "member_count": 23,
+      "package_count": 1
+    },
+    {
+      "id": 24479,
+      "label": "bower_components.eonasdan-bootstrap-datetimepicker (3)",
+      "color": "#3ecca3",
+      "member_count": 23,
+      "package_count": 1
+    },
+    {
+      "id": 26443,
+      "label": "bower_components.get-size::getStyleSize",
+      "color": "#cc3eb2",
+      "member_count": 23,
+      "package_count": 1
+    },
+    {
+      "id": 21099,
+      "label": "suites.mouse_navigation::anonymous@L21",
+      "color": "#c4cc3e",
+      "member_count": 22,
+      "package_count": 1
+    },
+    {
+      "id": 30524,
+      "label": "test.validation::compileInput",
+      "color": "#3e42cc",
+      "member_count": 21,
+      "package_count": 1
+    },
+    {
+      "id": 22069,
+      "label": "coolstore.model::shoppingCartToJson",
+      "color": "#bb3ecc",
+      "member_count": 21,
+      "package_count": 1
+    },
+    {
+      "id": 24072,
+      "label": "charts.heatmap::compileChart (2)",
+      "color": "#4ccc3e",
+      "member_count": 20,
+      "package_count": 1
+    },
+    {
+      "id": 35123,
+      "label": "views.cardview::compileHTML",
+      "color": "#cc873e",
+      "member_count": 18,
+      "package_count": 1
+    },
+    {
+      "id": 24871,
+      "label": "extensions.chart-bubble::getKey",
+      "color": "#3e5ccc",
+      "member_count": 18,
+      "package_count": 1
+    },
+    {
+      "id": 18866,
+      "label": ".workspace.repo (3)",
+      "color": "#3e51cc",
+      "member_count": 18,
+      "package_count": 1
+    },
+    {
+      "id": 31596,
+      "label": "js.layout-modes::extend",
+      "color": "#3e68cc",
+      "member_count": 18,
+      "package_count": 1
+    },
+    {
+      "id": 16722,
+      "label": "src.manipulation (2)",
+      "color": "#763ecc",
+      "member_count": 17,
+      "package_count": 1
+    },
+    {
+      "id": 23506,
+      "label": "bower_components.patternfly-bootstrap-combobox:: Manual download",
+      "color": "#3ecc89",
+      "member_count": 17,
+      "package_count": 1
+    },
+    {
+      "id": 11659,
+      "label": "bower_components.jquery::Script tag",
+      "color": "#743ecc",
+      "member_count": 17,
+      "package_count": 1
+    },
+    {
+      "id": 22143,
+      "label": "charts.donut::compileDonut",
+      "color": "#3eccb6",
+      "member_count": 17,
+      "package_count": 1
+    },
+    {
+      "id": 7430,
+      "label": "charts.sparkline::compileChart",
+      "color": "#3e6dcc",
+      "member_count": 17,
+      "package_count": 1
+    },
+    {
+      "id": 32925,
+      "label": "bower_components.datatables::Support",
+      "color": "#cca83e",
+      "member_count": 16,
+      "package_count": 1
+    },
+    {
+      "id": 2266,
+      "label": "card.basic::compileCard",
+      "color": "#3ecc89",
+      "member_count": 16,
+      "package_count": 1
+    },
+    {
+      "id": 24819,
+      "label": "test.sort::compileHTML",
+      "color": "#cc3ec4",
+      "member_count": 16,
+      "package_count": 1
+    },
+    {
+      "id": 33087,
+      "label": "webapp.app::logout",
+      "color": "#6fcc3e",
+      "member_count": 16,
+      "package_count": 1
+    },
+    {
+      "id": 33435,
+      "label": "bower_components.eventie (5)",
+      "color": "#613ecc",
+      "member_count": 16,
+      "package_count": 1
+    },
+    {
+      "id": 28294,
+      "label": "css.var (5)",
+      "color": "#3eb9cc",
+      "member_count": 15,
+      "package_count": 1
+    },
+    {
+      "id": 23631,
+      "label": "bower_components.matches-selector::checkParent",
+      "color": "#7e3ecc",
+      "member_count": 15,
+      "package_count": 1
+    },
+    {
+      "id": 23921,
+      "label": "bower_components.bootstrap-touchspin (4)",
+      "color": "#3e74cc",
+      "member_count": 15,
+      "package_count": 1
+    },
+    {
+      "id": 16561,
+      "label": "extensions.exporter::injectVerify",
+      "color": "#663ecc",
+      "member_count": 15,
+      "package_count": 1
+    },
+    {
+      "id": 27603,
+      "label": "src.effects::get",
+      "color": "#53cc3e",
+      "member_count": 14,
+      "package_count": 1
+    },
+    {
+      "id": 8461,
+      "label": "lib.parse::addParseToken",
+      "color": "#a3cc3e",
+      "member_count": 13,
+      "package_count": 1
+    },
+    {
+      "id": 13861,
+      "label": "card.aggregate-status::compileCard",
+      "color": "#a3cc3e",
+      "member_count": 13,
+      "package_count": 1
+    },
+    {
+      "id": 19479,
+      "label": "test.filters::compileHTML",
+      "color": "#453ecc",
+      "member_count": 13,
+      "package_count": 1
+    },
+    {
+      "id": 12071,
+      "label": "bower_components.get-style-property::getStyleProperty - quick & dirty CSS property testing",
+      "color": "#3ebbcc",
+      "member_count": 13,
+      "package_count": 1
+    },
+    {
+      "id": 24693,
+      "label": "bower_components.doc-ready::trigger",
+      "color": "#3ecc6f",
+      "member_count": 13,
+      "package_count": 1
+    },
+    {
+      "id": 26211,
+      "label": "src.traversing::winnow",
+      "color": "#3e8ccc",
+      "member_count": 13,
+      "package_count": 1
+    },
+    {
+      "id": 15925,
+      "label": "test.autofocus::compileElement",
+      "color": "#493ecc",
+      "member_count": 12,
+      "package_count": 1
+    },
+    {
+      "id": 11589,
+      "label": "bower_components.google-code-prettify::Google Code Prettify",
+      "color": "#3e7ecc",
+      "member_count": 12,
+      "package_count": 1
+    },
+    {
+      "id": 30915,
+      "label": "charts.trends::compileChart",
+      "color": "#613ecc",
+      "member_count": 12,
+      "package_count": 1
+    },
+    {
+      "id": 18308,
+      "label": "charts.utilization-bar::compileChart",
+      "color": "#aa3ecc",
+      "member_count": 12,
+      "package_count": 1
+    },
+    {
+      "id": 27331,
+      "label": "charts.utilization-trend::compileChart",
+      "color": "#ad3ecc",
+      "member_count": 11,
+      "package_count": 1
+    },
+    {
+      "id": 11271,
+      "label": "table-view.js (2)",
+      "color": "#cc7e3e",
+      "member_count": 11,
+      "package_count": 1
+    },
+    {
+      "id": 13931,
+      "label": "test.select::compileSelect",
+      "color": "#3ecc4e",
+      "member_count": 11,
+      "package_count": 1
+    },
+    {
+      "id": 13121,
+      "label": "moment.templates (2)",
+      "color": "#3e74cc",
+      "member_count": 11,
+      "package_count": 1
+    },
+    {
+      "id": 29176,
+      "label": "lib.format::expandFormat",
+      "color": "#423ecc",
+      "member_count": 11,
+      "package_count": 1
+    },
+    {
+      "id": 6194,
+      "label": "tests.pages::anonymous@L6",
+      "color": "#89cc3e",
+      "member_count": 11,
+      "package_count": 1
+    },
+    {
+      "id": 35347,
+      "label": "dist.tests::anonymous@L6",
+      "color": "#40cc3e",
+      "member_count": 10,
+      "package_count": 1
+    },
+    {
+      "id": 10353,
+      "label": "src.data::cache",
+      "color": "#9acc3e",
+      "member_count": 9,
+      "package_count": 1
+    },
+    {
+      "id": 7453,
+      "label": "weblogic.application::java",
+      "color": "#3e6bcc",
+      "member_count": 9,
+      "package_count": 1
+    },
+    {
+      "id": 22100,
+      "label": "form.form-group::anonymous@L9",
+      "color": "#cc3eb4",
+      "member_count": 9,
+      "package_count": 1
+    },
+    {
+      "id": 33652,
+      "label": "bower_components.datatables-colreorder::NPM and Bower",
+      "color": "#cc5f3e",
+      "member_count": 9,
+      "package_count": 1
+    },
+    {
+      "id": 29243,
+      "label": "bower_components.datatables-colvis::Installation",
+      "color": "#3ecc87",
+      "member_count": 9,
+      "package_count": 1
+    },
+    {
+      "id": 28837,
+      "label": "form.remaining-chars-count::compileRemainingCharsCount",
+      "color": "#3ecc82",
+      "member_count": 8,
+      "package_count": 1
+    },
+    {
+      "id": 18823,
+      "label": "traversing.var::anonymous@L7",
+      "color": "#cc583e",
+      "member_count": 8,
+      "package_count": 1
+    },
+    {
+      "id": 28194,
+      "label": "bower_components.keycloak::code_block_0",
+      "color": "#3eccaf",
+      "member_count": 7,
+      "package_count": 1
+    },
+    {
+      "id": 33068,
+      "label": "data.var (3)",
+      "color": "#aa3ecc",
+      "member_count": 7,
+      "package_count": 1
+    },
+    {
+      "id": 17046,
+      "label": "form.form-buttons::anonymous@L1",
+      "color": "#cc5a3e",
+      "member_count": 6,
+      "package_count": 1
+    },
+    {
+      "id": 26836,
+      "label": "form.datepicker::compileDatepicker",
+      "color": "#c7cc3e",
+      "member_count": 6,
+      "package_count": 1
+    },
+    {
+      "id": 24374,
+      "label": "ajax.var (3)",
+      "color": "#803ecc",
+      "member_count": 6,
+      "package_count": 1
+    },
+    {
+      "id": 11461,
+      "label": "manipulation.var (2)",
+      "color": "#cc3ea3",
+      "member_count": 6,
+      "package_count": 1
+    },
+    {
+      "id": 35060,
+      "label": "bower_components.angular-patternfly::json (3)",
+      "color": "#cc3eb4",
+      "member_count": 6,
+      "package_count": 1
+    },
+    {
+      "id": 22661,
+      "label": "src.exports (2)",
+      "color": "#cc953e",
+      "member_count": 6,
+      "package_count": 1
+    },
+    {
+      "id": 33063,
+      "label": "pages._plugins (2)",
+      "color": "#ccb63e",
+      "member_count": 6,
+      "package_count": 1
+    },
+    {
+      "id": 34004,
+      "label": "form.datetimepicker::compileDateTimepicker",
+      "color": "#cc3e42",
+      "member_count": 6,
+      "package_count": 1
+    },
+    {
+      "id": 15121,
+      "label": "src.queue::stop",
+      "color": "#663ecc",
+      "member_count": 5,
+      "package_count": 1
+    },
+    {
+      "id": 32108,
+      "label": "i18n.logging::NonCatalogLogger (2)",
+      "color": "#3eccaa",
+      "member_count": 5,
+      "package_count": 1
+    },
+    {
+      "id": 14238,
+      "label": "bootstrap-datepicker.docs (2)",
+      "color": "#3ecc93",
+      "member_count": 5,
+      "package_count": 1
+    },
+    {
+      "id": 15055,
+      "label": "charts.c3",
+      "color": "#cc903e",
+      "member_count": 5,
+      "package_count": 1
+    },
+    {
+      "id": 33251,
+      "label": "Produces",
+      "color": "#4e3ecc",
+      "member_count": 4,
+      "package_count": 1
+    },
+    {
+      "id": 12619,
+      "label": "bootstrap-datepicker.tests::Running the tests",
+      "color": "#cc743e",
+      "member_count": 4,
+      "package_count": 1
+    },
+    {
+      "id": 23390,
+      "label": "custom_theme.js::anonymous@L2",
+      "color": "#6dcc3e",
+      "member_count": 3,
+      "package_count": 1
+    },
+    {
+      "id": 16632,
+      "label": "src.deferred",
+      "color": "#cc3e4c",
+      "member_count": 3,
+      "package_count": 1
+    },
+    {
+      "id": 5643,
+      "label": "eonasdan-bootstrap-datetimepicker.tasks::exports",
+      "color": "#53cc3e",
+      "member_count": 3,
+      "package_count": 1
+    },
+    {
+      "id": 12399,
+      "label": "sandbox.require-js",
+      "color": "#3ecc45",
+      "member_count": 3,
+      "package_count": 1
+    },
+    {
+      "id": 3692,
+      "label": "bower_components.font-awesome::json",
+      "color": "#3e7bcc",
+      "member_count": 2,
+      "package_count": 1
+    },
+    {
+      "id": 9800,
+      "label": "bower_components.bootstrap-select::json",
+      "color": "#cc553e",
+      "member_count": 2,
+      "package_count": 1
+    },
+    {
+      "id": 31253,
+      "label": "main.webapp::json (2)",
+      "color": "#cc3ec9",
+      "member_count": 2,
+      "package_count": 1
+    },
+    {
+      "id": 23320,
+      "label": "bower_components.isotope::json (2)",
+      "color": "#ccb43e",
+      "member_count": 2,
+      "package_count": 1
+    },
+    {
+      "id": 22186,
+      "label": "core.var::anonymous@L1",
+      "color": "#cc893e",
+      "member_count": 2,
+      "package_count": 1
+    },
+    {
+      "id": 6537,
+      "label": "webapp.WEB-INF::xml (2)",
+      "color": "#cc533e",
+      "member_count": 2,
+      "package_count": 1
+    },
+    {
+      "id": 5217,
+      "label": "app.directives::anonymous@L4",
+      "color": "#533ecc",
+      "member_count": 2,
+      "package_count": 1
+    },
+    {
+      "id": 10809,
+      "label": "app.routes",
+      "color": "#8c3ecc",
+      "member_count": 2,
+      "package_count": 1
+    },
+    {
+      "id": 14706,
+      "label": "bootstrap.less::json",
+      "color": "#3eafcc",
+      "member_count": 1,
+      "package_count": 1
+    },
+    {
+      "id": 14499,
+      "label": "resources.META-INF::xml",
+      "color": "#3ec4cc",
+      "member_count": 1,
+      "package_count": 1
+    },
+    {
+      "id": 11993,
+      "label": "repo.konveyor::json",
+      "color": "#3ecc40",
+      "member_count": 1,
+      "package_count": 1
+    },
+    {
+      "id": 5382,
+      "label": "sandbox.browserify",
+      "color": "#93cc3e",
+      "member_count": 1,
+      "package_count": 1
+    },
+    {
+      "id": 17039,
+      "label": "bootstrap-select.docs::yml",
+      "color": "#cca33e",
+      "member_count": 1,
+      "package_count": 1
+    },
+    {
+      "id": 32237,
+      "label": "patternfly-bootstrap-treeview.public::json",
+      "color": "#58cc3e",
+      "member_count": 1,
+      "package_count": 1
+    },
+    {
+      "id": 8845,
+      "label": "repo.rules::yaml",
+      "color": "#3ecc49",
+      "member_count": 1,
+      "package_count": 1
+    },
+    {
+      "id": 26568,
+      "label": "docs.theme::json",
+      "color": "#bdcc3e",
+      "member_count": 1,
+      "package_count": 1
+    },
+    {
+      "id": 4605,
+      "label": "moment.src",
+      "color": "#a83ecc",
+      "member_count": 1,
+      "package_count": 1
+    },
+    {
+      "id": 6016,
+      "label": "github.workflows::yml",
+      "color": "#cc423e",
+      "member_count": 1,
+      "package_count": 1
+    }
+  ]
+}

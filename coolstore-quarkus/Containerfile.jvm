@@ -1,34 +1,87 @@
-# Multi-stage build: Stage 1 - Build
+# =============================================================================
+# CoolStore Quarkus — JVM Containerfile (multi-stage, Red Hat UBI9)
+#
+# Stage 1 (build):   registry.access.redhat.com/ubi9/openjdk-17:latest
+# Stage 2 (runtime): registry.access.redhat.com/ubi9/openjdk-17-runtime:latest
+#
+# Security hardening:
+#   - Non-root UID 185 (default for openjdk-17-runtime UBI image)
+#   - curl installed for HEALTHCHECK only; removed from final layer via microdnf cache clean
+#   - No secrets baked into image — all credentials injected at runtime via env vars
+#   - Audit log directory pre-created and owned by UID 185;
+#     mount a PVC at /deployments/device-inventory-audit-logs in production
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Stage 1 — Build
+# ---------------------------------------------------------------------------
 FROM registry.access.redhat.com/ubi9/openjdk-17:latest AS build
+
 WORKDIR /build
+
+# Cache Maven dependencies before copying source (layer caching optimisation)
 COPY pom.xml .
+RUN mvn dependency:go-offline -q 2>/dev/null || true
+
+# Copy application source and build the Quarkus fast-jar
 COPY src ./src
 RUN mvn package -DskipTests -q
 
-# Stage 2: Runtime
+# ---------------------------------------------------------------------------
+# Stage 2 — Runtime
+# ---------------------------------------------------------------------------
 FROM registry.access.redhat.com/ubi9/openjdk-17-runtime:latest
 
-# Install curl for health checks
+# Install curl for HEALTHCHECK; clean cache immediately to minimise layer size
 USER root
-RUN microdnf install -y curl && microdnf clean all
+RUN microdnf install -y curl && \
+    microdnf clean all && \
+    rm -rf /var/cache/yum
 
 WORKDIR /deployments
 
-# Quarkus fast-jar layout
-COPY --chown=185 --from=build /build/target/quarkus-app/lib/ ./lib/
-COPY --chown=185 --from=build /build/target/quarkus-app/*.jar ./
-COPY --chown=185 --from=build /build/target/quarkus-app/app/ ./app/
-COPY --chown=185 --from=build /build/target/quarkus-app/quarkus/ ./quarkus/
+# Copy Quarkus fast-jar layout (lib → JARs → app → quarkus)
+COPY --chown=185:185 --from=build /build/target/quarkus-app/lib/     ./lib/
+COPY --chown=185:185 --from=build /build/target/quarkus-app/*.jar    ./
+COPY --chown=185:185 --from=build /build/target/quarkus-app/app/     ./app/
+COPY --chown=185:185 --from=build /build/target/quarkus-app/quarkus/ ./quarkus/
 
-# Create audit log directory
+# Pre-create the audit log directory so AuditService.init() does not need
+# to do it at runtime (avoids write-permission errors with readOnlyRootFilesystem).
+# In OpenShift this directory is replaced by the PVC mount from deployment.yaml.
 RUN mkdir -p /deployments/device-inventory-audit-logs && \
-    chown -R 185:185 /deployments/device-inventory-audit-logs
+    chown -R 185:185 /deployments/device-inventory-audit-logs && \
+    chmod 755 /deployments/device-inventory-audit-logs
 
+# /tmp must be writable for Quarkus temp files even with readOnlyRootFilesystem;
+# the OpenShift Deployment mounts an emptyDir at /tmp.
+RUN mkdir -p /tmp && chmod 1777 /tmp
+
+# ---------------------------------------------------------------------------
+# Runtime configuration
+# ---------------------------------------------------------------------------
 EXPOSE 8080 8443
 
 USER 185
 
-ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+# JVM flags: bind to all interfaces; use JBoss log manager (required by Quarkus)
+ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 \
+               -Djava.util.logging.manager=org.jboss.logmanager.LogManager \
+               -XX:+UseContainerSupport \
+               -XX:MaxRAMPercentage=75.0"
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
+
+# All credentials and service URLs supplied at runtime — see deploy/openshift/secret.yaml
+# DB_URL, DB_USERNAME, DB_PASSWORD
+# AMQP_HOST, AMQP_PORT, AMQP_USERNAME, AMQP_PASSWORD
+# OIDC_AUTH_SERVER_URL, OIDC_CLIENT_ID, OIDC_CLIENT_SECRET
+# SESSION_ENCRYPTION_KEY
+# AUDIT_LOG_DIR (default: /deployments/device-inventory-audit-logs)
+
+# ---------------------------------------------------------------------------
+# Health check (Quarkus SmallRye Health)
+# ---------------------------------------------------------------------------
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8080/q/health/live || exit 1
 
 ENTRYPOINT ["java", "-jar", "/deployments/quarkus-run.jar"]

@@ -1,0 +1,39 @@
+# ── Version control ──────────────────────────────────────────────────────────
+.git
+.gitignore
+.gitattributes
+
+# ── IDE / editor artefacts ───────────────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# ── Build output (copied explicitly in multi-stage build) ────────────────────
+target/
+!target/quarkus-app/
+
+# ── Test sources and reports ─────────────────────────────────────────────────
+src/test/
+target/surefire-reports/
+target/failsafe-reports/
+
+# ── Documentation ────────────────────────────────────────────────────────────
+*.md
+docs/
+
+# ── Secrets / local overrides (must never enter image layers) ────────────────
+.env
+.env.*
+*.pem
+*.key
+*.crt
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+device-inventory-audit-logs/
+
+# ── OS artefacts ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

@@ -1,0 +1,183 @@
+# =============================================================================
+# CoolStore Quarkus — podman-compose for local development
+#
+# Mirrors the OpenShift topology: app + PostgreSQL + AMQ Artemis + Keycloak
+#
+# Usage:
+#   podman-compose up -d          # start all services
+#   podman-compose logs -f app    # follow app logs
+#   podman-compose down           # stop (keep volumes)
+#   podman-compose down -v        # stop and wipe all data volumes
+#
+# Build the app image first:
+#   cd coolstore-quarkus
+#   podman build -f Containerfile.jvm -t coolstore-quarkus:dev .
+#
+# Access:
+#   Application  → http://localhost:8080
+#   Health       → http://localhost:8080/q/health
+#   Metrics      → http://localhost:8080/q/metrics
+#   Swagger UI   → http://localhost:8080/q/swagger-ui
+#   Keycloak     → http://localhost:8180
+#   ActiveMQ UI  → http://localhost:8161  (admin / admin)
+# =============================================================================
+
+version: "3.8"
+
+services:
+  # ---------------------------------------------------------------------------
+  # Application — Quarkus fast-jar on UBI9 OpenJDK 17
+  # ---------------------------------------------------------------------------
+  app:
+    image: coolstore-quarkus:dev
+    build:
+      context: ./coolstore-quarkus
+      dockerfile: Containerfile.jvm
+    container_name: coolstore-app
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    environment:
+      # Activate Quarkus prod profile so it uses PostgreSQL (not H2)
+      QUARKUS_PROFILE: prod
+
+      # Database — points to the local 'db' service
+      DB_URL: "jdbc:postgresql://db:5432/coolstoredb"
+      DB_USERNAME: "coolstore"
+      DB_PASSWORD: "coolstore-dev-password"
+
+      # AMQ Artemis — points to the local 'amq' service
+      AMQP_HOST: "amq"
+      AMQP_PORT: "5672"
+      AMQP_USERNAME: "admin"
+      AMQP_PASSWORD: "admin"
+
+      # Keycloak OIDC — points to the local 'keycloak' service
+      OIDC_AUTH_SERVER_URL: "http://keycloak:8080/realms/coolstore"
+      OIDC_CLIENT_ID: "coolstore"
+      OIDC_CLIENT_SECRET: "coolstore-secret"
+
+      # Session key (dev only — never use this value in production)
+      SESSION_ENCRYPTION_KEY: "DevOnlyKeyPleaseChangeInProduction!"
+
+      # Audit log directory — mapped to named volume below
+      AUDIT_LOG_DIR: "/deployments/device-inventory-audit-logs"
+
+    volumes:
+      - audit-logs:/deployments/device-inventory-audit-logs
+      # /tmp is needed by the JVM even with a read-only root fs
+      - type: tmpfs
+        target: /tmp
+
+    depends_on:
+      db:
+        condition: service_healthy
+      amq:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+
+    networks:
+      - coolstore-net
+
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL 15 — Red Hat registry image (matches OpenShift CrunchyData PGO)
+  # ---------------------------------------------------------------------------
+  db:
+    image: registry.redhat.io/rhel9/postgresql-15:latest
+    container_name: coolstore-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRESQL_USER: "coolstore"
+      POSTGRESQL_PASSWORD: "coolstore-dev-password"
+      POSTGRESQL_DATABASE: "coolstoredb"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - coolstore-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coolstore -d coolstoredb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # AMQ Artemis — broker for SmallRye Reactive Messaging (AMQP 1.0)
+  # Mirrors the ActiveMQArtemis Operator CR in deploy/amq/activemqartemis-cr.yaml
+  # ---------------------------------------------------------------------------
+  amq:
+    # Use the community ActiveMQ Artemis image for local dev;
+    # production uses the AMQ Broker Operator on OpenShift.
+    image: quay.io/artemiscloud/activemq-artemis-broker:latest
+    container_name: coolstore-amq
+    ports:
+      - "5672:5672"    # AMQP
+      - "8161:8161"    # Artemis web console (admin / admin)
+      - "61616:61616"  # OpenWire (not used by this app, exposed for tooling)
+    environment:
+      AMQ_USER: "admin"
+      AMQ_PASSWORD: "admin"
+      AMQ_EXTRA_ARGS: "--no-autotune"
+    volumes:
+      - amq-data:/var/lib/artemis-instance
+    networks:
+      - coolstore-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8161/console/jolokia/ -o /dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Keycloak 23 — OIDC provider
+  # Import the coolstore realm from realm-export.json at startup.
+  # ---------------------------------------------------------------------------
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: coolstore-keycloak
+    command:
+      - start-dev
+      - --import-realm
+    ports:
+      - "8180:8080"
+    environment:
+      KEYCLOAK_ADMIN: "admin"
+      KEYCLOAK_ADMIN_PASSWORD: "admin"
+      KC_DB: "dev-mem"  # in-memory DB for local dev (non-persistent)
+    volumes:
+      # Mount realm-export.json so Keycloak imports it on first start
+      - ./realm-export.json:/opt/keycloak/data/import/coolstore-realm.json:ro
+    networks:
+      - coolstore-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/health/ready || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    restart: unless-stopped
+
+# =============================================================================
+# Named volumes — persisted across container restarts; wiped with 'down -v'
+# =============================================================================
+volumes:
+  postgres-data:
+    driver: local
+  amq-data:
+    driver: local
+  audit-logs:
+    driver: local
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  coolstore-net:
+    driver: bridge

@@ -22,10 +22,21 @@ spec:
         app: coolstore-quarkus
         version: "1.0.0"
     spec:
+      # -----------------------------------------------------------------------
+      # Pod-level security context
+      # Enforces non-root execution and enables seccomp RuntimeDefault profile
+      # (required by OpenShift restricted-v2 SCC).
+      # -----------------------------------------------------------------------
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+
       containers:
         - name: coolstore-quarkus
           image: quay.io/coolstore/coolstore-quarkus:latest
           imagePullPolicy: Always
+
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -33,11 +44,35 @@ spec:
             - containerPort: 8443
               protocol: TCP
               name: https
+
+          # -------------------------------------------------------------------
+          # Container-level security context
+          # Drops all Linux capabilities, prevents privilege escalation, and
+          # enforces a read-only root filesystem. Writable paths (/tmp and the
+          # audit-log PVC mount) are provided via volume mounts below.
+          # -------------------------------------------------------------------
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 185
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+
+          # -------------------------------------------------------------------
+          # Configuration: non-sensitive values from ConfigMap; secrets from Secret
+          # -------------------------------------------------------------------
           envFrom:
             - configMapRef:
                 name: coolstore-quarkus-config
             - secretRef:
                 name: coolstore-quarkus-secret
+
+          # -------------------------------------------------------------------
+          # Resource requests and limits
+          # Requests govern scheduling; limits prevent noisy-neighbour starvation.
+          # -------------------------------------------------------------------
           resources:
             requests:
               memory: "256Mi"
@@ -45,6 +80,10 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "1000m"
+
+          # -------------------------------------------------------------------
+          # Liveness probe — restarts the pod if the app hangs
+          # -------------------------------------------------------------------
           livenessProbe:
             httpGet:
               path: /q/health/live
@@ -53,6 +92,10 @@ spec:
             periodSeconds: 10
             failureThreshold: 3
             timeoutSeconds: 5
+
+          # -------------------------------------------------------------------
+          # Readiness probe — removes pod from Service endpoints until ready
+          # -------------------------------------------------------------------
           readinessProbe:
             httpGet:
               path: /q/health/ready
@@ -61,14 +104,26 @@ spec:
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
+
+          # -------------------------------------------------------------------
+          # Volume mounts
+          # /tmp           — emptyDir (required by JVM and Quarkus temp files
+          #                  when readOnlyRootFilesystem: true)
+          # /deployments/device-inventory-audit-logs
+          #                — PVC for durable audit log persistence
+          # -------------------------------------------------------------------
           volumeMounts:
+            - name: tmp
+              mountPath: /tmp
             - name: audit-logs
               mountPath: /deployments/device-inventory-audit-logs
+
+      # -----------------------------------------------------------------------
+      # Volumes
+      # -----------------------------------------------------------------------
       volumes:
+        - name: tmp
+          emptyDir: {}
         - name: audit-logs
           persistentVolumeClaim:
             claimName: coolstore-audit-logs-pvc
-      securityContext:
-        runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault

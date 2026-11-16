@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coolstore-quarkus-config
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+data:
+  quarkus.flyway.migrate-at-start: "true"
+  quarkus.flyway.baseline-on-migrate: "true"
+  quarkus.flyway.baseline-version: "1"
+  quarkus.log.level: "INFO"
+  quarkus.log.console.enable: "true"
+  quarkus.http.port: "8080"
+  quarkus.smallrye-health.root-path: "/q/health"
+  audit.log.directory: "/deployments/device-inventory-audit-logs"
+  quarkus.datasource.db-kind: "postgresql"
+  mp.messaging.incoming.orders.connector: "smallrye-amqp"
+  mp.messaging.incoming.orders.address: "topic/orders"
+  mp.messaging.incoming.orders.group-id: "order-service"
+  mp.messaging.incoming.orders-inventory.connector: "smallrye-amqp"
+  mp.messaging.incoming.orders-inventory.address: "topic/orders"
+  mp.messaging.incoming.orders-inventory.group-id: "inventory-notification"
+  mp.messaging.outgoing.orders.connector: "smallrye-amqp"
+  mp.messaging.outgoing.orders.address: "topic/orders"

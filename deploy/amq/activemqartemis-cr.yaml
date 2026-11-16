@@ -1,0 +1,48 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: coolstore-amq-broker
+  namespace: coolstore-dev
+spec:
+  deploymentPlan:
+    size: 1
+    image: placeholder
+    requireLogin: true
+    persistenceEnabled: true
+    messageMigration: true
+    managementRBACEnabled: true
+  acceptors:
+    - name: amqp
+      protocols: amqp
+      port: 5672
+      sslEnabled: false
+      expose: false
+    - name: console-jolokia
+      protocols: jolokia
+      port: 8161
+      expose: true
+  adminUser: admin
+  adminPassword: ${AMQP_PASSWORD}
+  console:
+    expose: true
+---
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemisAddress
+metadata:
+  name: orders-topic
+  namespace: coolstore-dev
+spec:
+  addressName: topic/orders
+  queueName: topic/orders
+  routingType: multicast
+---
+# Dead-letter address configuration
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemisAddress
+metadata:
+  name: orders-dlq
+  namespace: coolstore-dev
+spec:
+  addressName: DLQ
+  queueName: DLQ.topic.orders
+  routingType: anycast

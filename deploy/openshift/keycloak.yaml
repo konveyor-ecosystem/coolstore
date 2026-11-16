@@ -1,0 +1,38 @@
+# Keycloak deployment using Keycloak Operator
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: coolstore-keycloak
+  namespace: coolstore-dev
+spec:
+  instances: 1
+  db:
+    vendor: postgres
+    host: coolstore-db-primary.coolstore-dev.svc
+    usernameSecret:
+      name: coolstore-db-pguser-coolstore
+      key: user
+    passwordSecret:
+      name: coolstore-db-pguser-coolstore
+      key: password
+  http:
+    tlsSecret: coolstore-keycloak-tls
+  hostname:
+    hostname: keycloak.apps.cluster.example.com
+  ingress:
+    enabled: false
+---
+# Import the existing realm from realm-export.json
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: KeycloakRealmImport
+metadata:
+  name: coolstore-realm
+  namespace: coolstore-dev
+spec:
+  keycloakCRName: coolstore-keycloak
+  realm:
+    realm: coolstore
+    enabled: true
+    # NOTE: Full realm configuration is in realm-export.json
+    # Apply via: oc create configmap coolstore-realm-config --from-file=realm-export.json
+    # and reference here, or use the Keycloak admin console to import

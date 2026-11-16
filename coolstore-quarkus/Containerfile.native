@@ -1,0 +1,22 @@
+# Multi-stage native build
+FROM registry.access.redhat.com/ubi9/openjdk-17:latest AS build
+WORKDIR /build
+COPY pom.xml .
+COPY src ./src
+RUN mvn package -Pnative -DskipTests -q
+
+# Native runtime - minimal UBI micro image
+FROM registry.access.redhat.com/ubi9/ubi-micro:latest
+
+WORKDIR /deployments
+
+COPY --chown=1001 --from=build /build/target/*-runner /deployments/application
+
+RUN mkdir -p /deployments/device-inventory-audit-logs && \
+    chown -R 1001:1001 /deployments/
+
+EXPOSE 8080 8443
+
+USER 1001
+
+ENTRYPOINT ["/deployments/application", "-Dquarkus.http.host=0.0.0.0"]

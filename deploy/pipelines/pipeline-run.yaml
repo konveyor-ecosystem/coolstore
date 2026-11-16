@@ -1,0 +1,56 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: coolstore-build-deploy-run-001
+  namespace: coolstore-dev
+  labels:
+    app: coolstore
+    tekton.dev/pipeline: coolstore-build-deploy
+  annotations:
+    # Update image-tag to the commit SHA or build number in CI
+    description: "Sample PipelineRun for the CoolStore Quarkus build-deploy pipeline"
+spec:
+  pipelineRef:
+    name: coolstore-build-deploy
+
+  params:
+    - name: git-url
+      value: https://github.com/your-org/coolstore-quarkus.git
+    - name: git-revision
+      value: main
+    - name: image-name
+      value: quay.io/coolstore/coolstore-quarkus
+    - name: image-tag
+      value: "1.0.0-SNAPSHOT"
+    - name: maven-goals
+      value:
+        - package
+        - "-DskipTests=false"
+    - name: deploy-namespace
+      value: coolstore-dev
+
+  workspaces:
+    - name: source
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+
+    - name: maven-cache
+      persistentVolumeClaim:
+        claimName: maven-local-repo-pvc
+
+    - name: docker-credentials
+      secret:
+        secretName: quay-push-secret
+
+  # Optional: service account with permissions to push images and deploy
+  serviceAccountName: pipeline
+
+  # Timeout for the entire pipeline run
+  timeouts:
+    pipeline: "1h0m0s"
+    tasks: "45m0s"

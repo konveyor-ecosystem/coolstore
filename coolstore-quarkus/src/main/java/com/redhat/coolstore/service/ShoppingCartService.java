@@ -1,0 +1,97 @@
+package com.redhat.coolstore.service;
+
+import com.redhat.coolstore.model.Product;
+import com.redhat.coolstore.model.ShoppingCart;
+import com.redhat.coolstore.model.ShoppingCartItem;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import org.jboss.logging.Logger;
+
+import java.io.Serializable;
+
+@SessionScoped
+public class ShoppingCartService implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private static final Logger LOG = Logger.getLogger(ShoppingCartService.class);
+
+    @Inject
+    ProductService productServices;
+
+    @Inject
+    PromoService ps;
+
+    @Inject
+    ShoppingCartOrderProcessor shoppingCartOrderProcessor;
+
+    @Inject
+    ShippingService shippingService;
+
+    private ShoppingCart cart = new ShoppingCart();
+
+    public ShoppingCartService() {
+    }
+
+    public ShoppingCart getShoppingCart(String cartId) {
+        return cart;
+    }
+
+    @Transactional
+    public ShoppingCart checkOutShoppingCart(String cartId) {
+        ShoppingCart cart = this.getShoppingCart(cartId);
+        LOG.info("Sending order: ");
+        shoppingCartOrderProcessor.process(cart);
+        cart.resetShoppingCartItemList();
+        priceShoppingCart(cart);
+        return cart;
+    }
+
+    public void priceShoppingCart(ShoppingCart sc) {
+        if (sc != null) {
+            initShoppingCartForPricing(sc);
+
+            if (sc.getShoppingCartItemList() != null && sc.getShoppingCartItemList().size() > 0) {
+                ps.applyCartItemPromotions(sc);
+
+                for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
+                    sc.setCartItemPromoSavings(
+                            sc.getCartItemPromoSavings() + sci.getPromoSavings() * sci.getQuantity());
+                    sc.setCartItemTotal(sc.getCartItemTotal() + sci.getPrice() * sci.getQuantity());
+                }
+
+                sc.setShippingTotal(shippingService.calculateShipping(sc));
+
+                if (sc.getCartItemTotal() >= 25) {
+                    sc.setShippingTotal(sc.getShippingTotal()
+                            + shippingService.calculateShippingInsurance(sc));
+                }
+            }
+
+            ps.applyShippingPromotions(sc);
+            sc.setCartTotal(sc.getCartItemTotal() + sc.getShippingTotal());
+        }
+    }
+
+    private void initShoppingCartForPricing(ShoppingCart sc) {
+        sc.setCartItemTotal(0);
+        sc.setCartItemPromoSavings(0);
+        sc.setShippingTotal(0);
+        sc.setShippingPromoSavings(0);
+        sc.setCartTotal(0);
+
+        for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
+            Product p = getProduct(sci.getProduct().getItemId());
+            if (p != null) {
+                sci.setProduct(p);
+                sci.setPrice(p.getPrice());
+            }
+            sci.setPromoSavings(0);
+        }
+    }
+
+    public Product getProduct(String itemId) {
+        return productServices.getProductByItemId(itemId);
+    }
+}

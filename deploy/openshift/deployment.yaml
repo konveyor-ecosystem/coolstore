@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coolstore-quarkus
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+    version: "1.0.0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: coolstore-quarkus
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: coolstore-quarkus
+        version: "1.0.0"
+    spec:
+      containers:
+        - name: coolstore-quarkus
+          image: quay.io/coolstore/coolstore-quarkus:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+              name: http
+            - containerPort: 8443
+              protocol: TCP
+              name: https
+          envFrom:
+            - configMapRef:
+                name: coolstore-quarkus-config
+            - secretRef:
+                name: coolstore-quarkus-secret
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /q/health/live
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: audit-logs
+              mountPath: /deployments/device-inventory-audit-logs
+      volumes:
+        - name: audit-logs
+          persistentVolumeClaim:
+            claimName: coolstore-audit-logs-pvc
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault

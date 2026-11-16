@@ -1,0 +1,61 @@
+# ServiceMonitor for OpenShift user-workload Prometheus to scrape CoolStore metrics.
+#
+# Prerequisites:
+#   - OpenShift user-workload monitoring must be enabled:
+#       oc patch configmap cluster-monitoring-config -n openshift-monitoring \
+#         --type=merge -p '{"data":{"config.yaml":"enableUserWorkload: true\n"}}'
+#   - The coolstore-dev namespace must have the monitoring label:
+#       oc label namespace coolstore-dev openshift.io/cluster-monitoring=true
+#
+# Apply with:
+#   oc apply -f deploy/openshift/servicemonitor.yaml -n coolstore-dev
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: coolstore-quarkus
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+    # This label is required by the OpenShift user-workload Prometheus operator
+    # to discover ServiceMonitors across namespaces.
+    openshift.io/cluster-monitoring: "true"
+spec:
+  # Match the coolstore-quarkus Service in the same namespace.
+  selector:
+    matchLabels:
+      app: coolstore-quarkus
+
+  namespaceSelector:
+    matchNames:
+      - coolstore-dev
+
+  endpoints:
+    - port: http           # matches the named port in service.yaml
+      path: /q/metrics     # Quarkus Micrometer / SmallRye Metrics endpoint
+      interval: 30s        # scrape every 30 seconds
+      scrapeTimeout: 10s
+      scheme: http
+
+      # Optional: basic auth or bearer token when metrics endpoint is secured.
+      # Uncomment and populate if Quarkus security is applied to /q/metrics.
+      # bearerTokenSecret:
+      #   name: coolstore-quarkus-secret
+      #   key: METRICS_TOKEN
+
+      # Relabelling: add the application name as a label on every metric series.
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_pod_label_app]
+          targetLabel: application
+        - sourceLabels: [__meta_kubernetes_namespace]
+          targetLabel: namespace
+        - sourceLabels: [__meta_kubernetes_pod_name]
+          targetLabel: pod
+
+      # Metric relabelling: drop high-cardinality internal Quarkus metrics that
+      # are not needed in long-term storage (e.g. individual HTTP paths with
+      # dynamic segments that would create an unbounded label set).
+      metricRelabelings:
+        - sourceLabels: [__name__]
+          regex: 'jvm_gc_pause.*|jvm_buffer.*|process_files.*'
+          action: drop

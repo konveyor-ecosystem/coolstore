@@ -15,12 +15,12 @@ spec:
     - name: git-url
       type: string
       description: Git repository URL
-      default: https://github.com/your-org/coolstore-quarkus.git
+      default: https://github.com/konveyor-ecosystem/coolstore.git
 
     - name: git-revision
       type: string
       description: Git revision (branch, tag, or commit SHA)
-      default: main
+      default: konveyor/migration-1794838418
 
     - name: image-name
       type: string
@@ -129,7 +129,7 @@ spec:
         - name: CONTEXT
           value: coolstore-quarkus
         - name: DOCKERFILE
-          value: coolstore-quarkus/src/main/docker/Dockerfile.jvm
+          value: coolstore-quarkus/Containerfile.jvm
         - name: TLSVERIFY
           value: "true"
 
@@ -177,10 +177,10 @@ spec:
       params:
         - name: SCRIPT
           value: |
-            oc set image deployment/coolstore \
-              coolstore=$(params.image-name):$(params.image-tag) \
+            oc set image deployment/coolstore-quarkus \
+              coolstore-quarkus=$(params.image-name):$(params.image-tag) \
               -n $(params.deploy-namespace)
-            oc rollout status deployment/coolstore \
+            oc rollout status deployment/coolstore-quarkus \
               -n $(params.deploy-namespace) \
               --timeout=180s
 

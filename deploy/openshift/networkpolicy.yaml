@@ -1,0 +1,213 @@
+# NetworkPolicy resources for the coolstore-dev namespace.
+#
+# Design goals:
+#   - Default-deny all ingress within the namespace
+#   - Allow only traffic that the application legitimately needs
+#   - Permit OpenShift ingress controller → app (HTTP/HTTPS)
+#   - Permit app → PostgreSQL, AMQ Artemis, Keycloak (intra-namespace only)
+#   - Permit Tekton / ArgoCD service accounts to reach the namespace
+#   - Permit Prometheus scraping from openshift-monitoring namespace
+#   - Isolate staging and production namespaces from dev
+#
+# Apply with:
+#   oc apply -f deploy/openshift/networkpolicy.yaml -n coolstore-dev
+
+---
+# 1. Default-deny all ingress within the namespace.
+#    Every allowed path must be whitelisted by a subsequent NetworkPolicy.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+spec:
+  podSelector: {}      # selects ALL pods in the namespace
+  policyTypes:
+    - Ingress
+
+---
+# 2. Allow the OpenShift router (HAProxy ingress controller) to reach the
+#    application pods on port 8080.  The router pods run in the
+#    openshift-ingress namespace and carry the label
+#    `ingresscontroller.operator.openshift.io/deployment-ingresscontroller: default`.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-router-to-app
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+spec:
+  podSelector:
+    matchLabels:
+      app: coolstore-quarkus
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-ingress
+      ports:
+        - port: 8080
+          protocol: TCP
+        - port: 8443
+          protocol: TCP
+
+---
+# 3. Allow intra-namespace traffic so the application can reach PostgreSQL
+#    (port 5432), AMQ Artemis (port 5672), and Keycloak (port 8080/8443).
+#    All three are deployed in the same namespace by their respective operators.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-intra-namespace
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+spec:
+  podSelector:
+    matchLabels:
+      app: coolstore-quarkus
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector: {}   # any pod in coolstore-dev
+      ports:
+        - port: 8080
+          protocol: TCP
+
+---
+# 4. Allow Prometheus (OpenShift user-workload monitoring) to scrape the
+#    /q/metrics endpoint on port 8080.  Prometheus pods live in
+#    openshift-user-workload-monitoring.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-prometheus-scrape
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+spec:
+  podSelector:
+    matchLabels:
+      app: coolstore-quarkus
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-user-workload-monitoring
+      ports:
+        - port: 8080
+          protocol: TCP
+
+---
+# 5. Allow Tekton pipeline pods (namespace openshift-pipelines, service-account
+#    "pipeline") to reach app pods during canary smoke-test steps.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-tekton-to-app
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+spec:
+  podSelector:
+    matchLabels:
+      app: coolstore-quarkus
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-pipelines
+      ports:
+        - port: 8080
+          protocol: TCP
+
+---
+# 6. Allow the PostgreSQL operator (CrunchyData PGO) pods — which carry the
+#    label `postgres-operator.crunchydata.com/cluster: coolstore-db` — to
+#    accept intra-namespace connections from the application.
+#    (Outbound from the app to PG is controlled by egress; PG's ingress policy
+#    sits here so both sides are covered when egress policies are added later.)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-app-to-postgres
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+spec:
+  podSelector:
+    matchLabels:
+      postgres-operator.crunchydata.com/cluster: coolstore-db
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: coolstore-quarkus
+      ports:
+        - port: 5432
+          protocol: TCP
+
+---
+# 7. Allow the application to reach AMQ Artemis broker pods on AMQP port 5672.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-app-to-amq
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+spec:
+  podSelector:
+    matchLabels:
+      ActiveMQArtemis: coolstore-amq-broker
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: coolstore-quarkus
+      ports:
+        - port: 5672
+          protocol: TCP
+        - port: 8161
+          protocol: TCP   # management console (internal access only)
+
+---
+# 8. Allow the router to reach Keycloak on its HTTP port so the Keycloak Route
+#    works (Keycloak Operator manages the TLS secret; edge TLS on the route).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-router-to-keycloak
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+spec:
+  podSelector:
+    matchLabels:
+      app: coolstore-keycloak
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-ingress
+      ports:
+        - port: 8080
+          protocol: TCP
+        - port: 8443
+          protocol: TCP

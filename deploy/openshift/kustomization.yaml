@@ -12,4 +12,6 @@ resources:
   - hpa.yaml
   - postgresql.yaml
   - keycloak.yaml
+  - networkpolicy.yaml
+  - servicemonitor.yaml
   - ../amq/activemqartemis-cr.yaml

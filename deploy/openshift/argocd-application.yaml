@@ -8,8 +8,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-org/coolstore-quarkus.git
-    targetRevision: main
+    repoURL: https://github.com/konveyor-ecosystem/coolstore.git
+    targetRevision: konveyor/migration-1794838418
     path: deploy/openshift
   destination:
     server: https://kubernetes.default.svc

@@ -1,0 +1,29 @@
+# PersistentVolumeClaim for the Maven local repository cache used by the
+# Tekton build pipeline (pipeline-run.yaml references claimName: maven-local-repo-pvc).
+#
+# This PVC is intentionally placed in the coolstore-dev namespace so that
+# Tekton workspace volumes can bind to it during PipelineRuns.
+#
+# Apply with:
+#   oc apply -f deploy/pipelines/maven-cache-pvc.yaml -n coolstore-dev
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: maven-local-repo-pvc
+  namespace: coolstore-dev
+  labels:
+    app: coolstore-quarkus
+    component: build-cache
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      # Maven dependency cache for a mid-size Quarkus project.
+      # Quarkus + all extensions typically uses 300–600 MB; 2 Gi gives
+      # comfortable headroom for multi-version cache entries.
+      storage: 2Gi
+  # Use the same gp3-csi class as the application PVC for consistency.
+  # Adjust to your cluster's default StorageClass if gp3-csi is unavailable.
+  storageClassName: gp3-csi

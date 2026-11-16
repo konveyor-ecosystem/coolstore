@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "app_id": "coolstore-monolith",
+  "generated_at": "2026-11-16T14:22:00Z",
+  "source": {
+    "language": "java",
+    "java_version": "8",
+    "specification": "Java EE 7",
+    "build_tool": "maven",
+    "packaging": "war",
+    "artifact_id": "monolith",
+    "group_id": "com.redhat.coolstore",
+    "app_server": "JBoss EAP / WildFly",
+    "vendor_stubs": ["weblogic.application.ApplicationLifecycleListener", "weblogic.jndi.WLInitialContextFactory"],
+    "frameworks": ["EJB 3.2", "CDI 1.2", "JAX-RS 2.0", "JPA 2.1", "JMS 2.0", "Flyway 4.1.2"],
+    "messaging": "JMS 2.0 (javax.jms, topic/orders via JBoss JNDI)",
+    "persistence": "Hibernate ORM via JPA 2.1, JNDI datasource java:jboss/datasources/CoolstoreDS",
+    "security": "Keycloak (keycloak.json in WAR)",
+    "frontend": "AngularJS 1.x SPA with Patternfly 3, Bower-managed",
+    "proprietary_deps": [
+      {
+        "artifact": "com.enterprise:audit-logging-library:1.0.0",
+        "scope": "system",
+        "path": "lib/audit-logging-library-1.0.0.jar",
+        "used_by": "com.redhat.coolstore.service.OrderService"
+      }
+    ]
+  },
+  "target": {
+    "language": "java",
+    "java_version": "17",
+    "framework": "Quarkus 3.x",
+    "rest": "RESTEasy Reactive (Jakarta EE 10 / JAX-RS 3.1)",
+    "persistence": "Hibernate ORM with Panache, Quarkus Flyway extension",
+    "messaging": "SmallRye Reactive Messaging over AMQP (AMQ Broker / ActiveMQ Artemis)",
+    "security": "quarkus-oidc (Keycloak)",
+    "build_tool": "maven",
+    "deployment_platform": "Red Hat OpenShift 4.x",
+    "container_runtime": "Podman / Buildah",
+    "cicd": "OpenShift Pipelines (Tekton) + OpenShift GitOps (ArgoCD)",
+    "image_base": "registry.access.redhat.com/ubi9/openjdk-17-runtime:latest",
+    "infrastructure": {
+      "database": "PostgreSQL (CrunchyData PGO Operator)",
+      "broker": "AMQ Broker (AMQ Broker Operator)",
+      "identity": "Keycloak / RHSSO (Keycloak Operator)"
+    }
+  },
+  "graph_analysis": {
+    "tool": "rgctl",
+    "preset": "hybrid_default",
+    "order_mode": "scheduled",
+    "indexed_files": 1273,
+    "total_nodes": 28326,
+    "total_edges": 86565,
+    "total_functions": 15244,
+    "total_communities": 18513,
+    "circular_dependencies": 232,
+    "security_findings": {
+      "embedded_secrets": 3,
+      "taint_flows_vulnerable": 1
+    },
+    "java_communities": [
+      {
+        "community_id": 21,
+        "label": "com.redhat.coolstore.model",
+        "schedule_step": 17,
+        "priority_rank": 105,
+        "avg_harmonic": 2.74e-6,
+        "migration_order": 1,
+        "rationale": "Lowest harmonic centrality — fewest inbound dependencies; migrate first"
+      },
+      {
+        "community_id": 143,
+        "label": "com.redhat.coolstore.persistence",
+        "schedule_step": 49,
+        "priority_rank": 144,
+        "avg_harmonic": 4.31e-9,
+        "migration_order": 2,
+        "rationale": "Isolated JNDI/datasource producer; safe to migrate after model"
+      },
+      {
+        "community_id": 94,
+        "label": "com.redhat.coolstore.utils",
+        "schedule_step": 95,
+        "priority_rank": 39,
+        "avg_harmonic": 1.22e-4,
+        "migration_order": 3,
+        "rationale": "Utility/transformer classes; moderate centrality; depends on model only"
+      },
+      {
+        "community_id": 37,
+        "label": "com.redhat.coolstore.service",
+        "schedule_step": 93,
+        "priority_rank": 37,
+        "avg_harmonic": 1.44e-4,
+        "migration_order": 4,
+        "rationale": "Core business logic; depends on model, persistence, utils; migrate before REST"
+      },
+      {
+        "community_id": 82,
+        "label": "com.redhat.coolstore.rest",
+        "schedule_step": 70,
+        "priority_rank": 13,
+        "avg_harmonic": 4.39e-4,
+        "migration_order": 5,
+        "rationale": "Highest harmonic centrality in Java layer — most connected; migrate last to reduce blast radius"
+      }
+    ]
+  },
+  "migration_strategy": "strangler_fig_phased",
+  "risk_level": "medium",
+  "risks": [
+    {
+      "id": "R1",
+      "title": "Stateful EJB session semantics",
+      "component": "ShoppingCartService (@Stateful)",
+      "likelihood": "medium",
+      "impact": "high",
+      "mitigation": "Replace with CDI @SessionScoped; validate HTTP session affinity on OpenShift Route; consider stateless cart backed by DB/Redis as fallback"
+    },
+    {
+      "id": "R2",
+      "title": "Proprietary audit library — no source available",
+      "component": "OrderService (com.enterprise:audit-logging-library)",
+      "likelihood": "medium",
+      "impact": "medium",
+      "mitigation": "Decompile JAR with Fernflower; write AuditService CDI bean replicating log format; obtain security sign-off on new format before removing JAR"
+    },
+    {
+      "id": "R3",
+      "title": "WebLogic T3 JNDI in InventoryNotificationMDB",
+      "component": "InventoryNotificationMDB",
+      "likelihood": "high",
+      "impact": "medium",
+      "mitigation": "Rewrite entirely as SmallRye @Incoming consumer on AMQ Artemis topic; test with Testcontainers from day one"
+    },
+    {
+      "id": "R4",
+      "title": "Flyway version gap (4.1.2 → 9.x)",
+      "component": "DataBaseMigrationStartup / Flyway scripts",
+      "likelihood": "low",
+      "impact": "medium",
+      "mitigation": "Test all migration scripts against PostgreSQL in staging; run flyway repair if checksum errors; use quarkus.flyway.baseline-on-migrate=true"
+    },
+    {
+      "id": "R5",
+      "title": "3 embedded secrets in source code",
+      "component": "Various",
+      "likelihood": "high",
+      "impact": "high",
+      "mitigation": "Rotate all secrets immediately in Task 1.1; inject via OpenShift Secrets; scan with git-secrets before any PR merges"
+    },
+    {
+      "id": "R6",
+      "title": "Taint flow — user input reaching sensitive sink",
+      "component": "REST endpoints (CartEndpoint)",
+      "likelihood": "medium",
+      "impact": "high",
+      "mitigation": "Apply Bean Validation (@Valid, @Min, @NotNull) to all user-supplied path/body parameters; verify remediation with OWASP ZAP in Task 10.4"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Foundation & Project Scaffolding",
+      "user_story": "User Story 1",
+      "task_group": "Task Group 1",
+      "story_points": 8,
+      "key_deliverables": [
+        "Secret rotation (3 embedded secrets removed)",
+        "Quarkus 3.x Maven scaffold with all extensions",
+        "javax → jakarta namespace migration (OpenRewrite)",
+        "Keycloak config migrated to quarkus.oidc.*",
+        "OpenShift Tekton CI/CD pipeline",
+        "Characterisation test suite (12 endpoint contracts, golden baseline)"
+      ],
+      "blockers_removed": ["Secret exposure (R5)", "javax.* compile errors"],
+      "java_communities_addressed": []
+    },
+    {
+      "phase": 2,
+      "name": "Model & Persistence Layer",
+      "user_story": "User Story 2",
+      "task_group": "Task Groups 2–3",
+      "story_points": 5,
+      "key_deliverables": [
+        "8 JPA entity/DTO classes migrated to jakarta.persistence.*",
+        "Panache entity annotations applied",
+        "Flyway migrated to Quarkus extension (quarkus.flyway.*)",
+        "JNDI datasource replaced with application.properties + OpenShift Secret",
+        "DataBaseMigrationStartup.java deleted",
+        "Resources.java / Producers.java deleted",
+        "Testcontainers PostgreSQL integration tests"
+      ],
+      "blockers_removed": ["JNDI datasource dependency", "EJB Singleton startup"],
+      "java_communities_addressed": ["com.redhat.coolstore.model", "com.redhat.coolstore.persistence"]
+    },
+    {
+      "phase": 3,
+      "name": "Utility & Audit Replacement",
+      "user_story": "User Story 3",
+      "task_group": "Task Group 4",
+      "story_points": 5,
+      "key_deliverables": [
+        "WebLogic lifecycle stubs deleted (ApplicationLifecycleEvent, ApplicationLifecycleListener)",
+        "StartupListener rewritten with Quarkus StartupEvent/ShutdownEvent",
+        "AuditService CDI bean replacing FileSystemAuditLogger",
+        "audit-logging-library system-scoped dep removed from pom.xml",
+        "Transformers.java migrated to jakarta.json.*",
+        "AuditService unit tests with temp directory"
+      ],
+      "blockers_removed": ["Proprietary dependency (R2)", "WebLogic stubs"],
+      "java_communities_addressed": ["com.redhat.coolstore.utils"]
+    },
+    {
+      "phase": 4,
+      "name": "Service Layer (EJB → CDI)",
+      "user_story": "User Story 4",
+      "task_group": "Task Group 5",
+      "story_points": 8,
+      "key_deliverables": [
+        "7 EJB services migrated to @ApplicationScoped / @SessionScoped CDI beans",
+        "ShoppingCartService @Stateful → @SessionScoped",
+        "ShippingService remote EJB → local CDI bean",
+        "ShippingServiceRemote.java deleted",
+        "ShoppingCartOrderProcessor using SmallRye Emitter",
+        "@Transactional replacing EJB CMT",
+        "Service layer @QuarkusTest integration tests with Testcontainers"
+      ],
+      "blockers_removed": ["EJB container dependency (R1)", "WildFly JNDI remote EJB lookup"],
+      "java_communities_addressed": ["com.redhat.coolstore.service"]
+    },
+    {
+      "phase": 5,
+      "name": "Messaging (JMS MDB → SmallRye Reactive)",
+      "user_story": "User Story 5",
+      "task_group": "Task Group 6",
+      "story_points": 8,
+      "key_deliverables": [
+        "AMQ Broker CR deployed on OpenShift (topic/orders, multicast routing)",
+        "OrderServiceMDB rewritten as @Incoming AMQP consumer",
+        "InventoryNotificationMDB rewritten — WebLogic T3 JNDI fully removed",
+        "Dead-letter address configured",
+        "Testcontainers Artemis end-to-end messaging tests"
+      ],
+      "blockers_removed": ["WebLogic T3 JNDI coupling (R3)", "JMS 2.0 EJB MDB container"],
+      "java_communities_addressed": ["com.redhat.coolstore.service (messaging)"]
+    },
+    {
+      "phase": 6,
+      "name": "REST Layer & OIDC Security",
+      "user_story": "User Story 6",
+      "task_group": "Task Group 7",
+      "story_points": 8,
+      "key_deliverables": [
+        "CartEndpoint, ProductEndpoint, OrderEndpoint migrated to RESTEasy Reactive",
+        "Keycloak OIDC wired via quarkus-oidc extension",
+        "@RolesAllowed mapped from realm-export.json",
+        "Taint flow remediated with Bean Validation (@Valid, @Min) (R6)",
+        "OpenAPI spec auto-generated and committed",
+        "All 12 characterisation tests pass green against Quarkus"
+      ],
+      "blockers_removed": ["javax.ws.rs vendor coupling", "Taint vulnerability (R6)"],
+      "java_communities_addressed": ["com.redhat.coolstore.rest"]
+    },
+    {
+      "phase": 7,
+      "name": "Containerisation & OpenShift Deployment",
+      "user_story": "User Story 7",
+      "task_group": "Task Groups 8–9",
+      "story_points": 8,
+      "key_deliverables": [
+        "Containerfile.jvm (UBI9 OpenJDK 17 fast-jar layout)",
+        "Image scan: 0 critical/high CVEs",
+        "PostgreSQL, AMQ Broker, Keycloak deployed via OpenShift Operators",
+        "Kubernetes manifests: Deployment, Service, Route, ConfigMap, Secret, HPA",
+        "OpenShift Pipelines end-to-end CI/CD",
+        "ArgoCD GitOps auto-sync on main branch",
+        "PVC for audit log directory",
+        "Liveness/readiness probes configured"
+      ],
+      "blockers_removed": ["WAR/EAP deployment model", "Manual deployment"],
+      "java_communities_addressed": []
+    },
+    {
+      "phase": 8,
+      "name": "Parallel Run, Validation & Cutover",
+      "user_story": "User Story 8",
+      "task_group": "Task Group 10",
+      "story_points": 5,
+      "key_deliverables": [
+        "Characterisation tests green in coolstore-staging",
+        "Performance baseline: Quarkus p95 ≤ monolith",
+        "OWASP ZAP scan: 0 critical findings",
+        "48-hour parallel run with no response divergence",
+        "Canary cutover: 10% → 50% → 100% over 72 hours",
+        "Monolith decommissioned after 30-day stability window",
+        "Post-migration report delivered"
+      ],
+      "blockers_removed": [],
+      "java_communities_addressed": []
+    }
+  ],
+  "total_story_points": 55,
+  "estimated_duration": "8-10 sprints (2-week sprints, team of 2-3 developers)",
+  "workspace_artifacts": {
+    "migration_prompt": "mig-prompt-workspace/migration-prompt.md",
+    "tasks": "mig-plan-workspace/tasks.md",
+    "user_stories": "mig-plan-workspace/UserStory.md",
+    "rgctl_graph": ".rgctl/",
+    "rgctl_migration_hints": ".rgctl/migration_plan.json"
+  }
+}

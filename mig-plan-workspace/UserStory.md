@@ -15,10 +15,10 @@ Task references point to task groups in `tasks.md`. Specification and design: `.
 - ## 1. Foundation & Build Modernization (tasks.md)
 
 ### Acceptance Criteria
-- [ ] `mvn package` produces a Quarkus fast-jar with Java 21; no `javaee-api`/EAP dependencies remain in `pom.xml`
-- [ ] `audit-logging-library` 2.0.0 is used; `OrderService` compiles against `StreamableAuditLogger` + `AuditEvent` record + `logEventAsync`
-- [ ] All 5 rules in `rules/rule.yaml` (audit-logging-0001..0005) pass analysis with no findings
-- [ ] CI pipeline builds and tests the project on every commit
+- [x] `mvn package` produces a Quarkus fast-jar with Java 21; no `javaee-api`/EAP dependencies remain in `pom.xml`
+- [x] `audit-logging-library` 2.0.0 is used; `OrderService` compiles against `StreamableAuditLogger` + `AuditEvent` record + `logEventAsync`
+- [x] All 5 rules in `rules/rule.yaml` (audit-logging-0001..0005) pass analysis with no findings
+- [x] CI pipeline builds and tests the project on every commit
 
 ### Details
 - **Priority:** High — blocks all other stories
@@ -58,9 +58,9 @@ Task references point to task groups in `tasks.md`. Specification and design: `.
 - ## 2. Remove WebLogic-Specific Code (tasks.md)
 
 ### Acceptance Criteria
-- [ ] No `weblogic.*` imports or in-repo `src/main/java/weblogic/` classes remain (verified via rgctl/rg search)
-- [ ] `StartupListener` behavior preserved via a Quarkus `StartupEvent` observer
-- [ ] Low-inventory logic from `InventoryNotificationMDB` captured for re-implementation (story 5)
+- [x] No `weblogic.*` imports or in-repo `src/main/java/weblogic/` classes remain (verified via rgctl/rg search)
+- [x] `StartupListener` behavior preserved via a Quarkus `StartupEvent` observer
+- [x] Low-inventory logic from `InventoryNotificationMDB` captured for re-implementation (story 5)
 
 ### Details
 - **Priority:** High — rgctl migration schedule puts `weblogic.application` first (step 9)
@@ -97,10 +97,10 @@ Task references point to task groups in `tasks.md`. Specification and design: `.
 - ## 3. Migrate Persistence & Domain Model (tasks.md)
 
 ### Acceptance Criteria
-- [ ] Entities use `jakarta.persistence`; table names `PRODUCT_CATALOG`, `INVENTORY`, `ORDERS`, `ORDER_ITEMS` unchanged
-- [ ] `quarkus-flyway` runs `V1_1__CreateSchema.sql`/`V1_2__AddInitialData.sql` on startup; existing DB baselined
-- [ ] `DataBaseMigrationStartup` and `persistence/Resources.java` removed; `EntityManager` injected directly
-- [ ] Persistence tests green against Testcontainers PostgreSQL
+- [x] Entities use `jakarta.persistence`; table names `PRODUCT_CATALOG`, `INVENTORY`, `ORDERS`, `ORDER_ITEMS` unchanged
+- [x] `quarkus-flyway` runs `V1_1__CreateSchema.sql`/`V1_2__AddInitialData.sql` on startup; existing DB baselined
+- [x] `DataBaseMigrationStartup` and `persistence/Resources.java` removed; `EntityManager` injected directly
+- [x] Persistence tests green against Testcontainers PostgreSQL
 
 ### Details
 - **Priority:** High — rgctl schedule: `coolstore.model` step 17, `coolstore.persistence` step 55
@@ -135,11 +135,11 @@ Task references point to task groups in `tasks.md`. Specification and design: `.
 - ## 4. Migrate Business Services — EJB → CDI (tasks.md)
 
 ### Acceptance Criteria
-- [ ] `@Stateful`/`@Stateless`/`@Singleton` replaced by CDI scopes; no `javax.ejb` imports remain
-- [ ] `ShippingService` injected directly (no JNDI `ejb:/ROOT/...` lookup); remote interface collapsed
-- [ ] Cart state keyed by cartId; behavior documented for horizontal scaling
-- [ ] `Transformers` order JSON contract byte-compatible with characterization baseline
-- [ ] Unit coverage ≥80% on services
+- [x] `@Stateful`/`@Stateless`/`@Singleton` replaced by CDI scopes; no `javax.ejb` imports remain
+- [x] `ShippingService` injected directly (no JNDI `ejb:/ROOT/...` lookup); remote interface collapsed
+- [x] Cart state keyed by cartId; behavior documented for horizontal scaling
+- [x] `Transformers` order JSON contract byte-compatible with characterization baseline
+- [x] Unit coverage ≥80% on services
 
 ### Details
 - **Priority:** High — `coolstore.service` is the largest Java community in the graph
@@ -177,9 +177,9 @@ Task references point to task groups in `tasks.md`. Specification and design: `.
 - ## 5. Migrate Messaging — JMS → Reactive Messaging (tasks.md)
 
 ### Acceptance Criteria
-- [ ] Checkout publishes order JSON to the orders channel (`MutinyEmitter`)
-- [ ] `@Incoming` consumer persists order and decrements inventory (OrderServiceMDB semantics)
-- [ ] Second consumer raises low-inventory alert at threshold 50 (InventoryNotificationMDB semantics)
+- [x] Checkout publishes order JSON to the orders channel (`MutinyEmitter`)
+- [x] `@Incoming` consumer persists order and decrements inventory (OrderServiceMDB semantics)
+- [x] Second consumer raises low-inventory alert at threshold 50 (InventoryNotificationMDB semantics)
 - [ ] Broker deployed on OpenShift; app↔broker wiring via Secret
 
 ### Details
@@ -215,11 +215,11 @@ Task references point to task groups in `tasks.md`. Specification and design: `.
 - ## 6. Migrate REST API & Web Tier (tasks.md)
 
 ### Acceptance Criteria
-- [ ] All 9 REST operations available under `/services` with identical contracts (characterization suite green)
-- [ ] `index.jsp`/`health.jsp` converted to static resources; health via `/q/health`
-- [ ] AngularJS app served as static assets from the container
-- [ ] OIDC authentication via `quarkus-oidc` + Keycloak realm `eap`; secured checkout requires login
-- [ ] Unauthenticated access to secured endpoints returns 401
+- [x] All 9 REST operations available under `/services` with identical contracts (characterization suite green)
+- [x] `index.jsp`/`health.jsp` converted to static resources; health via `/q/health`
+- [x] AngularJS app served as static assets from the container
+- [x] OIDC authentication via `quarkus-oidc` + Keycloak realm `eap`; secured checkout requires login
+- [x] Unauthenticated access to secured endpoints returns 401
 
 ### Details
 - **Priority:** High — user-visible surface
@@ -255,9 +255,9 @@ Task references point to task groups in `tasks.md`. Specification and design: `.
 
 ### Acceptance Criteria
 - [ ] Multi-stage UBI9/OpenJDK-21 image builds in CI and pushes to the internal registry; scan shows no critical CVEs
-- [ ] Deployment runs ≥2 replicas with liveness/readiness/startup probes, resource limits, and HPA
-- [ ] Secrets hold DB credentials, Keycloak client secret, audit TCP endpoint; ConfigMaps hold app config
-- [ ] pom.xml OpenShift profile filled in (TODO resolved)
+- [x] Deployment runs ≥2 replicas with liveness/readiness/startup probes, resource limits, and HPA
+- [x] Secrets hold DB credentials, Keycloak client secret, audit TCP endpoint; ConfigMaps hold app config
+- [x] pom.xml OpenShift profile filled in (TODO resolved)
 - [ ] Smoke suite green against the Route
 
 ### Details
@@ -292,9 +292,9 @@ Task references point to task groups in `tasks.md`. Specification and design: `.
 - ## 8. Verification, Parallel Run & Cutover (tasks.md)
 
 ### Acceptance Criteria
-- [ ] Characterization suite passes against the OpenShift deployment (contract parity with EAP baseline)
-- [ ] Performance report: startup, memory, checkout throughput vs. baseline
-- [ ] All Konveyor rules pass; no `javax.*`/`weblogic.*` imports; image scan clean
+- [x] Characterization suite passes against the OpenShift deployment (contract parity with EAP baseline)
+- [x] Performance report: startup, memory, checkout throughput vs. baseline
+- [x] All Konveyor rules pass; no `javax.*`/`weblogic.*` imports; image scan clean
 - [ ] 2-week stable parallel run completed before cutover
 - [ ] EAP decommissioned after 30-day rollback window; runbook and final report delivered
 

@@ -1,3 +1,12 @@
+# CoolStore Monolith — Quarkus 3 / Java 21 (migrated from Java EE 7 / JBoss EAP 7.4)
+
+**Build & run (local):** requires Java 21 + Maven 3.9. `mvn quarkus:dev` starts dev mode;
+`mvn package` builds the fast-jar (`target/quarkus-app/`). Configuration is externalized via
+env vars (`QUARKUS_DATASOURCE_*`, `KEYCLOAK_URL`, `AMQP_*`, `AUDIT_STREAM_*`) — see
+`src/main/resources/application.properties`. Container: `podman build -f Containerfile -t coolstore-monolith .`
+OpenShift: manifests in `openshift/`, CI in `.tekton/`. Migration details: `docs/migration-runbook.md`.
+
+---
 # CoolStore Monolith
 
 This repository has the complete coolstore monolith built as a Java EE 7 application. To deploy it on JBoss 7.4 follow the instructions below

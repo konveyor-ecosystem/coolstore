@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coolstore-config
+  labels: {app: coolstore-monolith}
+data:
+  QUARKUS_DATASOURCE_HOST: postgresql
+  QUARKUS_DATASOURCE_PORT: "5432"
+  QUARKUS_DATASOURCE_DATABASE: coolstore
+  KEYCLOAK_URL: http://keycloak:8080
+  AMQP_HOST: broker
+  AMQP_PORT: "5672"
+  AUDIT_STREAM_HOST: audit-collector
+  AUDIT_STREAM_PORT: "4560"

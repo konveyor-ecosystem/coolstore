@@ -1,0 +1,12 @@
+# CoolStore Migration Runbook (EAP 7.4 → Quarkus 3 / OpenShift)
+
+- **Build**: `mvn package` (Java 21, Quarkus 3.15 fast-jar). Unit tests: `mvn test`. Integration tests (need Podman): `mvn verify -Pintegration-tests`.
+- **WebLogic removal**: deleted in-repo `weblogic.*` shims; `StartupListener` → `utils/AppLifecycle` (`@Observes StartupEvent/ShutdownEvent`); WebLogic JMS client removed from `InventoryNotificationMDB` (re-implemented as AMQP consumer).
+- **EJB → CDI**: `@Stateless`/`@Singleton` → `@ApplicationScoped`; `@Stateful` cart → cartId-keyed in-memory map (R1: externalize for multi-pod HA — follow-up); remote-EJB JNDI self-lookup removed — `ShippingService` injected; `ShippingServiceRemote` collapsed.
+- **Persistence**: entities → `jakarta.persistence` (tables unchanged); `persistence.xml`/`Resources`/`DataBaseMigrationStartup` removed; `quarkus-flyway` runs `db/migration` with `baseline-on-migrate` (baseline 1.2) for the existing EAP database.
+- **Messaging**: JMS `topic/orders` → AMQP `orders` address via `quarkus-messaging-amqp` (connector `smallrye-amqp`); producer = `MutinyEmitter`; both consumers fan-out via `broadcast=true`; errors propagate → redelivery (auto-ack semantics preserved).
+- **Audit logging 2.0.0**: `AuditLoggerProducer` produces `StreamableAuditLogger` (TCP endpoint via `AUDIT_STREAM_HOST/PORT` Secret); `OrderService` emits `AuditEvent` records with `logEventAsync` (all 5 Konveyor rules satisfied; no `FileSystemAuditLogger`/Builder/sync calls).
+- **Web tier**: JSP shell → static `META-INF/resources`; health via `/q/health/*`; Keycloak JS adapter config inlined in `app.js` (OIDC, realm `eap`, client `eap-app`); backend secured by `quarkus-oidc` (checkout + orders require auth → 401 anonymous).
+- **Deploy (OpenShift)**: apply `openshift/` (PostgreSQL, Keycloak + realm, Artemis broker, Deployment 2 replicas + probes + HPA, Route, smoke-test Job); create `coolstore-secrets` from `openshift/secret.example.yaml`; image via `Containerfile` or `mvn package -Popenshift` (jib → internal registry). CI: `.tekton/pipeline.yaml` (build → test → buildah → trivy scan).
+- **Rollback**: schema unchanged → redeploy EAP WAR against same PostgreSQL. Keep EAP 30 days post-cutover.
+- **Cutover** (pending, needs live environment): performance baseline/parity report, 2-week parallel run, then Route traffic switch; monitoring via `/q/metrics` (Micrometer/Prometheus).

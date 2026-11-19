@@ -1,0 +1,9 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: coolstore-monolith
+spec:
+  to:
+    kind: Service
+    name: coolstore-monolith
+  port: {targetPort: http}

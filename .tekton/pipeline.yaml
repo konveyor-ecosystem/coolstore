@@ -1,0 +1,29 @@
+# OpenShift Pipelines (Tekton): build, test, image build + Trivy scan, push to internal registry
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata: {name: coolstore-ci}
+spec:
+  workspaces: [{name: source}]
+  tasks:
+    - name: git-clone
+      taskRef: {name: git-clone, kind: ClusterTask}
+      params: [{name: url, value: $(params.repo-url)}, {name: revision, value: $(params.revision)}]
+      workspaces: [{name: output, workspace: source}]
+    - name: build-and-test
+      taskRef: {name: maven, kind: ClusterTask}
+      runAfter: [git-clone]
+      params: [{name: GOALS, value: package}]
+      workspaces: [{name: source, workspace: source}, {name: maven-settings, workspace: source}]
+    - name: build-image
+      taskRef: {name: buildah, kind: ClusterTask}
+      runAfter: [build-and-test]
+      params: [{name: IMAGE, value: image-registry.openshift-image-registry.svc:5000/$(params.namespace)/coolstore-monolith:$(params.revision)}]
+      workspaces: [{name: source, workspace: source}]
+    - name: scan-image
+      taskRef: {name: trivy-scanner, kind: ClusterTask}
+      runAfter: [build-image]
+      params: [{name: IMAGE, value: image-registry.openshift-image-registry.svc:5000/$(params.namespace)/coolstore-monolith:$(params.revision)}]
+  params:
+    - {name: repo-url, type: string}
+    - {name: revision, type: string}
+    - {name: namespace, type: string, default: coolstore}

@@ -4,3 +4,7 @@ target
 .idea
 .settings
 .vscode
+
+# rgctl daemon/index artifacts (keep only migration_plan.json)
+.rgctl/*
+!.rgctl/migration_plan.json

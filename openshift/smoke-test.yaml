@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: coolstore-smoke-test
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: smoke
+          image: curlimages/curl:8.10.1
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -e
+              BASE=http://coolstore-monolith:80
+              curl -sf $BASE/q/health/ready
+              curl -sf $BASE/services/products | grep -q itemId
+              echo "SMOKE TESTS PASSED"

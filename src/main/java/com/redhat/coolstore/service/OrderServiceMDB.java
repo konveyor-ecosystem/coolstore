@@ -1,47 +1,39 @@
 package com.redhat.coolstore.service;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
-import javax.inject.Inject;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+
+import org.eclipse.microprofile.reactive.messaging.Incoming;
+import org.jboss.logging.Logger;
 
 import com.redhat.coolstore.model.Order;
 import com.redhat.coolstore.utils.Transformers;
 
-@MessageDriven(name = "OrderServiceMDB", activationConfig = {
-	@ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "topic/orders"),
-	@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
-	@ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")})
-public class OrderServiceMDB implements MessageListener { 
+/**
+ * Replaces the JMS {@code @MessageDriven} OrderServiceMDB (topic/orders, auto-acknowledge).
+ * Consumes the "orders" AMQP channel, persists the order and decrements inventory per item.
+ * Exceptions propagate so the message is not acknowledged (nacked) and is redelivered,
+ * preserving the original MDB semantics.
+ */
+@ApplicationScoped
+public class OrderServiceMDB {
 
-	@Inject
-	OrderService orderService;
+    private static final Logger LOG = Logger.getLogger(OrderServiceMDB.class);
 
-	@Inject
-	CatalogService catalogService;
+    @Inject
+    OrderService orderService;
 
-	@Override
-	public void onMessage(Message rcvMessage) {
-		System.out.println("\nMessage recd !");
-		TextMessage msg = null;
-		try {
-				if (rcvMessage instanceof TextMessage) {
-						msg = (TextMessage) rcvMessage;
-						String orderStr = msg.getBody(String.class);
-						System.out.println("Received order: " + orderStr);
-						Order order = Transformers.jsonToOrder(orderStr);
-						System.out.println("Order object is " + order);
-						orderService.save(order);
-						order.getItemList().forEach(orderItem -> {
-							catalogService.updateInventoryItems(orderItem.getProductId(), orderItem.getQuantity());
-						});
-				}
-		} catch (JMSException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Inject
+    CatalogService catalogService;
 
+    @Incoming("orders")
+    public void onOrder(String orderStr) {
+        LOG.info("Received order message");
+        LOG.debug("Received order: " + orderStr);
+        Order order = Transformers.jsonToOrder(orderStr);
+        orderService.save(order);
+        order.getItemList().forEach(orderItem ->
+            catalogService.updateInventoryItems(orderItem.getProductId(), orderItem.getQuantity()));
+        LOG.info("Order persisted and inventory updated");
+    }
 }

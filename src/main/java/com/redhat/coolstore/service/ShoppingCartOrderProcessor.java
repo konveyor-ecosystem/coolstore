@@ -1,35 +1,32 @@
 package com.redhat.coolstore.service;
 
-import java.util.logging.Logger;
-import javax.ejb.Stateless;
-import javax.annotation.Resource;
-import javax.inject.Inject;
-import javax.jms.JMSContext;
-import javax.jms.Topic;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.jboss.logging.Logger;
 
 import com.redhat.coolstore.model.ShoppingCart;
 import com.redhat.coolstore.utils.Transformers;
 
-@Stateless
-public class ShoppingCartOrderProcessor  {
+import io.smallrye.reactive.messaging.MutinyEmitter;
+
+/**
+ * Publishes checkout orders as JSON to the "orders" AMQP channel, replacing the
+ * injected JMSContext + @Resource(lookup = "java:/topic/orders") Topic producer.
+ */
+@ApplicationScoped
+public class ShoppingCartOrderProcessor {
 
     @Inject
     Logger log;
 
-
     @Inject
-    private transient JMSContext context;
+    @Channel("orders")
+    private MutinyEmitter<String> ordersEmitter;
 
-    @Resource(lookup = "java:/topic/orders")
-    private Topic ordersTopic;
-
-    
-  
-    public void  process(ShoppingCart cart) {
-        log.info("Sending order from processor: ");
-        context.createProducer().send(ordersTopic, Transformers.shoppingCartToJson(cart));
+    public void process(ShoppingCart cart) {
+        log.info("Sending order from processor");
+        ordersEmitter.sendAndAwait(Transformers.shoppingCartToJson(cart));
     }
-
-
-
 }

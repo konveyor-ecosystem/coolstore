@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: postgresql}}
+  template:
+    metadata: {labels: {app: postgresql}}
+    spec:
+      containers:
+        - name: postgresql
+          image: registry.access.redhat.com/rhscl/postgresql-13-rhel7
+          env:
+            - {name: POSTGRESQL_USER, value: coolstore}
+            - {name: POSTGRESQL_PASSWORD, value: coolstore}
+            - {name: POSTGRESQL_DATABASE, value: coolstore}
+          ports: [{containerPort: 5432}]
+          volumeMounts: [{name: pgdata, mountPath: /var/lib/pgsql/data}]
+      volumes: [{name: pgdata, emptyDir: {}}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: postgresql}
+spec:
+  selector: {app: postgresql}
+  ports: [{name: pg, port: 5432, targetPort: 5432}]

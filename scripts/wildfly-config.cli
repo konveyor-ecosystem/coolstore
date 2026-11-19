@@ -1,0 +1,31 @@
+# WildFly offline configuration for coolstore monolith
+# Applied at image build time against standalone-full.xml (full platform: JMS/Artemis)
+embed-server --server-config=standalone-full.xml
+
+# PostgreSQL JDBC driver
+/subsystem=datasources/jdbc-driver=postgresql:add( \
+    driver-name=postgresql, \
+    driver-module-name=org.postgresql, \
+    driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+
+# CoolstoreDS datasource consumed by persistence.xml and DataBaseMigrationStartup
+# Connection details are resolved at boot from environment variables:
+#   DB_HOST, DB_PORT, DB_NAME (ConfigMap) / DB_USER, DB_PASSWORD (Secret)
+/subsystem=datasources/data-source=CoolstoreDS:add( \
+    jndi-name=java:jboss/datasources/CoolstoreDS, \
+    driver-name=postgresql, \
+    enabled=true, \
+    use-java-context=true, \
+    connection-url="jdbc:postgresql://${env.DB_HOST:localhost}:${env.DB_PORT:5432}/${env.DB_NAME:coolstore}", \
+    user-name="${env.DB_USER:coolstore}", \
+    password="${env.DB_PASSWORD:coolstore}", \
+    min-pool-size=2, \
+    max-pool-size=20, \
+    blocking-timeout-wait-millis=5000)
+
+# JMS topic consumed by OrderServiceMDB (destinationLookup=topic/orders)
+/subsystem=messaging-activemq/server=default/jms-topic=orders:add( \
+    entries=["topic/orders", "java:/topic/orders"])
+
+run-batch
+stop-embedded-server

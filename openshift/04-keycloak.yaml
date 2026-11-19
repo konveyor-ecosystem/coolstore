@@ -1,0 +1,74 @@
+# Keycloak 20.0.5 with the coolstore 'eap' realm (realm-export.json)
+# Prerequisite (59KB JSON too large to inline):
+#   oc create configmap keycloak-realm -n coolstore --from-file=realm-export.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: coolstore
+  labels:
+    app: keycloak
+spec:
+  selector:
+    app: keycloak
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: coolstore
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:20.0.5
+        args: ["start-dev", "--http-port=8080", "--import-realm"]
+        env:
+        - name: KEYCLOAK_ADMIN
+          value: "admin"
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: "CHANGE_ME_admin_password"   # move to a Secret in production
+        - name: KC_HOSTNAME_STRICT
+          value: "false"
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - name: realm
+          mountPath: /opt/keycloak/data/import
+          readOnly: true
+        readinessProbe:
+          httpGet:
+            path: /realms/master
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+      volumes:
+      - name: realm
+        configMap:
+          name: keycloak-realm

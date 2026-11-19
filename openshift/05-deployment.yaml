@@ -1,0 +1,91 @@
+# Coolstore monolith — application workload (WildFly on UBI8 OpenJDK 11)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coolstore
+  namespace: coolstore
+  labels:
+    app: coolstore
+    version: v1
+spec:
+  replicas: 2   # parity with the two-node EAP HA topology
+  selector:
+    matchLabels:
+      app: coolstore
+  template:
+    metadata:
+      labels:
+        app: coolstore
+        version: v1
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 0
+        fsGroup: 0
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: coolstore
+        # OpenShift internal registry — push with:
+        #   podman tag coolstore-monolith:latest \
+        #     image-registry.openshift-image-registry.svc:5000/coolstore/coolstore-monolith:latest
+        image: image-registry.openshift-image-registry.svc:5000/coolstore/coolstore-monolith:latest
+        imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        # Non-sensitive configuration
+        envFrom:
+        - configMapRef:
+            name: coolstore-config
+        # Sensitive configuration
+        env:
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: coolstore-secrets
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: coolstore-secrets
+              key: DB_PASSWORD
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /health.jsp
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /health.jsp
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        # Writable state (deployments staging, logs, tmp, data) — image root FS is read-only
+        - name: wildfly-standalone
+          mountPath: /opt/jboss/wildfly/standalone
+      volumes:
+      - name: wildfly-standalone
+        emptyDir: {}

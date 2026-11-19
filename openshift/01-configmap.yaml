@@ -1,0 +1,16 @@
+# Non-sensitive application configuration for the coolstore monolith
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coolstore-config
+  namespace: coolstore
+  labels:
+    app: coolstore
+data:
+  # PostgreSQL connection (Service created by 03-postgres.yaml)
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_NAME: "coolstore"
+  # Keycloak auth server for the SPA's client-side OIDC adapter
+  # (was hardcoded to http://localhost:8081/ in src/main/webapp/keycloak.json)
+  KEYCLOAK_AUTH_SERVER_URL: "http://keycloak:8080/"

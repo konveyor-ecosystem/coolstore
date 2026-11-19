@@ -70,7 +70,8 @@
             </plugin>
         </plugins>
     </build>
+    <!-- OpenShift deployment is handled by the container pipeline:
+         see Dockerfile, openshift/ and mig-containerize-workspace/containerization-report.md -->
     <profiles>
-<!-- TODO: Add OpenShift profile here -->
     </profiles>
 </project>

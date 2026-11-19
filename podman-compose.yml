@@ -1,0 +1,64 @@
+# Local development environment for the coolstore monolith (Podman-compatible)
+# Usage:
+#   podman-compose up -d        # start app + postgres + keycloak
+#   podman-compose logs -f app
+#   podman-compose down -v      # stop and reset data
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: coolstore-monolith:latest
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: coolstore
+      DB_USER: coolstore
+      DB_PASSWORD: coolstore
+      KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080/
+    depends_on:
+      - postgres
+      - keycloak
+    networks:
+      - coolstore
+
+  postgres:
+    # Red Hat registry image (podman login registry.redhat.io first);
+    # plain `postgres:15` from Docker Hub also works (see README)
+    image: registry.redhat.io/rhel9/postgresql-15:latest
+    environment:
+      POSTGRESQL_USER: coolstore
+      POSTGRESQL_PASSWORD: coolstore
+      POSTGRESQL_DATABASE: coolstore
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - coolstore
+
+  keycloak:
+    # Same version the EAP deployment used (realm 'eap' from realm-export.json)
+    image: quay.io/keycloak/keycloak:20.0.5
+    command: ["start-dev", "--http-port=8080", "--import-realm"]
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HOSTNAME_STRICT: "false"
+    ports:
+      - "8081:8080"   # matches http://localhost:8081/ from the original README setup
+    volumes:
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json:ro,Z
+    networks:
+      - coolstore
+
+volumes:
+  postgres-data:
+
+networks:
+  coolstore:
+    driver: bridge

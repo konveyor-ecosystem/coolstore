@@ -1,0 +1,24 @@
+# Keep the container build context minimal
+.git
+.gitignore
+.github
+.vscode
+.project
+.rgctl/
+target/
+build/
+docs/
+*.md
+tests/
+mig-prompt-workspace/
+mig-plan-workspace/
+mig-containerize-workspace/
+openshift/
+rules/
+assets/
+realm-export.json
+podman-compose.yml
+.dockerignore
+*.log
+node_modules/
+__pycache__/

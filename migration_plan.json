@@ -1,0 +1,167 @@
+{
+  "schema_version": 2,
+  "preset": "hybrid_default",
+  "preset_label": "Hybrid Default",
+  "weights": {
+    "alpha": 0.33,
+    "beta": 0.33,
+    "gamma": 0.34
+  },
+  "order_mode": "scheduled",
+  "steps": [
+    {
+      "step": 1,
+      "community_id": 4,
+      "label": "src.main.webapp.app",
+      "priority_score": 0.1638940104048078,
+      "schedule_step": 1,
+      "priority_rank": 3,
+      "avg_pagerank": 0.001775598677340895,
+      "avg_harmonic": 0.00013046314318974813,
+      "max_blast": 0.0
+    },
+    {
+      "step": 2,
+      "community_id": 7,
+      "label": "root",
+      "priority_score": 0.011381547478398452,
+      "schedule_step": 2,
+      "priority_rank": 6,
+      "avg_pagerank": 0.001357794355135411,
+      "avg_harmonic": 0.0,
+      "max_blast": 0.0
+    },
+    {
+      "step": 3,
+      "community_id": 8,
+      "label": "weblogic.application",
+      "priority_score": -0.04179182860139469,
+      "schedule_step": 3,
+      "priority_rank": 7,
+      "avg_pagerank": 0.0012083104520570487,
+      "avg_harmonic": 0.0,
+      "max_blast": 0.0
+    },
+    {
+      "step": 4,
+      "community_id": 3,
+      "label": "src.main.webapp.app.services",
+      "priority_score": -0.12390133953633434,
+      "schedule_step": 4,
+      "priority_rank": 8,
+      "avg_pagerank": 0.0009685554744108864,
+      "avg_harmonic": 0.00010635582325251207,
+      "max_blast": 0.0
+    },
+    {
+      "step": 5,
+      "community_id": 2,
+      "label": "src.main.webapp.app.controllers",
+      "priority_score": 0.05857913821333707,
+      "schedule_step": 5,
+      "priority_rank": 5,
+      "avg_pagerank": 0.0014784048458643478,
+      "avg_harmonic": 0.00014389317263575161,
+      "max_blast": 0.0
+    },
+    {
+      "step": 6,
+      "community_id": 0,
+      "label": "com.redhat.coolstore.model",
+      "priority_score": -0.12912329270828665,
+      "schedule_step": 6,
+      "priority_rank": 9,
+      "avg_pagerank": 0.0009581441438958509,
+      "avg_harmonic": 0.000055480460377083614,
+      "max_blast": 0.0
+    },
+    {
+      "step": 7,
+      "community_id": 9,
+      "label": "weblogic.i18n.logging",
+      "priority_score": -0.17,
+      "schedule_step": 7,
+      "priority_rank": 10,
+      "avg_pagerank": 0.0008478846284560859,
+      "avg_harmonic": 0.0,
+      "max_blast": 0.0
+    },
+    {
+      "step": 8,
+      "community_id": 10,
+      "label": "src.main.webapp.app.routes",
+      "priority_score": -0.17,
+      "schedule_step": 8,
+      "priority_rank": 11,
+      "avg_pagerank": 0.0008478846284560859,
+      "avg_harmonic": 0.0,
+      "max_blast": 0.0
+    },
+    {
+      "step": 9,
+      "community_id": 11,
+      "label": "src.main.webapp.app.directives",
+      "priority_score": -0.17,
+      "schedule_step": 9,
+      "priority_rank": 12,
+      "avg_pagerank": 0.0008478846284560859,
+      "avg_harmonic": 0.0,
+      "max_blast": 0.0
+    },
+    {
+      "step": 10,
+      "community_id": 12,
+      "label": "com.redhat.coolstore.persistence",
+      "priority_score": -0.17,
+      "schedule_step": 10,
+      "priority_rank": 13,
+      "avg_pagerank": 0.0008478846284560859,
+      "avg_harmonic": 0.0,
+      "max_blast": 0.0
+    },
+    {
+      "step": 11,
+      "community_id": 13,
+      "label": "src.main.webapp.partials",
+      "priority_score": -0.17,
+      "schedule_step": 11,
+      "priority_rank": 14,
+      "avg_pagerank": 0.0008478846284560859,
+      "avg_harmonic": 0.0,
+      "max_blast": 0.0
+    },
+    {
+      "step": 12,
+      "community_id": 5,
+      "label": "com.redhat.coolstore.rest",
+      "priority_score": 0.22441398942879057,
+      "schedule_step": 12,
+      "priority_rank": 1,
+      "avg_pagerank": 0.0010289687585706513,
+      "avg_harmonic": 0.011056169033205757,
+      "max_blast": 0.0
+    },
+    {
+      "step": 13,
+      "community_id": 6,
+      "label": "com.redhat.coolstore.utils",
+      "priority_score": 0.1760074803329009,
+      "schedule_step": 13,
+      "priority_rank": 2,
+      "avg_pagerank": 0.0011139065544638368,
+      "avg_harmonic": 0.008422120784719786,
+      "max_blast": 0.0
+    },
+    {
+      "step": 14,
+      "community_id": 1,
+      "label": "com.redhat.coolstore.service",
+      "priority_score": 0.06143613311158527,
+      "schedule_step": 14,
+      "priority_rank": 4,
+      "avg_pagerank": 0.001121679228396179,
+      "avg_harmonic": 0.0044909427927520415,
+      "max_blast": 0.0
+    }
+  ]
+}

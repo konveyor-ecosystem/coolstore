@@ -48,6 +48,8 @@ spec:
           value: "CHANGE_ME_admin_password"   # move to a Secret in production
         - name: KC_HOSTNAME_STRICT
           value: "false"
+        - name: KC_PROXY
+          value: "edge"   # honour X-Forwarded-* from the edge-TLS Route (08-keycloak-route.yaml)
         ports:
         - containerPort: 8080
           name: http

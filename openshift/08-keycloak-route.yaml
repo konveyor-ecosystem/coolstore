@@ -1,0 +1,30 @@
+# External HTTPS access to Keycloak — required by the coolstore SPA.
+#
+# The AngularJS app uses a browser-side OIDC adapter (src/main/webapp/
+# keycloak.json, patched at container start from KEYCLOAK_AUTH_SERVER_URL).
+# The browser cannot resolve in-cluster service DNS such as
+# http://keycloak:8080/, so Keycloak must be exposed through a Route and
+# KEYCLOAK_AUTH_SERVER_URL must point at it. scripts/deploy-openshift.sh
+# creates this Route and patches the coolstore-config ConfigMap with its URL
+# before deploying the application.
+#
+# KC_PROXY=edge in 04-keycloak.yaml makes Keycloak 20 honour the
+# X-Forwarded-* headers set by the edge-terminating TLS route.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: keycloak
+  namespace: coolstore
+  labels:
+    app: keycloak
+spec:
+  to:
+    kind: Service
+    name: keycloak
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

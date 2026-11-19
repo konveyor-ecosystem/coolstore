@@ -13,4 +13,7 @@ data:
   DB_NAME: "coolstore"
   # Keycloak auth server for the SPA's client-side OIDC adapter
   # (was hardcoded to http://localhost:8081/ in src/main/webapp/keycloak.json)
+  # NOTE: overwritten by scripts/deploy-openshift.sh with the external
+  # https:// URL of the Keycloak Route (08-keycloak-route.yaml) before the
+  # application is deployed — the browser cannot reach in-cluster service DNS.
   KEYCLOAK_AUTH_SERVER_URL: "http://keycloak:8080/"

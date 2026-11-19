@@ -19,7 +19,9 @@ services:
       DB_NAME: coolstore
       DB_USER: coolstore
       DB_PASSWORD: coolstore
-      KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080/
+      # Browser-reachable URL of the Keycloak service (host port 8081 -> container 8080);
+      # the SPA's OIDC adapter runs in the browser, so in-cluster DNS would not resolve
+      KEYCLOAK_AUTH_SERVER_URL: http://localhost:8081/
     depends_on:
       - postgres
       - keycloak

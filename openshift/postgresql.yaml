@@ -1,27 +1,64 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: postgresql
-spec:
-  replicas: 1
-  selector: {matchLabels: {app: postgresql}}
-  template:
-    metadata: {labels: {app: postgresql}}
-    spec:
-      containers:
-        - name: postgresql
-          image: registry.access.redhat.com/rhscl/postgresql-13-rhel7
-          env:
-            - {name: POSTGRESQL_USER, value: coolstore}
-            - {name: POSTGRESQL_PASSWORD, value: coolstore}
-            - {name: POSTGRESQL_DATABASE, value: coolstore}
-          ports: [{containerPort: 5432}]
-          volumeMounts: [{name: pgdata, mountPath: /var/lib/pgsql/data}]
-      volumes: [{name: pgdata, emptyDir: {}}]
----
+# PostgreSQL 15 (Red Hat UBI9-based image) as a StatefulSet with persistent storage.
+# Replaces the deprecated rhscl/postgresql-13-rhel7 Deployment with emptyDir (data loss on restart).
+# Credentials come from the coolstore-secrets Secret (see secret.example.yaml).
+
+# Client Service — stable DNS `postgresql:5432` consumed by the app ConfigMap
 apiVersion: v1
 kind: Service
-metadata: {name: postgresql}
+metadata:
+  name: postgresql
+  labels: {app: postgresql}
 spec:
   selector: {app: postgresql}
   ports: [{name: pg, port: 5432, targetPort: 5432}]
+---
+# Headless governing service for the StatefulSet
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-headless
+  labels: {app: postgresql}
+spec:
+  clusterIP: None
+  selector: {app: postgresql}
+  ports: [{name: pg, port: 5432, targetPort: 5432}]
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql
+spec:
+  serviceName: postgresql-headless
+  replicas: 1
+  selector:
+    matchLabels: {app: postgresql}
+  template:
+    metadata:
+      labels: {app: postgresql}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: postgresql
+          image: registry.redhat.io/rhel9/postgresql-15:latest
+          env:
+            - name: POSTGRESQL_USER
+              valueFrom: {secretKeyRef: {name: coolstore-secrets, key: POSTGRESQL_USER}}
+            - name: POSTGRESQL_PASSWORD
+              valueFrom: {secretKeyRef: {name: coolstore-secrets, key: POSTGRESQL_PASSWORD}}
+            - name: POSTGRESQL_DATABASE
+              value: coolstore
+          ports: [{containerPort: 5432, name: pg}]
+          volumeMounts:
+            - {name: postgres-storage, mountPath: /var/lib/pgsql/data}
+          resources:
+            requests: {cpu: 250m, memory: 256Mi}
+            limits: {cpu: "1", memory: 1Gi}
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi

@@ -1,0 +1,32 @@
+# Build-context exclusions for podman/docker builds (Containerfile).
+# Keeps only what the image build needs: pom.xml, local-maven-repo/, src/main/.
+.git
+.github
+.project
+.rgctl
+.tekton
+.vscode
+.idea
+.settings
+.classpath
+assets
+docs
+lib
+mig-plan-workspace
+mig-prompt-workspace
+openshift
+rules
+*.md
+.gitignore
+realm-export.json
+Containerfile
+podman-compose.yml
+# Tests are skipped in the image build (-DskipTests)
+src/test
+# Local build output must never leak into the image
+target
+node_modules
+__pycache__
+*.pyc
+*.log
+.env

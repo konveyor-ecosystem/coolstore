@@ -14,10 +14,23 @@ spec:
     metadata:
       labels: {app: coolstore-monolith}
     spec:
+      # Pod security: non-root, RuntimeDefault seccomp (restricted-v2 compatible)
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: coolstore-monolith
           image: image-registry.openshift-image-registry.svc:5000/coolstore/coolstore-monolith:latest
-          ports: [{containerPort: 8080}]
+          # Container security: no privilege escalation, all capabilities dropped, read-only rootfs
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 185
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          ports: [{containerPort: 8080, name: http, protocol: TCP}]
           envFrom:
             - configMapRef: {name: coolstore-config}
             - secretRef: {name: coolstore-secrets}
@@ -36,3 +49,9 @@ spec:
             httpGet: {path: /q/health/started, port: 8080}
             failureThreshold: 30
             periodSeconds: 2
+          # Writable paths for the read-only root filesystem
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: tmp
+          emptyDir: {}

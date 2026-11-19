@@ -1,20 +1,30 @@
+# ActiveMQ Artemis broker (AMQP 1.0) for the `orders` address.
+# Credentials externalized to the coolstore-secrets Secret (was hardcoded artemis/artemis).
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: broker
+  labels: {app: broker}
 spec:
   replicas: 1
   selector: {matchLabels: {app: broker}}
   template:
     metadata: {labels: {app: broker}}
     spec:
+      securityContext:
+        runAsNonRoot: true
       containers:
         - name: artemis
           image: quay.io/artemiscloud/activemq-artemis-broker:1.0.25
           env:
-            - {name: AMQ_USER, value: artemis}
-            - {name: AMQ_PASSWORD, value: artemis}
-          ports: [{containerPort: 5672}]
+            - name: AMQ_USER
+              valueFrom: {secretKeyRef: {name: coolstore-secrets, key: AMQ_USER}}
+            - name: AMQ_PASSWORD
+              valueFrom: {secretKeyRef: {name: coolstore-secrets, key: AMQ_PASSWORD}}
+          ports: [{containerPort: 5672, name: amqp}]
+          resources:
+            requests: {cpu: 100m, memory: 256Mi}
+            limits: {cpu: "1", memory: 1Gi}
 ---
 apiVersion: v1
 kind: Service

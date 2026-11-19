@@ -3,8 +3,13 @@
 **Build & run (local):** requires Java 21 + Maven 3.9. `mvn quarkus:dev` starts dev mode;
 `mvn package` builds the fast-jar (`target/quarkus-app/`). Configuration is externalized via
 env vars (`QUARKUS_DATASOURCE_*`, `KEYCLOAK_URL`, `AMQP_*`, `AUDIT_STREAM_*`) — see
-`src/main/resources/application.properties`. Container: `podman build -f Containerfile -t coolstore-monolith .`
-OpenShift: manifests in `openshift/`, CI in `.tekton/`. Migration details: `docs/migration-runbook.md`.
+`src/main/resources/application.properties`. Container (multi-stage Red Hat UBI9 OpenJDK 21,
+non-root, health-checked): `podman build -f Containerfile -t coolstore-monolith .` — the build
+context is trimmed by `.containerignore`. Full local stack (app + PostgreSQL + Artemis + Keycloak
++ audit sink): `podman-compose up -d` (see `podman-compose.yml`).
+OpenShift: hardened manifests in `openshift/` (security contexts, read-only rootfs, StatefulSet
+PostgreSQL with PVC), CI in `.tekton/`. Migration details: `docs/migration-runbook.md`;
+containerization details: `docs/containerization-report.md`.
 
 ---
 # CoolStore Monolith

@@ -1,0 +1,87 @@
+# Local development stack for the CoolStore monolith — mirrors the openshift/ manifests.
+# Usage:
+#   podman-compose up -d          # start app + postgresql + broker + keycloak (+ audit sink)
+#   podman-compose logs -f app    # follow app logs
+#   podman-compose down           # stop (add -v to reset the postgres volume)
+# App:     http://localhost:8080  (UI + /services REST, health at /q/health/*)
+# Keycloak http://localhost:8081  (realm "eap" auto-imported; browser OIDC fallback URL)
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Containerfile
+    image: coolstore-monolith:latest
+    ports:
+      - "8080:8080"
+    environment:
+      QUARKUS_DATASOURCE_HOST: postgresql
+      QUARKUS_DATASOURCE_PORT: "5432"
+      QUARKUS_DATASOURCE_DATABASE: coolstore
+      QUARKUS_DATASOURCE_USERNAME: coolstore
+      QUARKUS_DATASOURCE_PASSWORD: coolstore
+      KEYCLOAK_URL: http://keycloak:8080
+      AMQP_HOST: broker
+      AMQP_PORT: "5672"
+      AMQP_USERNAME: artemis
+      AMQP_PASSWORD: artemis
+      AUDIT_STREAM_HOST: audit-collector
+      AUDIT_STREAM_PORT: "4560"
+    depends_on:
+      - postgresql
+      - broker
+      - keycloak
+    networks:
+      - coolstore
+
+  postgresql:
+    image: registry.redhat.io/rhel9/postgresql-15:latest
+    environment:
+      POSTGRESQL_USER: coolstore
+      POSTGRESQL_PASSWORD: coolstore
+      POSTGRESQL_DATABASE: coolstore
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/pgsql/data
+    networks:
+      - coolstore
+
+  broker:
+    image: quay.io/artemiscloud/activemq-artemis-broker:1.0.25
+    environment:
+      AMQ_USER: artemis
+      AMQ_PASSWORD: artemis
+    ports:
+      - "5672:5672"
+    networks:
+      - coolstore
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+    networks:
+      - coolstore
+
+  # Dev-only TCP sink for the app's StreamableAuditLogger (audit events are discarded).
+  # On OpenShift, point AUDIT_STREAM_HOST at a real audit collector service instead.
+  audit-collector:
+    image: alpine/socat:latest
+    command: ["socat", "TCP-LISTEN:4560,fork,reuseaddr", "/dev/null"]
+    networks:
+      - coolstore
+
+volumes:
+  postgres-data:
+
+networks:
+  coolstore:
+    driver: bridge

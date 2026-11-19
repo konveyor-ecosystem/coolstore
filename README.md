@@ -8,8 +8,10 @@ non-root, health-checked): `podman build -f Containerfile -t coolstore-monolith 
 context is trimmed by `.containerignore`. Full local stack (app + PostgreSQL + Artemis + Keycloak
 + audit sink): `podman-compose up -d` (see `podman-compose.yml`).
 OpenShift: hardened manifests in `openshift/` (security contexts, read-only rootfs, StatefulSet
-PostgreSQL with PVC), CI in `.tekton/`. Migration details: `docs/migration-runbook.md`;
-containerization details: `docs/containerization-report.md`.
+PostgreSQL with PVC), CI in `.tekton/`. Deploy with `./openshift/deploy.sh` (dependency-aware,
+health-verified, dry-run capable; see usage with `--help`). Migration details:
+`docs/migration-runbook.md`; containerization details: `docs/containerization-report.md`;
+deployment details: `docs/deployment-report.md`.
 
 ---
 # CoolStore Monolith
